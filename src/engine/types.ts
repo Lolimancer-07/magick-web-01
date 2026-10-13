@@ -13,6 +13,7 @@ export interface PipelineStep {
 export type WorkerRequest =
   | { type: "init" }
   | { type: "load"; id: number; bytes: ArrayBuffer }
+  | { type: "cancel"; upToId: number }
   | { type: "render"; id: number; steps: PipelineStep[]; preview: boolean; format: string; quality?: number };
 
 export type WorkerResponse =

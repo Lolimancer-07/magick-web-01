@@ -8139,6 +8139,7 @@ var OP_MAP = Object.fromEntries(OPERATIONS.map((o) => [o.id, o]));
 
 // src/engine/magick.worker.ts
 var original = null;
+var latestRenderId = 0;
 var post = (m2, t3) => self.postMessage(m2, t3 ?? []);
 var FORMAT_MAP = {
   png: [Ae.Png, "image/png"],
@@ -8146,6 +8147,7 @@ var FORMAT_MAP = {
   jpg: [Ae.Jpeg, "image/jpeg"],
   webp: [Ae.WebP, "image/webp"]
 };
+var PREVIEW_MAX = 900;
 self.onmessage = async (e29) => {
   const msg = e29.data;
   try {
@@ -8164,15 +8166,21 @@ self.onmessage = async (e29) => {
         original,
         (img) => post({ type: "loaded", id: msg.id, width: img.width, height: img.height })
       );
+    } else if (msg.type === "cancel") {
+      latestRenderId = msg.upToId;
     } else if (msg.type === "render") {
       if (!original) throw new Error("No image loaded");
+      latestRenderId = msg.id;
+      const myId = msg.id;
       const fmtKey = (msg.format ?? "png").toLowerCase();
       const [fmt, mime] = msg.preview ? [Ae.Png, "image/png"] : FORMAT_MAP[fmtKey] ?? FORMAT_MAP.png;
       R.read(original, (img) => {
+        if (myId !== latestRenderId) return;
         if (msg.preview) {
-          const max = 1600;
-          if (Math.max(img.width, img.height) > max) {
-            const s = max / Math.max(img.width, img.height);
+          const max = PREVIEW_MAX;
+          const largest = Math.max(img.width, img.height);
+          if (largest > max) {
+            const s = max / largest;
             img.resize(
               Math.max(1, Math.round(img.width * s)),
               Math.max(1, Math.round(img.height * s))
@@ -8180,6 +8188,7 @@ self.onmessage = async (e29) => {
           }
         }
         for (const step of msg.steps) {
+          if (myId !== latestRenderId) return;
           if (!step.enabled) continue;
           const op = OP_MAP[step.opId];
           if (op) {
@@ -8190,10 +8199,12 @@ self.onmessage = async (e29) => {
             }
           }
         }
+        if (myId !== latestRenderId) return;
         if (!msg.preview && msg.quality) {
           img.quality = msg.quality;
         }
         img.write(fmt, (data) => {
+          if (myId !== latestRenderId) return;
           const copy = data.slice().buffer;
           post(
             {
