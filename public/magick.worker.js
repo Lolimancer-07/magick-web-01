@@ -8139,6 +8139,7 @@ var OP_MAP = Object.fromEntries(OPERATIONS.map((o) => [o.id, o]));
 
 // src/engine/magick.worker.ts
 var original = null;
+var previewSource = null;
 var latestRenderId = 0;
 var post = (m2, t3) => self.postMessage(m2, t3 ?? []);
 var FORMAT_MAP = {
@@ -8148,24 +8149,36 @@ var FORMAT_MAP = {
   webp: [Ae.WebP, "image/webp"]
 };
 var PREVIEW_MAX = 900;
+function downscaleForPreview(img) {
+  const largest = Math.max(img.width, img.height);
+  if (largest > PREVIEW_MAX) {
+    const s = PREVIEW_MAX / largest;
+    img.resize(
+      Math.max(1, Math.round(img.width * s)),
+      Math.max(1, Math.round(img.height * s))
+    );
+  }
+}
 self.onmessage = async (e29) => {
   const msg = e29.data;
   try {
     if (msg.type === "init") {
       const res = await fetch("/wasm/magick.wasm");
-      if (!res.ok) {
-        throw new Error(`Failed to fetch /wasm/magick.wasm: ${res.status} ${res.statusText}`);
-      }
+      if (!res.ok) throw new Error(`Failed to fetch /wasm/magick.wasm: ${res.status} ${res.statusText}`);
       const buffer = await res.arrayBuffer();
-      const wasmBytes = new Uint8Array(buffer);
-      await V(wasmBytes);
+      await V(new Uint8Array(buffer));
       post({ type: "ready" });
     } else if (msg.type === "load") {
       original = new Uint8Array(msg.bytes);
-      R.read(
-        original,
-        (img) => post({ type: "loaded", id: msg.id, width: img.width, height: img.height })
-      );
+      R.read(original, (img) => {
+        const w2 = img.width;
+        const h2 = img.height;
+        downscaleForPreview(img);
+        img.write(Ae.Png, (data) => {
+          previewSource = data.slice();
+        });
+        post({ type: "loaded", id: msg.id, width: w2, height: h2 });
+      });
     } else if (msg.type === "cancel") {
       latestRenderId = msg.upToId;
     } else if (msg.type === "render") {
@@ -8174,18 +8187,10 @@ self.onmessage = async (e29) => {
       const myId = msg.id;
       const fmtKey = (msg.format ?? "png").toLowerCase();
       const [fmt, mime] = msg.preview ? [Ae.Png, "image/png"] : FORMAT_MAP[fmtKey] ?? FORMAT_MAP.png;
-      R.read(original, (img) => {
+      const source = msg.preview && previewSource ? previewSource : original;
+      R.read(source, (img) => {
         if (myId !== latestRenderId) return;
-        if (msg.preview) {
-          const max = PREVIEW_MAX;
-          const largest = Math.max(img.width, img.height);
-          if (largest > max) {
-            const s = max / largest;
-            img.resize(
-              Math.max(1, Math.round(img.width * s)),
-              Math.max(1, Math.round(img.height * s))
-            );
-          }
+        if (!msg.preview) {
         }
         for (const step of msg.steps) {
           if (myId !== latestRenderId) return;
@@ -8207,14 +8212,7 @@ self.onmessage = async (e29) => {
           if (myId !== latestRenderId) return;
           const copy = data.slice().buffer;
           post(
-            {
-              type: "rendered",
-              id: msg.id,
-              bytes: copy,
-              width: img.width,
-              height: img.height,
-              mime
-            },
+            { type: "rendered", id: msg.id, bytes: copy, width: img.width, height: img.height, mime },
             [copy]
           );
         });

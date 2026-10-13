@@ -11,7 +11,8 @@ import OperationPicker from "@/components/OperationPicker";
 import HistoryPanel from "@/components/HistoryPanel";
 import ExportDialog from "@/components/ExportDialog";
 
-const DEBOUNCE_MS = 40;
+const DEBOUNCE_MS_SLIDER = 40;  // debounce for slider drags
+const DEBOUNCE_MS_ADD = 0;      // instant feedback when adding a new step
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -40,11 +41,19 @@ function EditorContent() {
   const latestRenderRef = useRef(0);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const initialProcessedRef = useRef(false);
+  const prevStepCountRef = useRef(0);
 
   // Render pipeline whenever steps change
   const triggerRender = useCallback(() => {
     if (!hasImage) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // Use 0ms debounce when a new step was added (instant feedback),
+    // 40ms for slider changes (avoids spamming while dragging)
+    const stepCountChanged = steps.length !== prevStepCountRef.current;
+    prevStepCountRef.current = steps.length;
+    const delay = stepCountChanged ? DEBOUNCE_MS_ADD : DEBOUNCE_MS_SLIDER;
+
     debounceRef.current = setTimeout(async () => {
       const renderId = ++latestRenderRef.current;
       setPreviewLoading(true);
@@ -56,15 +65,19 @@ function EditorContent() {
         const url = URL.createObjectURL(blob);
         setPreviewUrl(url);
       } catch (err: unknown) {
+        // Silently ignore renders cancelled by a newer request
+        const errMsg = err instanceof Error ? err.message : String(err);
+        if (errMsg === "cancelled") {
+          // Still clear the spinner if this was the latest render
+          if (renderId === latestRenderRef.current) setPreviewLoading(false);
+          return;
+        }
         if (renderId !== latestRenderRef.current) return;
-        // Silently ignore renders that were cancelled by a newer request
-        const msg = err instanceof Error ? err.message : String(err);
-        if (msg === "cancelled") return;
-        setPreviewError(msg || "Render failed");
+        setPreviewError(errMsg || "Render failed");
       } finally {
         if (renderId === latestRenderRef.current) setPreviewLoading(false);
       }
-    }, DEBOUNCE_MS);
+    }, delay);
   }, [hasImage, steps, setPreviewUrl, setPreviewLoading, setPreviewError]);
 
   useEffect(() => {
