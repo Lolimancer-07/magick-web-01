@@ -11,7 +11,7 @@ import OperationPicker from "@/components/OperationPicker";
 import HistoryPanel from "@/components/HistoryPanel";
 import ExportDialog from "@/components/ExportDialog";
 
-const DEBOUNCE_MS = 120;
+const DEBOUNCE_MS = 40;
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -57,7 +57,10 @@ function EditorContent() {
         setPreviewUrl(url);
       } catch (err: unknown) {
         if (renderId !== latestRenderRef.current) return;
-        setPreviewError(err instanceof Error ? err.message : "Render failed");
+        // Silently ignore renders that were cancelled by a newer request
+        const msg = err instanceof Error ? err.message : String(err);
+        if (msg === "cancelled") return;
+        setPreviewError(msg || "Render failed");
       } finally {
         if (renderId === latestRenderRef.current) setPreviewLoading(false);
       }

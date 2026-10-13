@@ -10,6 +10,9 @@ class EngineClient {
   private readyPromise!: Promise<void>;
   private started = false;
 
+  // Track the latest preview render so we can cancel superseded ones immediately
+  private latestPreviewId = 0;
+
   start() {
     if (typeof window === "undefined") {
       return Promise.reject(new Error("EngineClient can only run in the browser"));
@@ -23,7 +26,7 @@ class EngineClient {
         if (m.type === "ready") return res();
         const p = this.pending.get((m as any).id); // eslint-disable-line @typescript-eslint/no-explicit-any
         if (!p) {
-          if (m.type === "error" && (m as any).id === -1) {
+          if (m.type === "error" && (m as any).id === -1) { // eslint-disable-line @typescript-eslint/no-explicit-any
             return rej(new Error(m.message));
           }
           return;
@@ -66,18 +69,40 @@ class EngineClient {
     steps: PipelineStep[],
     opts: { preview: boolean; format?: string; quality?: number }
   ) {
-    return this.call<{
+    const id = this.nextId++;
+
+    if (opts.preview) {
+      // Cancel any previous preview renders — tell the worker to discard them
+      if (this.latestPreviewId > 0) {
+        // Reject any pending preview promises so callers don't hang
+        for (const [pendingId, p] of this.pending) {
+          if (pendingId < id && pendingId >= this.latestPreviewId) {
+            this.pending.delete(pendingId);
+            p.reject(new Error("cancelled"));
+          }
+        }
+        // Notify the worker to mark those renders stale
+        this.worker.postMessage({ type: "cancel", upToId: id - 1 } satisfies WorkerRequest);
+      }
+      this.latestPreviewId = id;
+    }
+
+    return new Promise<{
       bytes: ArrayBuffer;
       mime: string;
       width: number;
       height: number;
-    }>({
-      type: "render",
-      steps,
-      preview: opts.preview,
-      format: opts.format ?? "png",
-      quality: opts.quality,
-    } as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    }>((resolve, reject) => {
+      this.pending.set(id, { resolve, reject });
+      this.worker.postMessage({
+        type: "render",
+        id,
+        steps,
+        preview: opts.preview,
+        format: opts.format ?? "png",
+        quality: opts.quality,
+      } as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+    });
   }
 }
 
