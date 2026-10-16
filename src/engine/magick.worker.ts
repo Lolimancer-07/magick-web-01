@@ -26,7 +26,7 @@ const FORMAT_MAP: Record<string, [any, string]> = {
   webp: [MagickFormat.WebP, "image/webp"],
 };
 
-const PREVIEW_MAX = 900;
+const PREVIEW_MAX = 1600;
 
 /** Downscale an image in-place to fit within PREVIEW_MAX on its longest side */
 function downscaleForPreview(img: any) {
@@ -45,7 +45,8 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
   try {
     // ── Init ────────────────────────────────────────────────────────────────
     if (msg.type === "init") {
-      const res = await fetch("/wasm/magick.wasm");
+      const wasmUrl = new URL("/wasm/magick.wasm", self.location.origin);
+      const res = await fetch(wasmUrl);
       if (!res.ok) throw new Error(`Failed to fetch /wasm/magick.wasm: ${res.status} ${res.statusText}`);
       const buffer = await res.arrayBuffer();
       await initializeImageMagickx64(new Uint8Array(buffer));
