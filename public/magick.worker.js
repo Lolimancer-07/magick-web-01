@@ -8148,7 +8148,7 @@ var FORMAT_MAP = {
   jpg: [Ae.Jpeg, "image/jpeg"],
   webp: [Ae.WebP, "image/webp"]
 };
-var PREVIEW_MAX = 900;
+var PREVIEW_MAX = 1600;
 function downscaleForPreview(img) {
   const largest = Math.max(img.width, img.height);
   if (largest > PREVIEW_MAX) {
@@ -8163,7 +8163,8 @@ self.onmessage = async (e29) => {
   const msg = e29.data;
   try {
     if (msg.type === "init") {
-      const res = await fetch("/wasm/magick.wasm");
+      const wasmUrl = new URL("/wasm/magick.wasm", self.location.origin);
+      const res = await fetch(wasmUrl);
       if (!res.ok) throw new Error(`Failed to fetch /wasm/magick.wasm: ${res.status} ${res.statusText}`);
       const buffer = await res.arrayBuffer();
       await V(new Uint8Array(buffer));
