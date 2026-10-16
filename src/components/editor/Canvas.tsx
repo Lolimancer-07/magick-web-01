@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ZoomIn, ZoomOut, Maximize2, RotateCcw, AlertTriangle, Loader2, SplitSquareVertical } from "lucide-react";
+import {
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  AlertTriangle,
+  Loader2,
+  SplitSquareVertical,
+  RotateCw,
+  ArrowUpDown,
+  ArrowLeftRight,
+  Maximize2,
+} from "lucide-react";
 import { useEditorStore } from "@/store/editorStore";
-import ClayCard from "@/components/ui/ClayCard";
-import Button from "@/components/ui/Button";
 
 interface CanvasProps {
   onRetry?: () => void;
@@ -19,6 +28,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
     beforeAfterMode,
     setBeforeAfterMode,
     originalDimensions,
+    addStep,
   } = useEditorStore();
 
   const [zoom, setZoom] = useState(1);
@@ -52,8 +62,8 @@ export default function Canvas({ onRetry }: CanvasProps) {
   }, []);
 
   // Zoom controls
-  const handleZoomIn = () => setZoom((z) => Math.min(5, +(z + 0.25).toFixed(2)));
-  const handleZoomOut = () => setZoom((z) => Math.max(0.2, +(z - 0.25).toFixed(2)));
+  const handleZoomIn = () => setZoom((z) => Math.min(5, +(z + 0.2).toFixed(2)));
+  const handleZoomOut = () => setZoom((z) => Math.max(0.15, +(z - 0.2).toFixed(2)));
   const handleResetZoom = () => {
     setZoom(1);
     setPan({ x: 0, y: 0 });
@@ -62,10 +72,10 @@ export default function Canvas({ onRetry }: CanvasProps) {
   // Mouse wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    const delta = e.deltaY < 0 ? 0.1 : -0.1;
+    const delta = e.deltaY < 0 ? 0.08 : -0.08;
     setZoom((z) => {
       const next = z + delta;
-      return Math.min(5, Math.max(0.2, +next.toFixed(2)));
+      return Math.min(5, Math.max(0.15, +next.toFixed(2)));
     });
   };
 
@@ -111,58 +121,105 @@ export default function Canvas({ onRetry }: CanvasProps) {
   const activeUrl = previewUrl || beforeUrl;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center p-3 select-none overflow-hidden">
-      {/* Top Floating Controls Bar */}
-      <div className="absolute top-4 z-20 flex flex-wrap items-center gap-2 px-3 py-2 bg-beige/90 backdrop-blur-md rounded-2xl border-2 border-ink shadow-[3px_3px_0_var(--ink)]">
+    <div className="relative w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 select-none overflow-hidden">
+      {/* Top Floating Glass Toolbar */}
+      <div className="absolute top-4 z-20 flex flex-wrap items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-xl rounded-2xl border border-ink/10 shadow-[0_8px_30px_rgba(46,54,69,0.1)]">
+        {/* Zoom Out */}
         <button
           type="button"
           onClick={handleZoomOut}
-          className="p-2 rounded-xl border-2 border-ink bg-white hover:bg-gray text-ink font-display cursor-pointer transition-transform active:translate-y-0.5"
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
           aria-label="Zoom out"
+          title="Zoom out"
         >
-          <ZoomOut size={18} aria-hidden="true" />
+          <ZoomOut size={16} aria-hidden="true" />
         </button>
 
-        <span className="font-display font-bold text-xs px-2 text-ink min-w-[50px] text-center">
-          {Math.round(zoom * 100)}%
-        </span>
-
-        <button
-          type="button"
-          onClick={handleZoomIn}
-          className="p-2 rounded-xl border-2 border-ink bg-white hover:bg-gray text-ink font-display cursor-pointer transition-transform active:translate-y-0.5"
-          aria-label="Zoom in"
-        >
-          <ZoomIn size={18} aria-hidden="true" />
-        </button>
-
+        {/* Zoom % */}
         <button
           type="button"
           onClick={handleResetZoom}
-          className="p-2 rounded-xl border-2 border-ink bg-white hover:bg-gray text-ink font-display cursor-pointer transition-transform active:translate-y-0.5"
-          aria-label="Reset zoom and position"
-          title="Reset Zoom"
+          className="font-mono font-bold text-xs px-2 py-1 text-ink min-w-[50px] text-center hover:bg-slate-100 rounded-md transition-colors"
+          title="Click to reset zoom to 100%"
         >
-          <RotateCcw size={18} aria-hidden="true" />
+          {Math.round(zoom * 100)}%
         </button>
 
-        <div className="h-5 w-0.5 bg-ink/20 mx-1" />
+        {/* Zoom In */}
+        <button
+          type="button"
+          onClick={handleZoomIn}
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Zoom in"
+          title="Zoom in"
+        >
+          <ZoomIn size={16} aria-hidden="true" />
+        </button>
+
+        {/* Reset / Fit */}
+        <button
+          type="button"
+          onClick={handleResetZoom}
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Reset zoom and center"
+          title="Reset Zoom & Pan"
+        >
+          <Maximize2 size={15} aria-hidden="true" />
+        </button>
+
+        <div className="h-4 w-px bg-ink/15 mx-1" />
+
+        {/* Quick Transforms */}
+        <button
+          type="button"
+          onClick={() => addStep("rotate", { deg: 90 })}
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          title="Rotate 90° Clockwise"
+          aria-label="Rotate 90 degrees clockwise"
+        >
+          <RotateCw size={15} aria-hidden="true" />
+        </button>
 
         <button
           type="button"
+          onClick={() => addStep("flop", {})}
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          title="Flip Horizontal"
+          aria-label="Flip Horizontal"
+        >
+          <ArrowLeftRight size={15} aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => addStep("flip", {})}
+          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          title="Flip Vertical"
+          aria-label="Flip Vertical"
+        >
+          <ArrowUpDown size={15} aria-hidden="true" />
+        </button>
+
+        <div className="h-4 w-px bg-ink/15 mx-1" />
+
+        {/* Before / After Compare Toggle */}
+        <button
+          type="button"
           onClick={() => setBeforeAfterMode(!beforeAfterMode)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-ink font-display text-xs font-bold cursor-pointer transition-transform active:translate-y-0.5 ${
-            beforeAfterMode ? "bg-mint text-ink shadow-[2px_2px_0_var(--ink)]" : "bg-white text-ink hover:bg-gray"
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition-all duration-150 cursor-pointer ${
+            beforeAfterMode
+              ? "bg-green text-white shadow-sm"
+              : "bg-slate-100 text-ink/80 hover:bg-slate-200"
           }`}
           aria-pressed={beforeAfterMode}
-          aria-label="Toggle before and after split view"
+          aria-label="Toggle split compare view"
         >
-          <SplitSquareVertical size={16} aria-hidden="true" />
+          <SplitSquareVertical size={14} aria-hidden="true" />
           <span>Compare</span>
         </button>
 
         {originalDimensions && (
-          <span className="hidden sm:inline-block text-xs font-semibold text-muted ml-2">
+          <span className="hidden lg:inline-block text-[11px] font-mono text-muted pl-2 border-l border-ink/10">
             {originalDimensions.w} × {originalDimensions.h} px
           </span>
         )}
@@ -176,36 +233,40 @@ export default function Canvas({ onRetry }: CanvasProps) {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        className={`relative w-full h-[65vh] md:h-[75vh] flex items-center justify-center rounded-2xl border-2 border-ink overflow-hidden bg-gray/40 pattern-grid ${
+        className={`relative w-full h-[65vh] md:h-[78vh] flex items-center justify-center rounded-2xl border border-ink/10 overflow-hidden bg-[#dedad5] ${
           spacePressed || isPanning ? "cursor-grab active:cursor-grabbing" : "cursor-default"
         }`}
         style={{
           backgroundImage:
-            "radial-gradient(circle, var(--ink) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
+            "radial-gradient(circle, rgba(46,54,69,0.12) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
           backgroundPosition: "0 0",
         }}
       >
-        {/* Loading overlay indicator */}
+        {/* Loading overlay badge */}
         {previewLoading && (
-          <div className="absolute top-4 right-4 z-30 flex items-center gap-2 px-3 py-1.5 bg-mint border-2 border-ink rounded-full shadow-[2px_2px_0_var(--ink)] animate-pulse">
-            <Loader2 size={16} className="animate-spin text-ink" aria-hidden="true" />
-            <span className="text-xs font-display font-bold text-ink">Rendering...</span>
+          <div className="absolute top-4 right-4 z-30 flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-md border border-ink/15 rounded-full shadow-md animate-in fade-in">
+            <Loader2 size={14} className="animate-spin text-green-d" aria-hidden="true" />
+            <span className="text-xs font-medium text-ink">Rendering in WASM...</span>
           </div>
         )}
 
         {/* Error overlay banner */}
         {previewError && (
-          <div className="absolute bottom-6 z-30 max-w-md mx-auto p-4 bg-salmon border-2 border-ink rounded-2xl shadow-[4px_4px_0_var(--ink)] flex items-start gap-3">
-            <AlertTriangle size={24} className="shrink-0 text-ink" aria-hidden="true" />
-            <div className="flex-1 text-sm font-medium text-ink">
-              <p className="font-bold font-display">Processing Error</p>
-              <p className="text-xs mt-0.5 text-ink/80">{previewError}</p>
+          <div className="absolute bottom-6 z-30 max-w-md mx-auto p-4 bg-red-50 border border-red-200 rounded-2xl shadow-xl flex items-start gap-3">
+            <AlertTriangle size={20} className="shrink-0 text-red-600 mt-0.5" aria-hidden="true" />
+            <div className="flex-1 text-sm text-red-900">
+              <p className="font-bold">Render Issue</p>
+              <p className="text-xs mt-0.5 text-red-700">{previewError}</p>
             </div>
             {onRetry && (
-              <Button size="sm" variant="white" onClick={onRetry}>
+              <button
+                type="button"
+                onClick={onRetry}
+                className="px-3 py-1 rounded-lg bg-white border border-red-200 text-xs font-semibold text-red-800 hover:bg-red-100 cursor-pointer"
+              >
                 Retry
-              </Button>
+              </button>
             )}
           </div>
         )}
@@ -221,7 +282,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
           >
             {beforeAfterMode && beforeUrl && previewUrl ? (
               /* Before / After Comparison Split View */
-              <div className="relative select-none pointer-events-none rounded-xl border-2 border-ink shadow-[4px_4px_0_var(--ink)] overflow-hidden">
+              <div className="relative select-none pointer-events-none rounded-2xl border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden bg-white">
                 {/* Before Image (underneath) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -271,18 +332,18 @@ export default function Canvas({ onRetry }: CanvasProps) {
                     }
                   }}
                 >
-                  <div className="w-1 h-full bg-ink" />
-                  <div className="absolute w-7 h-7 rounded-full bg-white border-2 border-ink shadow-[2px_2px_0_var(--ink)] flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-ink" />
+                  <div className="w-0.5 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
+                  <div className="absolute w-7 h-7 rounded-full bg-white border border-ink/20 shadow-lg flex items-center justify-center text-ink text-[11px] font-bold select-none">
+                    ‹›
                   </div>
                 </div>
 
-                {/* Split Labels */}
-                <span className="absolute top-3 left-3 px-2 py-1 bg-ink text-white rounded-lg text-[10px] font-bold font-display uppercase tracking-wider">
-                  After
+                {/* Split Badges */}
+                <span className="absolute top-3 left-3 px-2 py-0.5 bg-black/75 backdrop-blur-md text-white rounded-md text-[10px] font-bold uppercase tracking-wider">
+                  Edited (After)
                 </span>
-                <span className="absolute top-3 right-3 px-2 py-1 bg-white/90 text-ink border border-ink rounded-lg text-[10px] font-bold font-display uppercase tracking-wider">
-                  Before
+                <span className="absolute top-3 right-3 px-2 py-0.5 bg-white/90 backdrop-blur-md text-ink border border-ink/15 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                  Original (Before)
                 </span>
               </div>
             ) : (
@@ -291,7 +352,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
               <img
                 src={activeUrl}
                 alt="Image workspace canvas preview"
-                className="max-h-[60vh] max-w-[80vw] object-contain rounded-xl border-2 border-ink shadow-[4px_4px_0_var(--ink)] block pointer-events-none"
+                className="max-h-[60vh] max-w-[80vw] object-contain rounded-2xl border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.2)] block pointer-events-none bg-white"
                 draggable={false}
               />
             )}
@@ -299,7 +360,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
         ) : (
           <div className="text-center p-8 text-muted">
             <p className="font-display text-lg text-ink font-bold">No Image Active</p>
-            <p className="text-sm">Upload an image to start transforming it</p>
+            <p className="text-sm">Upload an image to start transforming</p>
           </div>
         )}
       </div>

@@ -1,36 +1,29 @@
 "use client";
 
-import { useMemo } from "react";
 import { Sliders, RotateCcw } from "lucide-react";
-import { OP_MAP } from "@/ops/definitions";
 import { useEditorStore } from "@/store/editorStore";
-import ClayCard from "@/components/ui/ClayCard";
-import IconTile from "@/components/ui/IconTile";
+import { OP_MAP } from "@/ops/definitions";
 
 interface ParamPanelProps {
-  selectedUid?: string | null;
+  selectedUid: string | null;
 }
 
 export default function ParamPanel({ selectedUid }: ParamPanelProps) {
   const { steps, updateStep } = useEditorStore();
 
-  // Pick the active step: either explicitly selected or the latest step in pipeline
-  const activeStep = useMemo(() => {
-    if (selectedUid) {
-      return steps.find((s) => s.uid === selectedUid) || null;
-    }
-    return steps.length > 0 ? steps[steps.length - 1] : null;
-  }, [steps, selectedUid]);
+  const activeStep = selectedUid
+    ? steps.find((s) => s.uid === selectedUid)
+    : steps[steps.length - 1];
 
   const opDef = activeStep ? OP_MAP[activeStep.opId] : null;
 
   if (!activeStep || !opDef) {
     return (
-      <ClayCard variant="white" className="p-6 text-center text-muted">
-        <Sliders size={32} className="mx-auto mb-2 text-muted/60" aria-hidden="true" />
-        <h4 className="font-display font-bold text-base text-ink mb-1">Parameters</h4>
-        <p className="text-xs">Add or select a pipeline step to configure settings.</p>
-      </ClayCard>
+      <div className="bg-white rounded-2xl border border-ink/10 shadow-sm p-4 text-center text-muted">
+        <Sliders size={20} className="mx-auto mb-1 text-muted/40" />
+        <h4 className="font-display font-bold text-xs text-ink/80 mb-0.5">Parameters</h4>
+        <p className="text-[11px]">Select a step in the pipeline to tune settings</p>
+      </div>
     );
   }
 
@@ -43,26 +36,22 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
   };
 
   return (
-    <ClayCard variant="white" className="p-4 flex flex-col gap-4">
-      <div className="flex items-center justify-between pb-3 border-b-2 border-gray">
-        <div className="flex items-center gap-2">
-          <IconTile color="salmon" size="sm">
-            <Sliders size={16} className="text-ink" aria-hidden="true" />
-          </IconTile>
-          <div>
-            <h4 className="font-display font-bold text-base text-ink">{opDef.name}</h4>
-            <p className="text-[11px] text-muted">Tune operation properties</p>
-          </div>
+    <div className="bg-white rounded-2xl border border-ink/10 shadow-sm p-4 flex flex-col gap-3 max-h-[42vh] overflow-y-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-2.5 border-b border-ink/10">
+        <div>
+          <h4 className="font-display font-bold text-sm text-ink tracking-tight">{opDef.name}</h4>
+          <span className="text-[10px] text-muted">Tune operation properties</span>
         </div>
 
         {opDef.params.length > 0 && (
           <button
             type="button"
             onClick={handleResetDefaults}
-            className="flex items-center gap-1 text-xs font-bold text-muted hover:text-ink px-2 py-1 rounded-lg border border-ink/40 bg-gray hover:bg-white cursor-pointer transition-colors"
-            title="Reset parameters to defaults"
+            className="flex items-center gap-1 text-[11px] font-semibold text-muted hover:text-ink px-2 py-1 rounded-lg border border-ink/10 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer"
+            title="Reset to defaults"
           >
-            <RotateCcw size={12} aria-hidden="true" />
+            <RotateCcw size={11} aria-hidden="true" />
             <span>Reset</span>
           </button>
         )}
@@ -70,10 +59,10 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
 
       {opDef.params.length === 0 ? (
         <div className="py-4 text-center text-muted text-xs">
-          This operation does not require configurable parameters.
+          This operation works instantly without configurable sliders.
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {opDef.params.map((param) => {
             const currentValue = activeStep.params[param.id] ?? param.default;
 
@@ -81,12 +70,12 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
               const numVal = typeof currentValue === "number" ? currentValue : Number(currentValue);
 
               return (
-                <div key={param.id} className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs font-display font-bold text-ink">
+                <div key={param.id} className="space-y-1">
+                  <div className="flex items-center justify-between text-xs font-semibold text-ink">
                     <label htmlFor={`param-${activeStep.uid}-${param.id}`}>
                       {param.label}
                     </label>
-                    <span className="px-2 py-0.5 rounded-md bg-gray border border-ink font-mono text-[11px]">
+                    <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-ink/10 font-mono text-[11px] text-ink">
                       {numVal}
                     </span>
                   </div>
@@ -102,14 +91,14 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
                       updateStep(
                         activeStep.uid,
                         { [param.id]: parseFloat(e.target.value) },
-                        false // Live update while dragging
+                        false
                       );
                     }}
                     onMouseUp={(e) => {
                       updateStep(
                         activeStep.uid,
                         { [param.id]: parseFloat((e.target as HTMLInputElement).value) },
-                        true // Commit to undo history on release
+                        true
                       );
                     }}
                     onTouchEnd={(e) => {
@@ -128,9 +117,9 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
                         );
                       }
                     }}
-                    className="w-full accent-green h-2.5 bg-gray rounded-lg border border-ink appearance-none cursor-pointer"
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-green"
                   />
-                  <div className="flex justify-between text-[10px] text-muted font-medium">
+                  <div className="flex justify-between text-[10px] text-muted/80 font-mono">
                     <span>{param.min}</span>
                     <span>{param.max}</span>
                   </div>
@@ -140,10 +129,10 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
 
             if (param.type === "select") {
               return (
-                <div key={param.id} className="space-y-1.5">
+                <div key={param.id} className="space-y-1">
                   <label
                     htmlFor={`param-${activeStep.uid}-${param.id}`}
-                    className="block text-xs font-display font-bold text-ink"
+                    className="block text-xs font-semibold text-ink"
                   >
                     {param.label}
                   </label>
@@ -153,7 +142,7 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
                     onChange={(e) => {
                       updateStep(activeStep.uid, { [param.id]: e.target.value }, true);
                     }}
-                    className="w-full px-3 py-2 rounded-xl border-2 border-ink bg-gray text-ink font-medium text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-d cursor-pointer"
+                    className="w-full px-2.5 py-1.5 rounded-xl border border-ink/15 bg-slate-50 text-ink text-xs focus:bg-white focus:outline-none focus:ring-1 focus:ring-green-d cursor-pointer"
                   >
                     {param.options.map((opt) => (
                       <option key={opt} value={opt}>
@@ -172,7 +161,7 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
                 <div key={param.id} className="flex items-center justify-between py-1">
                   <label
                     htmlFor={`param-${activeStep.uid}-${param.id}`}
-                    className="text-xs font-display font-bold text-ink cursor-pointer"
+                    className="text-xs font-semibold text-ink cursor-pointer"
                   >
                     {param.label}
                   </label>
@@ -183,7 +172,7 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
                     onChange={(e) => {
                       updateStep(activeStep.uid, { [param.id]: e.target.checked }, true);
                     }}
-                    className="w-5 h-5 rounded border-2 border-ink accent-green cursor-pointer"
+                    className="w-4 h-4 rounded border-ink/20 accent-green cursor-pointer"
                   />
                 </div>
               );
@@ -193,6 +182,6 @@ export default function ParamPanel({ selectedUid }: ParamPanelProps) {
           })}
         </div>
       )}
-    </ClayCard>
+    </div>
   );
 }
