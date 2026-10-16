@@ -1,0 +1,1566 @@
+{
+  "-adaptive-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "adaptiveBlur",
+    "engine": "wasm"
+  },
+  "-adaptive-resize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "adaptiveResize",
+    "engine": "wasm"
+  },
+  "-adaptive-sharpen": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "adaptiveSharpen",
+    "engine": "wasm"
+  },
+  "-adjoin": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "adjoin",
+    "engine": "wasm"
+  },
+  "-affine": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "affine",
+    "engine": "wasm"
+  },
+  "-alpha": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "alpha",
+    "engine": "wasm"
+  },
+  "-annotate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "annotate",
+    "engine": "wasm"
+  },
+  "-antialias": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "antialias",
+    "engine": "wasm"
+  },
+  "-append": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "append",
+    "engine": "wasm"
+  },
+  "-attenuate": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "attenuate",
+    "engine": "wasm"
+  },
+  "-authenticate": {
+    "section": "setting",
+    "status": "native-only",
+    "tool": "authenticate",
+    "engine": "native",
+    "reason": "Requires cipher delegate and passphrase; runs in desktop app"
+  },
+  "-auto-gamma": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "autoGamma",
+    "engine": "wasm"
+  },
+  "-auto-level": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "autoLevel",
+    "engine": "wasm"
+  },
+  "-auto-orient": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "autoOrient",
+    "engine": "wasm"
+  },
+  "-auto-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "autoThreshold",
+    "engine": "wasm"
+  },
+  "-background": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "background",
+    "engine": "wasm"
+  },
+  "-bench": {
+    "section": "operator",
+    "status": "not-applicable",
+    "reason": "CLI benchmarking flag; performance tests run via Vitest"
+  },
+  "-bias": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "bias",
+    "engine": "wasm"
+  },
+  "-bilateral-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "bilateralBlur",
+    "engine": "wasm"
+  },
+  "-black-point-compensation": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "blackPointCompensation",
+    "engine": "wasm"
+  },
+  "-black-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "blackThreshold",
+    "engine": "wasm"
+  },
+  "-blue-primary": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "bluePrimary",
+    "engine": "wasm"
+  },
+  "-blue-shift": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "blueShift",
+    "engine": "wasm"
+  },
+  "-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "blur",
+    "engine": "wasm"
+  },
+  "-border": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "border",
+    "engine": "wasm"
+  },
+  "-bordercolor": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "bordercolor",
+    "engine": "wasm"
+  },
+  "-brightness-contrast": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "brightnessContrast",
+    "engine": "wasm"
+  },
+  "-canny": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "canny",
+    "engine": "wasm"
+  },
+  "-caption": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "caption",
+    "engine": "wasm"
+  },
+  "-cdl": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "cdl",
+    "engine": "wasm"
+  },
+  "-channel": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "channel",
+    "engine": "wasm"
+  },
+  "-channel-fx": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "channelFx",
+    "engine": "wasm"
+  },
+  "-charcoal": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "charcoal",
+    "engine": "wasm"
+  },
+  "-chop": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "chop",
+    "engine": "wasm"
+  },
+  "-clahe": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "clahe",
+    "engine": "wasm"
+  },
+  "-clamp": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "clamp",
+    "engine": "wasm"
+  },
+  "-clip": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "clip",
+    "engine": "wasm"
+  },
+  "-clip-mask": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "clipMask",
+    "engine": "wasm"
+  },
+  "-clip-path": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "clipPath",
+    "engine": "wasm"
+  },
+  "-clone": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "clone",
+    "engine": "wasm"
+  },
+  "-clut": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "clut",
+    "engine": "wasm"
+  },
+  "-coalesce": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "coalesce",
+    "engine": "wasm"
+  },
+  "-color-matrix": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "colorMatrix",
+    "engine": "wasm"
+  },
+  "-colorize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "colorize",
+    "engine": "wasm"
+  },
+  "-colors": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "colors",
+    "engine": "wasm"
+  },
+  "-colorspace": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "colorspace",
+    "engine": "wasm"
+  },
+  "-combine": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "combine",
+    "engine": "wasm"
+  },
+  "-comment": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "comment",
+    "engine": "wasm"
+  },
+  "-compare": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "compare",
+    "engine": "wasm"
+  },
+  "-complex": {
+    "section": "sequence",
+    "status": "native-only",
+    "tool": "complex",
+    "engine": "native",
+    "reason": "Requires native complex number mathematics; runs in desktop app"
+  },
+  "-compose": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "compose",
+    "engine": "wasm"
+  },
+  "-composite": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "composite",
+    "engine": "wasm"
+  },
+  "-compress": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "compress",
+    "engine": "wasm"
+  },
+  "-connected-components": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "connectedComponents",
+    "engine": "native",
+    "reason": "Requires native connected components labeling; runs in desktop app"
+  },
+  "-contrast": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "contrast",
+    "engine": "wasm"
+  },
+  "-contrast-stretch": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "contrastStretch",
+    "engine": "wasm"
+  },
+  "-convolve": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "convolve",
+    "engine": "wasm"
+  },
+  "-copy": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "copy",
+    "engine": "wasm"
+  },
+  "-crop": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "crop",
+    "engine": "wasm"
+  },
+  "-cycle": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "cycle",
+    "engine": "wasm"
+  },
+  "-debug": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI debugging trace; development diagnostics logged via DevTools"
+  },
+  "-decipher": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "decipher",
+    "engine": "native",
+    "reason": "Requires cipher delegate for pixel decryption; runs in desktop app"
+  },
+  "-deconstruct": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "deconstruct",
+    "engine": "wasm"
+  },
+  "-define": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "define",
+    "engine": "wasm"
+  },
+  "-delay": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "delay",
+    "engine": "wasm"
+  },
+  "-delete": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "delete",
+    "engine": "wasm"
+  },
+  "-density": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "density",
+    "engine": "wasm"
+  },
+  "-depth": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "depth",
+    "engine": "wasm"
+  },
+  "-deskew": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "deskew",
+    "engine": "wasm"
+  },
+  "-despeckle": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "despeckle",
+    "engine": "wasm"
+  },
+  "-direction": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "direction",
+    "engine": "wasm"
+  },
+  "-display": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "X11 server display viewing; GUI canvas renders image directly"
+  },
+  "-dispose": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "dispose",
+    "engine": "wasm"
+  },
+  "-distort": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "distort",
+    "engine": "wasm"
+  },
+  "-distribute-cache": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI network distributed pixel cache daemon; browser/desktop runs locally"
+  },
+  "-dither": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "dither",
+    "engine": "wasm"
+  },
+  "-draw": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "draw",
+    "engine": "wasm"
+  },
+  "-duplicate": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "duplicate",
+    "engine": "wasm"
+  },
+  "-edge": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "edge",
+    "engine": "wasm"
+  },
+  "-emboss": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "emboss",
+    "engine": "wasm"
+  },
+  "-encipher": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "encipher",
+    "engine": "native",
+    "reason": "Requires cipher delegate for pixel encryption; runs in desktop app"
+  },
+  "-encoding": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "encoding",
+    "engine": "wasm"
+  },
+  "-endian": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "endian",
+    "engine": "wasm"
+  },
+  "-enhance": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "enhance",
+    "engine": "wasm"
+  },
+  "-equalize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "equalize",
+    "engine": "wasm"
+  },
+  "-evaluate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "evaluate",
+    "engine": "wasm"
+  },
+  "-evaluate-sequence": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "evaluateSequence",
+    "engine": "wasm"
+  },
+  "-extent": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "extent",
+    "engine": "wasm"
+  },
+  "-extract": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "extract",
+    "engine": "wasm"
+  },
+  "-family": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "family",
+    "engine": "wasm"
+  },
+  "-features": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "features",
+    "engine": "wasm"
+  },
+  "-fft": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "fft",
+    "engine": "native",
+    "reason": "Requires FFTW delegate; runs in desktop app"
+  },
+  "-fill": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "fill",
+    "engine": "wasm"
+  },
+  "-filter": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "filter",
+    "engine": "wasm"
+  },
+  "-flatten": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "flatten",
+    "engine": "wasm"
+  },
+  "-flip": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "flip",
+    "engine": "wasm"
+  },
+  "-floodfill": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "floodfill",
+    "engine": "wasm"
+  },
+  "-flop": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "flop",
+    "engine": "wasm"
+  },
+  "-font": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "font",
+    "engine": "wasm"
+  },
+  "-format": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "format",
+    "engine": "wasm"
+  },
+  "-frame": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "frame",
+    "engine": "wasm"
+  },
+  "-function": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "function",
+    "engine": "wasm"
+  },
+  "-fuzz": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "fuzz",
+    "engine": "wasm"
+  },
+  "-fx": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "fx",
+    "engine": "wasm"
+  },
+  "-gamma": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "gamma",
+    "engine": "wasm"
+  },
+  "-gaussian-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "gaussianBlur",
+    "engine": "wasm"
+  },
+  "-geometry": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "geometry",
+    "engine": "wasm"
+  },
+  "-gravity": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "gravity",
+    "engine": "wasm"
+  },
+  "-grayscale": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "grayscale",
+    "engine": "wasm"
+  },
+  "-green-primary": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "greenPrimary",
+    "engine": "wasm"
+  },
+  "-hald-clut": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "haldClut",
+    "engine": "wasm"
+  },
+  "-help": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI help flag; interactive documentation and tooltips provided in UI"
+  },
+  "-hough-lines": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "houghLines",
+    "engine": "native",
+    "reason": "Requires native Hough line transform accumulator; runs in desktop app"
+  },
+  "-identify": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "identify",
+    "engine": "wasm"
+  },
+  "-ift": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "ift",
+    "engine": "native",
+    "reason": "Requires FFTW delegate; runs in desktop app"
+  },
+  "-illuminant": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "illuminant",
+    "engine": "wasm"
+  },
+  "-implode": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "implode",
+    "engine": "wasm"
+  },
+  "-insert": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "insert",
+    "engine": "wasm"
+  },
+  "-integral": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "integral",
+    "engine": "native",
+    "reason": "Requires native integral image transform operator; runs in desktop app"
+  },
+  "-intensity": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "intensity",
+    "engine": "wasm"
+  },
+  "-intent": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "intent",
+    "engine": "wasm"
+  },
+  "-interlace": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "interlace",
+    "engine": "wasm"
+  },
+  "-interline-spacing": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "interlineSpacing",
+    "engine": "wasm"
+  },
+  "-interpolate": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "interpolate",
+    "engine": "wasm"
+  },
+  "-interpolative-resize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "interpolativeResize",
+    "engine": "wasm"
+  },
+  "-interword-spacing": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "interwordSpacing",
+    "engine": "wasm"
+  },
+  "-kerning": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "kerning",
+    "engine": "wasm"
+  },
+  "-kmeans": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "kmeans",
+    "engine": "wasm"
+  },
+  "-kuwahara": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "kuwahara",
+    "engine": "native",
+    "reason": "Requires native Kuwahara edge-preserving filter; runs in desktop app"
+  },
+  "-label": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "label",
+    "engine": "wasm"
+  },
+  "-lat": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "lat",
+    "engine": "wasm"
+  },
+  "-layers": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "layers",
+    "engine": "wasm"
+  },
+  "-level": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "level",
+    "engine": "wasm"
+  },
+  "-level-colors": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "levelColors",
+    "engine": "wasm"
+  },
+  "-limit": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "limit",
+    "engine": "wasm"
+  },
+  "-linear-stretch": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "linearStretch",
+    "engine": "wasm"
+  },
+  "-liquid-rescale": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "liquidRescale",
+    "engine": "native",
+    "reason": "Requires liblqr delegate for seam carving; runs in desktop app"
+  },
+  "-list": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI listing flag; options and formats listed in UI library and dialogs"
+  },
+  "-local-contrast": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "localContrast",
+    "engine": "wasm"
+  },
+  "-log": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI log format configuration; handled through browser/desktop logging"
+  },
+  "-loop": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "loop",
+    "engine": "wasm"
+  },
+  "-matte": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "matte",
+    "engine": "wasm"
+  },
+  "-mattecolor": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "mattecolor",
+    "engine": "wasm"
+  },
+  "-mean-shift": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "meanShift",
+    "engine": "native",
+    "reason": "Requires native mean shift clustering operator; runs in desktop app"
+  },
+  "-median": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "median",
+    "engine": "wasm"
+  },
+  "-mode": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "mode",
+    "engine": "wasm"
+  },
+  "-modulate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "modulate",
+    "engine": "wasm"
+  },
+  "-moments": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "moments",
+    "engine": "wasm"
+  },
+  "-monitor": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "CLI progress monitor; replaced by application progress bars and task indicators"
+  },
+  "-monochrome": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "monochrome",
+    "engine": "wasm"
+  },
+  "-morph": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "morph",
+    "engine": "wasm"
+  },
+  "-morphology": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "morphology",
+    "engine": "wasm"
+  },
+  "-mosaic": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "mosaic",
+    "engine": "wasm"
+  },
+  "-motion-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "motionBlur",
+    "engine": "wasm"
+  },
+  "-negate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "negate",
+    "engine": "wasm"
+  },
+  "-noise": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "noise",
+    "engine": "wasm"
+  },
+  "-normalize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "normalize",
+    "engine": "wasm"
+  },
+  "-opaque": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "opaque",
+    "engine": "wasm"
+  },
+  "-ordered-dither": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "orderedDither",
+    "engine": "wasm"
+  },
+  "-orient": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "orient",
+    "engine": "wasm"
+  },
+  "-page": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "page",
+    "engine": "wasm"
+  },
+  "-paint": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "paint",
+    "engine": "wasm"
+  },
+  "-perceptible": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "perceptible",
+    "engine": "wasm"
+  },
+  "-ping": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "ping",
+    "engine": "wasm"
+  },
+  "-pointsize": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "pointsize",
+    "engine": "wasm"
+  },
+  "-polaroid": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "polaroid",
+    "engine": "wasm"
+  },
+  "-poly": {
+    "section": "sequence",
+    "status": "native-only",
+    "tool": "polynomial",
+    "engine": "native",
+    "reason": "Requires native polynomial sequence blending; runs in desktop app"
+  },
+  "-posterize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "posterize",
+    "engine": "wasm"
+  },
+  "-precision": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "precision",
+    "engine": "wasm"
+  },
+  "-preview": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "CLI contact-sheet generator; UI provides live visual thumbnail previews"
+  },
+  "-print": {
+    "section": "sequence",
+    "status": "not-applicable",
+    "reason": "CLI console output; surfaced through Info/Analyze tab and CLI console"
+  },
+  "-process": {
+    "section": "sequence",
+    "status": "not-applicable",
+    "reason": "CLI external filter module execution; plugins run via WebAssembly/Native modules"
+  },
+  "-profile": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "profile",
+    "engine": "wasm"
+  },
+  "-quality": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "quality",
+    "engine": "wasm"
+  },
+  "-quantize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "quantize",
+    "engine": "wasm"
+  },
+  "-quiet": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "quiet",
+    "engine": "wasm"
+  },
+  "-raise": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "raise",
+    "engine": "wasm"
+  },
+  "-random-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "randomThreshold",
+    "engine": "wasm"
+  },
+  "-range-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "rangeThreshold",
+    "engine": "wasm"
+  },
+  "-read-mask": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "readMask",
+    "engine": "wasm"
+  },
+  "-red-primary": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "redPrimary",
+    "engine": "wasm"
+  },
+  "-regard-warnings": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "CLI warning sensitivity flag; configured in Desktop engine settings"
+  },
+  "-region": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "region",
+    "engine": "wasm"
+  },
+  "-remap": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "remap",
+    "engine": "wasm"
+  },
+  "-render": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "render",
+    "engine": "wasm"
+  },
+  "-repage": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "repage",
+    "engine": "wasm"
+  },
+  "-resample": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "resample",
+    "engine": "wasm"
+  },
+  "-reshape": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "reshape",
+    "engine": "wasm"
+  },
+  "-resize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "resize",
+    "engine": "wasm"
+  },
+  "-respect-parentheses": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "CLI stack syntax; handled via UI pipeline groups and layers"
+  },
+  "-reverse": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "reverse",
+    "engine": "wasm"
+  },
+  "-roll": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "roll",
+    "engine": "wasm"
+  },
+  "-rotate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "rotate",
+    "engine": "wasm"
+  },
+  "-rotational-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "rotationalBlur",
+    "engine": "wasm"
+  },
+  "-sample": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sample",
+    "engine": "wasm"
+  },
+  "-sampling-factor": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "samplingFactor",
+    "engine": "wasm"
+  },
+  "-scale": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "scale",
+    "engine": "wasm"
+  },
+  "-scene": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "scene",
+    "engine": "wasm"
+  },
+  "-seed": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "seed",
+    "engine": "wasm"
+  },
+  "-segment": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "segment",
+    "engine": "native",
+    "reason": "Requires native color clustering segmentation; runs in desktop app"
+  },
+  "-selective-blur": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "selectiveBlur",
+    "engine": "wasm"
+  },
+  "-separate": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "separate",
+    "engine": "wasm"
+  },
+  "-sepia-tone": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sepiaTone",
+    "engine": "wasm"
+  },
+  "-set": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "set",
+    "engine": "wasm"
+  },
+  "-shade": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "shade",
+    "engine": "wasm"
+  },
+  "-shadow": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "shadow",
+    "engine": "wasm"
+  },
+  "-sharpen": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sharpen",
+    "engine": "wasm"
+  },
+  "-shave": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "shave",
+    "engine": "wasm"
+  },
+  "-shear": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "shear",
+    "engine": "wasm"
+  },
+  "-sigmoidal-contrast": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sigmoidalContrast",
+    "engine": "wasm"
+  },
+  "-size": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "size",
+    "engine": "wasm"
+  },
+  "-sketch": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sketch",
+    "engine": "wasm"
+  },
+  "-smush": {
+    "section": "sequence",
+    "status": "ui",
+    "tool": "smush",
+    "engine": "wasm"
+  },
+  "-solarize": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "solarize",
+    "engine": "wasm"
+  },
+  "-sort-pixels": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "sortPixels",
+    "engine": "native",
+    "reason": "Requires native pixel sorting operator; runs in desktop app"
+  },
+  "-sparse-color": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "sparseColor",
+    "engine": "wasm"
+  },
+  "-splice": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "splice",
+    "engine": "wasm"
+  },
+  "-spread": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "spread",
+    "engine": "wasm"
+  },
+  "-statistic": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "statistic",
+    "engine": "wasm"
+  },
+  "-stretch": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "stretch",
+    "engine": "wasm"
+  },
+  "-strip": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "strip",
+    "engine": "wasm"
+  },
+  "-stroke": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "stroke",
+    "engine": "wasm"
+  },
+  "-strokewidth": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "strokewidth",
+    "engine": "wasm"
+  },
+  "-style": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "style",
+    "engine": "wasm"
+  },
+  "-support": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "support",
+    "engine": "wasm"
+  },
+  "-swap": {
+    "section": "stack",
+    "status": "ui",
+    "tool": "swap",
+    "engine": "wasm"
+  },
+  "-swirl": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "swirl",
+    "engine": "wasm"
+  },
+  "-synchronize": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "CLI disk synchronization flag; memory-backed execution in WASM"
+  },
+  "-taint": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "taint",
+    "engine": "wasm"
+  },
+  "-texture": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "texture",
+    "engine": "wasm"
+  },
+  "-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "threshold",
+    "engine": "wasm"
+  },
+  "-thumbnail": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "thumbnail",
+    "engine": "wasm"
+  },
+  "-tile": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "tile",
+    "engine": "wasm"
+  },
+  "-tile-offset": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "tileOffset",
+    "engine": "wasm"
+  },
+  "-tint": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "tint",
+    "engine": "wasm"
+  },
+  "-transform": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "transform",
+    "engine": "wasm"
+  },
+  "-transparent": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "transparent",
+    "engine": "wasm"
+  },
+  "-transparent-color": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "transparentColor",
+    "engine": "wasm"
+  },
+  "-transpose": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "transpose",
+    "engine": "wasm"
+  },
+  "-transverse": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "transverse",
+    "engine": "wasm"
+  },
+  "-treedepth": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "treedepth",
+    "engine": "wasm"
+  },
+  "-trim": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "trim",
+    "engine": "wasm"
+  },
+  "-type": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "type",
+    "engine": "wasm"
+  },
+  "-undercolor": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "undercolor",
+    "engine": "wasm"
+  },
+  "-unique-colors": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "uniqueColors",
+    "engine": "wasm"
+  },
+  "-units": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "units",
+    "engine": "wasm"
+  },
+  "-unsharp": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "unsharp",
+    "engine": "wasm"
+  },
+  "-usage": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI usage flag; UI tooltips and command palette provide guided usage"
+  },
+  "-verbose": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "verbose",
+    "engine": "wasm"
+  },
+  "-version": {
+    "section": "misc",
+    "status": "not-applicable",
+    "reason": "CLI version information; displayed in Status bar and about modal"
+  },
+  "-view": {
+    "section": "setting",
+    "status": "not-applicable",
+    "reason": "FlashPix / interactive X11 viewer; replaced by interactive Canvas view"
+  },
+  "-vignette": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "vignette",
+    "engine": "wasm"
+  },
+  "-virtual-pixel": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "virtualPixel",
+    "engine": "wasm"
+  },
+  "-wave": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "wave",
+    "engine": "wasm"
+  },
+  "-wavelet-denoise": {
+    "section": "operator",
+    "status": "native-only",
+    "tool": "waveletDenoise",
+    "engine": "native",
+    "reason": "Requires native wavelet denoise operator; runs in desktop app"
+  },
+  "-weight": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "weight",
+    "engine": "wasm"
+  },
+  "-white-balance": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "whiteBalance",
+    "engine": "wasm"
+  },
+  "-white-point": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "whitePoint",
+    "engine": "wasm"
+  },
+  "-white-threshold": {
+    "section": "operator",
+    "status": "ui",
+    "tool": "whiteThreshold",
+    "engine": "wasm"
+  },
+  "-write": {
+    "section": "sequence",
+    "status": "not-applicable",
+    "reason": "CLI intermediate pipeline write; handled via snapshot history and export dialog"
+  },
+  "-write-mask": {
+    "section": "setting",
+    "status": "ui",
+    "tool": "writeMask",
+    "engine": "wasm"
+  }
+}

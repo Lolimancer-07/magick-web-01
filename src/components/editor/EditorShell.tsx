@@ -1,52 +1,52 @@
 "use client";
 
 import { useEffect, useCallback, useState, useRef } from "react";
-import Link from "next/link";
-import {
-  Wand2,
-  ArrowLeft,
-  Download,
-  ImagePlus,
-  Sliders,
-  Layers,
-  Sparkles,
-  X,
-} from "lucide-react";
 import { useEditorStore } from "@/store/editorStore";
 import { engine } from "@/engine/engineClient";
-import Dropzone from "./Dropzone";
-import Canvas from "./Canvas";
-import OperationPicker from "./OperationPicker";
-import ParamPanel from "./ParamPanel";
-import HistoryPanel from "./HistoryPanel";
-import ExportDialog from "./ExportDialog";
-import Button from "@/components/ui/Button";
-import IconTile from "@/components/ui/IconTile";
-import Pill from "@/components/ui/Pill";
+import TopBar from "./TopBar";
+import StatusBar from "./StatusBar";
+import EmptyState from "./EmptyState";
+import CanvasView from "./canvas/CanvasView";
+import ToolLibrary from "./library/ToolLibrary";
+import Inspector from "./inspector/Inspector";
+import ExportDialog from "./export/ExportDialog";
+import Toasts from "./feedback/Toasts";
+import ShortcutSheet from "./feedback/ShortcutSheet";
+import { Sparkles, Layers, Sliders, X } from "lucide-react";
 
-const DEBOUNCE_MS_SLIDER = 80; // Debounce per Step 6 specification (~80ms)
-const DEBOUNCE_MS_ADD = 0;     // Instant on add
+const DEBOUNCE_MS_SLIDER = 50;
+const DEBOUNCE_MS_ADD = 0;
 
 export default function EditorShell() {
   const {
     steps,
     fileName,
-    originalDimensions,
+    setFile,
+    setBeforeUrl,
     setPreviewUrl,
     setPreviewLoading,
     setPreviewError,
+    setRenderTimeMs,
+    setZoom,
+    setPan,
+    setPeekOriginal,
+    removeStep,
+    selectedUid,
     undo,
     redo,
     reset,
+    addToast,
   } = useEditorStore();
 
   const [hasImage, setHasImage] = useState(false);
   const [showExport, setShowExport] = useState(false);
-  const [selectedUid, setSelectedUid] = useState<string | null>(null);
+  const [libraryOpen, setLibraryOpen] = useState(true);
+  const [inspectorOpen, setInspectorOpen] = useState(true);
 
-  // Mobile / <900px drawer state: null | 'tools' | 'pipeline' | 'params'
-  const [mobileDrawer, setMobileDrawer] = useState<"tools" | "pipeline" | "params" | null>(null);
+  // Mobile bottom sheet state: null | 'tools' | 'edits' | 'info'
+  const [mobileSheet, setMobileSheet] = useState<"tools" | "edits" | "info" | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const latestRenderRef = useRef(0);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevStepCountRef = useRef(0);
@@ -55,20 +55,26 @@ export default function EditorShell() {
   // Sync hasImage with fileName
   useEffect(() => {
     setHasImage(Boolean(fileName));
+    if (fileName) {
+      document.title = `${fileName} — Magick Studio`;
+    } else {
+      document.title = "Editor — Magick Studio";
+    }
   }, [fileName]);
 
-  // Keep selectedUid valid
+  // Unsaved-work guard (Phase 8)
   useEffect(() => {
-    if (steps.length > 0) {
-      if (!selectedUid || !steps.some((s) => s.uid === selectedUid)) {
-        setSelectedUid(steps[steps.length - 1].uid);
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (steps.length > 0) {
+        e.preventDefault();
+        e.returnValue = "";
       }
-    } else {
-      setSelectedUid(null);
-    }
-  }, [steps, selectedUid]);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [steps.length]);
 
-  // Render pipeline when steps change
+  // Trigger preview render pipeline when steps change
   const triggerRender = useCallback(() => {
     if (!hasImage) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -81,13 +87,15 @@ export default function EditorShell() {
       const renderId = ++latestRenderRef.current;
       setPreviewLoading(true);
       setPreviewError(null);
+      const startTime = performance.now();
 
       try {
         const result = await engine.render(steps, { preview: true });
-        // Discard stale renders older than latest request
         if (renderId !== latestRenderRef.current) return;
 
-        // Revoke previous blob URL to prevent memory leaks
+        const elapsed = Math.round(performance.now() - startTime);
+        setRenderTimeMs(elapsed);
+
         if (currentBlobUrlRef.current && currentBlobUrlRef.current.startsWith("blob:")) {
           URL.revokeObjectURL(currentBlobUrlRef.current);
         }
@@ -108,215 +116,230 @@ export default function EditorShell() {
         if (renderId === latestRenderRef.current) setPreviewLoading(false);
       }
     }, delay);
-  }, [hasImage, steps, setPreviewUrl, setPreviewLoading, setPreviewError]);
+  }, [hasImage, steps, setPreviewUrl, setPreviewLoading, setPreviewError, setRenderTimeMs]);
 
   useEffect(() => {
     triggerRender();
   }, [triggerRender]);
 
-  // Keyboard shortcuts: Ctrl+Z, Ctrl+Shift+Z / Ctrl+Y
+  // Global Keyboard Shortcuts (Phase 6)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+      const isInput = document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "SELECT";
+      if (isInput) return;
+
+      // Undo: Ctrl+Z / Cmd+Z
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !e.shiftKey) {
         e.preventDefault();
         undo();
+        return;
       }
+
+      // Redo: Ctrl+Y / Cmd+Y or Ctrl+Shift+Z
       if (
         (e.ctrlKey || e.metaKey) &&
-        (e.key === "y" || (e.key === "z" && e.shiftKey) || (e.key === "Z" && e.shiftKey))
+        (e.key.toLowerCase() === "y" || (e.key.toLowerCase() === "z" && e.shiftKey))
       ) {
         e.preventDefault();
         redo();
+        return;
+      }
+
+      // Peek original: Hold '\' key
+      if (e.key === "\\") {
+        setPeekOriginal(true);
+        return;
+      }
+
+      // Fit: '0'
+      if (e.key === "0") {
+        setZoom(1);
+        setPan({ x: 0, y: 0 });
+        return;
+      }
+
+      // 100%: '1'
+      if (e.key === "1") {
+        setZoom(1);
+        return;
+      }
+
+      // Zoom + / -
+      if (e.key === "=" || e.key === "+") {
+        setZoom((z) => Math.min(5, +(z + 0.25).toFixed(2)));
+        return;
+      }
+      if (e.key === "-") {
+        setZoom((z) => Math.max(0.15, +(z - 0.25).toFixed(2)));
+        return;
+      }
+
+      // Delete selected step
+      if (e.key === "Delete" || e.key === "Backspace") {
+        if (selectedUid) {
+          removeStep(selectedUid);
+          addToast("Removed step", "info");
+        }
+        return;
+      }
+
+      // Open new image: 'O'
+      if (e.key.toLowerCase() === "o" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        fileInputRef.current?.click();
+        return;
+      }
+
+      // Export: 'E'
+      if (e.key.toLowerCase() === "e" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        if (hasImage) setShowExport(true);
+        return;
       }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "\\") {
+        setPeekOriginal(false);
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [undo, redo]);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [undo, redo, setPeekOriginal, setZoom, setPan, selectedUid, removeStep, addToast, hasImage]);
+
+  // Handle direct file input change (for "New Image" / 'O' shortcut)
+  const handleNativeFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const originalUrl = URL.createObjectURL(file);
+      setBeforeUrl(originalUrl);
+      setPreviewUrl(null);
+      const { width, height } = await engine.load(file);
+      setFile(file.name, { w: width, h: height }, { size: file.size, type: file.type });
+      setHasImage(true);
+      addToast(`Opened ${file.name}`, "success");
+    } catch (err: unknown) {
+      console.error(err);
+      addToast("Failed to decode image file", "error");
+    } finally {
+      e.target.value = "";
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-beige flex flex-col font-sans select-none overflow-x-hidden">
-      {/* ── Top Bar ── */}
-      <header className="sticky top-0 z-30 px-4 py-3 bg-white/95 backdrop-blur-md border-b-2 border-ink shadow-[0_2px_0_var(--ink)]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Left: Home link, Logo & File Meta */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-ink bg-gray hover:bg-white text-ink font-display text-xs font-bold transition-all shadow-[2px_2px_0_var(--ink)] active:translate-y-0.5 cursor-pointer"
-              title="Return to home page"
-            >
-              <ArrowLeft size={16} aria-hidden="true" />
-              <span className="hidden sm:inline">Home</span>
-            </Link>
+    <div className="h-[100dvh] w-screen overflow-hidden flex flex-col bg-[var(--ed-bg)] font-sans select-none text-[var(--ink)]">
+      {/* Hidden file input for 'O' / New Image */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleNativeFileChange}
+        className="hidden"
+        aria-hidden="true"
+      />
 
-            <div className="flex items-center gap-2">
-              <IconTile color="salmon" size="sm">
-                <Wand2 size={18} className="text-ink" aria-hidden="true" />
-              </IconTile>
-              <span className="font-display font-bold text-lg text-ink hidden sm:inline">
-                Magick<span className="text-green-d">Studio</span>
-              </span>
-            </div>
+      {/* ── Top Bar (56px) ── */}
+      <TopBar
+        onOpenExport={() => setShowExport(true)}
+        onOpenNew={() => fileInputRef.current?.click()}
+        onToggleLibrary={() => setLibraryOpen(!libraryOpen)}
+        onToggleInspector={() => setInspectorOpen(!inspectorOpen)}
+        libraryOpen={libraryOpen}
+        inspectorOpen={inspectorOpen}
+      />
 
-            {fileName && (
-              <div className="flex items-center gap-2 pl-2 border-l-2 border-ink/20">
-                <Pill color="lavender" className="max-w-[160px] sm:max-w-[220px] truncate">
-                  {fileName}
-                </Pill>
-                {originalDimensions && (
-                  <span className="hidden md:inline text-xs font-semibold text-muted">
-                    {originalDimensions.w} × {originalDimensions.h}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Right: Actions */}
-          <div className="flex items-center gap-2">
-            {hasImage ? (
-              <>
-                <Button
-                  variant="white"
-                  size="sm"
-                  onClick={() => {
-                    if (confirm("Open another image? Current changes will be reset.")) {
-                      reset();
-                    }
-                  }}
-                  title="Open a different image"
-                >
-                  <ImagePlus size={16} className="inline mr-1 text-ink" aria-hidden="true" />
-                  <span className="hidden sm:inline">New Image</span>
-                </Button>
-
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => setShowExport(true)}
-                  title="Export full resolution image"
-                >
-                  <Download size={16} className="inline mr-1 text-ink" aria-hidden="true" />
-                  <span>Export</span>
-                </Button>
-              </>
-            ) : (
-              <span className="text-xs font-semibold text-muted">Lightweight WASM Editor</span>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {/* ── Workspace Body ── */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
+      {/* ── Main App Shell Body ── */}
+      <main className="flex-1 min-h-0 flex flex-col relative overflow-hidden">
         {!hasImage ? (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <Dropzone onImageLoaded={() => setHasImage(true)} />
-          </div>
+          <EmptyState onImageLoaded={() => setHasImage(true)} />
         ) : (
-          <div className="flex-1 flex flex-col lg:flex-row relative overflow-hidden">
-            {/* Desktop Left Side Panel (Operations catalog) */}
-            <aside className="hidden lg:block w-72 shrink-0 p-4 border-r-2 border-ink bg-beige/60 overflow-y-auto">
-              <OperationPicker
-                onSelectOp={() => {
-                  // After adding, focus latest step
-                  setTimeout(() => {
-                    const st = useEditorStore.getState().steps;
-                    if (st.length > 0) setSelectedUid(st[st.length - 1].uid);
-                  }, 50);
-                }}
-              />
+          <div className="flex-1 min-h-0 flex flex-col md:flex-row relative overflow-hidden">
+            {/* Left Tool Library Panel (280px on desktop, collapsable on 900-1279px) */}
+            <aside
+              className={`hidden md:flex w-[280px] shrink-0 border-r border-[var(--line)] bg-[var(--surface)] flex-col transition-all duration-150 ${
+                !libraryOpen ? "md:hidden xl:flex" : ""
+              }`}
+            >
+              <ToolLibrary />
             </aside>
 
-            {/* Center Canvas Area */}
-            <section className="flex-1 flex flex-col justify-center items-center relative overflow-hidden bg-beige">
-              <Canvas onRetry={triggerRender} />
+            {/* Center Canvas Viewport */}
+            <section className="flex-1 min-h-0 flex flex-col relative overflow-hidden bg-[var(--ed-bg)]">
+              <CanvasView onRetry={triggerRender} />
 
-              {/* Mobile Drawer Toggle Bar (< 900px / < lg) */}
-              <div className="lg:hidden w-full px-4 py-2 bg-white/95 border-t-2 border-ink flex items-center justify-around gap-2 z-20">
+              {/* Mobile Bottom Tab Bar (<900px / md) */}
+              <div className="md:hidden h-[44px] px-3 bg-[var(--surface)] border-t border-[var(--line)] flex items-center justify-around gap-2 z-20 shrink-0">
                 <button
                   type="button"
-                  onClick={() => setMobileDrawer(mobileDrawer === "tools" ? null : "tools")}
-                  className={`flex-1 py-2 px-3 rounded-xl border-2 border-ink font-display text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                    mobileDrawer === "tools" ? "bg-mint shadow-[2px_2px_0_var(--ink)]" : "bg-gray"
+                  onClick={() => setMobileSheet(mobileSheet === "tools" ? null : "tools")}
+                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
+                    mobileSheet === "tools" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
                   }`}
                 >
-                  <Sparkles size={16} aria-hidden="true" />
+                  <Sparkles size={14} />
                   <span>Tools</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setMobileDrawer(mobileDrawer === "pipeline" ? null : "pipeline")}
-                  className={`flex-1 py-2 px-3 rounded-xl border-2 border-ink font-display text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                    mobileDrawer === "pipeline" ? "bg-mint shadow-[2px_2px_0_var(--ink)]" : "bg-gray"
+                  onClick={() => setMobileSheet(mobileSheet === "edits" ? null : "edits")}
+                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
+                    mobileSheet === "edits" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
                   }`}
                 >
-                  <Layers size={16} aria-hidden="true" />
-                  <span>Pipeline ({steps.length})</span>
+                  <Layers size={14} />
+                  <span>Edits ({steps.length})</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setMobileDrawer(mobileDrawer === "params" ? null : "params")}
-                  className={`flex-1 py-2 px-3 rounded-xl border-2 border-ink font-display text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                    mobileDrawer === "params" ? "bg-mint shadow-[2px_2px_0_var(--ink)]" : "bg-gray"
+                  onClick={() => setMobileSheet(mobileSheet === "info" ? null : "info")}
+                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
+                    mobileSheet === "info" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
                   }`}
                 >
-                  <Sliders size={16} aria-hidden="true" />
+                  <Sliders size={14} />
                   <span>Tune</span>
                 </button>
               </div>
             </section>
 
-            {/* Desktop Right Side Panels (History & Params) */}
-            <aside className="hidden lg:flex flex-col w-80 shrink-0 p-4 border-l-2 border-ink bg-beige/60 gap-4 overflow-y-auto">
-              <HistoryPanel
-                selectedUid={selectedUid}
-                onSelectStep={(uid) => setSelectedUid(uid)}
-              />
-              <ParamPanel selectedUid={selectedUid} />
+            {/* Right Inspector Panel (340px) */}
+            <aside className="hidden md:flex w-[340px] shrink-0 border-l border-[var(--line)] bg-[var(--surface)] flex-col">
+              <Inspector />
             </aside>
 
-            {/* Mobile Bottom Sheet (< 900px) */}
-            {mobileDrawer && (
-              <div className="lg:hidden fixed inset-x-0 bottom-0 top-1/3 z-40 bg-white border-t-4 border-ink rounded-t-3xl shadow-[0_-6px_0_rgba(46,54,69,0.15)] flex flex-col p-4 animate-in slide-in-from-bottom duration-200">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b-2 border-gray">
-                  <span className="font-display font-bold text-sm text-ink uppercase tracking-wide">
-                    {mobileDrawer === "tools" && "Operation Catalog"}
-                    {mobileDrawer === "pipeline" && "Edit Pipeline"}
-                    {mobileDrawer === "params" && "Tune Parameters"}
+            {/* Mobile Bottom Sheet (<900px) */}
+            {mobileSheet && (
+              <div className="md:hidden fixed inset-x-0 bottom-0 top-[35%] z-40 bg-[var(--surface)] border-t-2 border-[var(--line-2)] rounded-t-3xl shadow-[0_-10px_35px_rgba(0,0,0,0.5)] flex flex-col p-3 animate-in slide-in-from-bottom duration-200">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[var(--line)]">
+                  <span className="font-display font-bold text-xs uppercase tracking-wider text-[var(--ink)]">
+                    {mobileSheet === "tools" && "Tool Library"}
+                    {mobileSheet === "edits" && `Pipeline (${steps.length} steps)`}
+                    {mobileSheet === "info" && "Tune & Info"}
                   </span>
                   <button
                     type="button"
-                    onClick={() => setMobileDrawer(null)}
-                    className="p-1.5 rounded-lg border-2 border-ink bg-gray hover:bg-white text-ink cursor-pointer"
-                    aria-label="Close bottom sheet"
+                    onClick={() => setMobileSheet(null)}
+                    className="p-1 rounded-lg hover:bg-[var(--surface-2)] text-[var(--ink)]"
+                    aria-label="Close Sheet"
                   >
-                    <X size={16} aria-hidden="true" />
+                    <X size={16} />
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto">
-                  {mobileDrawer === "tools" && (
-                    <OperationPicker
-                      onSelectOp={() => {
-                        setMobileDrawer("pipeline");
-                      }}
-                    />
+                <div className="flex-1 overflow-y-auto min-h-0">
+                  {mobileSheet === "tools" && (
+                    <ToolLibrary onSelectOp={() => setMobileSheet("edits")} />
                   )}
-                  {mobileDrawer === "pipeline" && (
-                    <HistoryPanel
-                      selectedUid={selectedUid}
-                      onSelectStep={(uid) => {
-                        setSelectedUid(uid);
-                        setMobileDrawer("params");
-                      }}
-                    />
-                  )}
-                  {mobileDrawer === "params" && (
-                    <ParamPanel selectedUid={selectedUid} />
-                  )}
+                  {mobileSheet === "edits" && <Inspector />}
+                  {mobileSheet === "info" && <Inspector />}
                 </div>
               </div>
             )}
@@ -324,11 +347,20 @@ export default function EditorShell() {
         )}
       </main>
 
+      {/* ── Status Bar (28px) ── */}
+      <StatusBar />
+
       {/* Full-resolution Export Dialog */}
       <ExportDialog
         isOpen={showExport}
         onClose={() => setShowExport(false)}
       />
+
+      {/* Non-blocking Toasts */}
+      <Toasts />
+
+      {/* Keyboard Shortcuts Sheet Modal */}
+      <ShortcutSheet />
     </div>
   );
 }

@@ -1,29 +1,25 @@
 "use client";
 
 import {
+  Layers,
   Undo2,
   Redo2,
+  Trash2,
   Eye,
   EyeOff,
-  Trash2,
   ChevronUp,
   ChevronDown,
-  Layers,
+  Sliders,
 } from "lucide-react";
-import { OP_MAP } from "@/ops/definitions";
 import { useEditorStore } from "@/store/editorStore";
-import ClayCard from "@/components/ui/ClayCard";
-import IconTile from "@/components/ui/IconTile";
+import { OP_MAP } from "@/ops/definitions";
 
 interface HistoryPanelProps {
-  selectedUid?: string | null;
+  selectedUid: string | null;
   onSelectStep?: (uid: string) => void;
 }
 
-export default function HistoryPanel({
-  selectedUid,
-  onSelectStep,
-}: HistoryPanelProps) {
+export default function HistoryPanel({ selectedUid, onSelectStep }: HistoryPanelProps) {
   const {
     steps,
     past,
@@ -39,60 +35,50 @@ export default function HistoryPanel({
   const canRedo = future.length > 0;
 
   return (
-    <ClayCard variant="white" className="p-4 flex flex-col h-full max-h-[85vh]">
-      {/* Header with Undo / Redo */}
-      <div className="flex items-center justify-between pb-3 border-b-2 border-gray mb-3">
+    <div className="bg-[var(--surface)] rounded-2xl border border-[var(--line-2)]/10 shadow-sm p-4 flex flex-col max-h-[42vh]">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-2.5 border-b border-[var(--line-2)]/10 mb-2.5">
         <div className="flex items-center gap-2">
-          <IconTile color="mint" size="sm">
-            <Layers size={16} className="text-ink" aria-hidden="true" />
-          </IconTile>
+          <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <Layers size={15} aria-hidden="true" />
+          </div>
           <div>
-            <h3 className="font-display font-bold text-base text-ink">Pipeline</h3>
-            <p className="text-[11px] text-muted">{steps.length} step{steps.length === 1 ? "" : "s"}</p>
+            <h3 className="font-display font-bold text-sm text-[var(--ink)] tracking-tight">Active Pipeline</h3>
+            <p className="text-[10px] text-muted">{steps.length} step{steps.length === 1 ? "" : "s"} applied</p>
           </div>
         </div>
 
-        {/* Undo / Redo Clay Buttons */}
-        <div className="flex items-center gap-1.5">
+        {/* Undo / Redo */}
+        <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-[var(--line-2)]/10">
           <button
             type="button"
             onClick={undo}
             disabled={!canUndo}
-            className={`p-2 rounded-xl border-2 border-ink font-display text-xs font-bold transition-all ${
-              canUndo
-                ? "bg-white hover:bg-gray text-ink cursor-pointer active:translate-y-0.5 shadow-[2px_2px_0_var(--ink)]"
-                : "bg-gray/50 text-muted/40 border-ink/30 cursor-not-allowed"
-            }`}
-            aria-label="Undo last change (Ctrl+Z)"
+            className="p-1 rounded text-[var(--ink)]/70 hover:text-[var(--ink)] hover:bg-[var(--surface)] disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-all"
+            aria-label="Undo"
             title="Undo (Ctrl+Z)"
           >
-            <Undo2 size={16} aria-hidden="true" />
+            <Undo2 size={13} />
           </button>
-
           <button
             type="button"
             onClick={redo}
             disabled={!canRedo}
-            className={`p-2 rounded-xl border-2 border-ink font-display text-xs font-bold transition-all ${
-              canRedo
-                ? "bg-white hover:bg-gray text-ink cursor-pointer active:translate-y-0.5 shadow-[2px_2px_0_var(--ink)]"
-                : "bg-gray/50 text-muted/40 border-ink/30 cursor-not-allowed"
-            }`}
-            aria-label="Redo last change (Ctrl+Shift+Z)"
-            title="Redo (Ctrl+Shift+Z)"
+            className="p-1 rounded text-[var(--ink)]/70 hover:text-[var(--ink)] hover:bg-[var(--surface)] disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-all"
+            aria-label="Redo"
+            title="Redo (Ctrl+Y)"
           >
-            <Redo2 size={16} aria-hidden="true" />
+            <Redo2 size={13} />
           </button>
         </div>
       </div>
 
       {/* Steps List */}
-      <div className="overflow-y-auto pr-1 flex-1 space-y-2">
+      <div className="overflow-y-auto pr-1 flex-1 space-y-1.5">
         {steps.map((step, index) => {
           const op = OP_MAP[step.opId];
           const isSelected = selectedUid ? step.uid === selectedUid : index === steps.length - 1;
 
-          // Summarize params
           const paramSummary = Object.entries(step.params)
             .map(([k, v]) => `${k}: ${v}`)
             .join(" · ");
@@ -101,80 +87,68 @@ export default function HistoryPanel({
             <div
               key={step.uid}
               onClick={() => onSelectStep?.(step.uid)}
-              className={`p-3 rounded-xl border-2 border-ink transition-all cursor-pointer ${
+              className={`p-2 rounded-xl border transition-all cursor-pointer ${
                 isSelected
-                  ? "bg-mint/20 shadow-[3px_3px_0_var(--ink)] -translate-y-0.5"
-                  : "bg-white hover:bg-gray shadow-[2px_2px_0_var(--ink)]"
-              } ${!step.enabled ? "opacity-60" : ""}`}
+                  ? "bg-green/5 border-green-d/40 shadow-sm"
+                  : "bg-[var(--surface)] hover:bg-slate-50 border-[var(--line-2)]/10"
+              } ${!step.enabled ? "opacity-50" : ""}`}
             >
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md border border-ink bg-gray flex items-center justify-center font-display font-bold text-[10px] text-ink">
+                  <span className="w-4 h-4 rounded text-[10px] font-mono font-bold bg-slate-100 text-[var(--ink)]/70 flex items-center justify-center">
                     {index + 1}
                   </span>
-                  <span className="font-display font-bold text-sm text-ink">
+                  <span className="font-display font-bold text-xs text-[var(--ink)] truncate max-w-[110px]">
                     {op?.name || step.opId}
                   </span>
                 </div>
 
                 {/* Step controls */}
                 <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                  {/* Up button */}
                   <button
                     type="button"
                     onClick={() => index > 0 && reorderSteps(index, index - 1)}
                     disabled={index === 0}
-                    className="p-1 rounded-lg border border-ink/50 bg-white hover:bg-gray disabled:opacity-30 disabled:cursor-not-allowed text-ink cursor-pointer"
-                    aria-label={`Move ${op?.name} up`}
-                    title="Move up"
+                    className="p-1 rounded text-[var(--ink)]/60 hover:text-[var(--ink)] hover:bg-slate-100 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                    title="Move Up"
                   >
-                    <ChevronUp size={14} aria-hidden="true" />
+                    <ChevronUp size={13} />
                   </button>
 
-                  {/* Down button */}
                   <button
                     type="button"
                     onClick={() => index < steps.length - 1 && reorderSteps(index, index + 1)}
                     disabled={index === steps.length - 1}
-                    className="p-1 rounded-lg border border-ink/50 bg-white hover:bg-gray disabled:opacity-30 disabled:cursor-not-allowed text-ink cursor-pointer"
-                    aria-label={`Move ${op?.name} down`}
-                    title="Move down"
+                    className="p-1 rounded text-[var(--ink)]/60 hover:text-[var(--ink)] hover:bg-slate-100 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                    title="Move Down"
                   >
-                    <ChevronDown size={14} aria-hidden="true" />
+                    <ChevronDown size={13} />
                   </button>
 
-                  {/* Toggle button */}
                   <button
                     type="button"
                     onClick={() => toggleStep(step.uid)}
-                    className={`p-1 rounded-lg border border-ink text-ink cursor-pointer ${
-                      step.enabled ? "bg-mint" : "bg-gray text-muted"
+                    className={`p-1 rounded transition-colors ${
+                      step.enabled ? "text-green-d hover:bg-green/10" : "text-muted hover:bg-slate-100"
                     }`}
-                    aria-label={step.enabled ? `Disable ${op?.name}` : `Enable ${op?.name}`}
                     title={step.enabled ? "Disable step" : "Enable step"}
                   >
-                    {step.enabled ? (
-                      <Eye size={14} aria-hidden="true" />
-                    ) : (
-                      <EyeOff size={14} aria-hidden="true" />
-                    )}
+                    {step.enabled ? <Eye size={13} /> : <EyeOff size={13} />}
                   </button>
 
-                  {/* Delete button */}
                   <button
                     type="button"
                     onClick={() => removeStep(step.uid)}
-                    className="p-1 rounded-lg border border-ink bg-salmon/30 hover:bg-salmon text-ink cursor-pointer transition-colors"
-                    aria-label={`Delete ${op?.name}`}
+                    className="p-1 rounded text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors"
                     title="Delete step"
                   >
-                    <Trash2 size={14} aria-hidden="true" />
+                    <Trash2 size={13} />
                   </button>
                 </div>
               </div>
 
               {paramSummary && (
-                <p className="text-[11px] text-muted font-mono truncate pl-7">
+                <p className="text-[10px] text-muted font-mono truncate pl-6 mt-0.5">
                   {paramSummary}
                 </p>
               )}
@@ -183,12 +157,13 @@ export default function HistoryPanel({
         })}
 
         {steps.length === 0 && (
-          <div className="py-8 text-center text-muted">
-            <p className="font-display font-bold text-sm text-ink mb-1">Pipeline is Empty</p>
-            <p className="text-xs">Add an operation from the catalog to begin editing.</p>
+          <div className="py-6 text-center text-muted">
+            <Sliders size={20} className="mx-auto mb-1 text-muted/40" />
+            <p className="font-display font-semibold text-xs text-[var(--ink)]/80">Pipeline is Empty</p>
+            <p className="text-[11px] text-muted/70 mt-0.5">Click any tool on the left to add a step</p>
           </div>
         )}
       </div>
-    </ClayCard>
+    </div>
   );
 }

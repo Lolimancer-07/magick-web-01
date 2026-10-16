@@ -1,35 +1,41 @@
 import NavBar from "@/components/landing/NavBar";
 import Hero from "@/components/landing/Hero";
-import ToolCatalog from "@/components/landing/ToolCatalog";
+import PipelineTicker from "@/components/landing/PipelineTicker";
 import Features from "@/components/landing/Features";
-import Testimonials from "@/components/landing/Testimonials";
+import ToolCatalog from "@/components/landing/ToolCatalog";
 import CtaBand from "@/components/landing/CtaBand";
 import Footer from "@/components/landing/Footer";
 
+export const metadata = {
+  title: "Magick Studio — Pro In-Browser Image Editor",
+  description:
+    "Edit images with precision using the full power of ImageMagick. 100% private, runs entirely inside your browser via WebAssembly.",
+};
+
 export default function LandingPage() {
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "var(--beige)" }}>
-      {/* 1. Floating Nav Card (sticky) */}
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg)", color: "var(--ink)" }}>
+      {/* Top sticky navigation */}
       <NavBar />
 
       <main>
-        {/* 2. Hero on warm beige background */}
+        {/* Hero section */}
         <Hero />
 
-        {/* 3. Popular Catalog on light gray (2x2 grid) */}
-        <ToolCatalog />
+        {/* Pipeline Ticker */}
+        <PipelineTicker />
 
-        {/* 4. Why choose us on beige */}
+        {/* Features (Built for Serious Editors, Stats Card, Privacy Architecture) */}
         <Features />
 
-        {/* 5. Creator Testimonials on light gray */}
-        <Testimonials />
+        {/* Full Tool Catalog by category */}
+        <ToolCatalog />
 
-        {/* 6. CTA Band on full-width light blue */}
+        {/* Call to action */}
         <CtaBand />
       </main>
 
-      {/* 7. Footer on beige */}
+      {/* Footer */}
       <Footer />
     </div>
   );

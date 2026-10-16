@@ -1,134 +1,177 @@
-import { Check, ArrowRight, Download } from "lucide-react";
-import ClayCard from "@/components/ui/ClayCard";
-import Button from "@/components/ui/Button";
+"use client";
 
-const GITHUB_RELEASES_URL = "https://github.com/Lolimancer-07/magick-web-01/releases";
+import Link from "next/link";
+import { Check, ArrowRight, Download } from "lucide-react";
 
 export default function CtaBand() {
   return (
     <section
       id="download"
       style={{
-        backgroundColor: "var(--blue)",
-        padding: "90px 24px 100px",
-        scrollMarginTop: "80px",
+        maxWidth: "1240px",
+        margin: "0 auto 100px",
+        padding: "0 24px",
       }}
     >
-      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <ClayCard
+      <div
+        style={{
+          backgroundColor: "var(--surface)",
+          border: "1px solid var(--line)",
+          borderRadius: "20px",
+          padding: "64px 32px",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.35)",
+        }}
+      >
+        {/* Subtle background glow */}
+        <div
+          aria-hidden="true"
           style={{
-            padding: "54px 36px",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "24px",
-            borderRadius: "28px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "500px",
+            height: "300px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(63,237,30,0.12) 0%, transparent 70%)",
+            pointerEvents: "none",
           }}
-        >
+        />
+
+        <div style={{ position: "relative", zIndex: 1, maxWidth: "640px", margin: "0 auto" }}>
           <h2
             className="font-display"
             style={{
-              fontSize: "clamp(2rem, 4vw, 3.2rem)",
-              fontWeight: 700,
-              color: "var(--ink)",
-              lineHeight: 1.2,
+              fontSize: "clamp(2.2rem, 4.5vw, 3.4rem)",
+              fontWeight: 800,
+              color: "#ffffff",
+              marginBottom: "16px",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
             }}
           >
-            Ready to start editing?
+            Start Editing in{" "}
+            <span
+              style={{
+                background: "linear-gradient(90deg, #3089c5, #3fed1e)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Seconds
+            </span>
           </h2>
 
           <p
             style={{
+              fontSize: "1.05rem",
               color: "var(--muted)",
-              fontSize: "1.2rem",
-              maxWidth: "600px",
-              lineHeight: 1.6,
-              fontWeight: 600,
+              lineHeight: 1.65,
+              marginBottom: "36px",
             }}
           >
-            No account or sign-up required. Jump straight into the browser editor, or download the native Linux desktop app for offline workflows.
+            Experience the complete ImageMagick engine directly inside your browser.
+            No account creation, no cloud sync lag, and completely free.
           </p>
 
-          {/* Action Buttons */}
+          {/* Action buttons */}
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "16px",
               flexWrap: "wrap",
-              marginTop: "8px",
+              gap: "16px",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "32px",
             }}
           >
-            <Button variant="primary" size="lg" href="/editor">
-              <span>Launch Editor</span>
-              <ArrowRight width={18} height={18} aria-hidden="true" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              href={GITHUB_RELEASES_URL}
+            <Link
+              href="/editor"
               style={{
-                backgroundColor: "var(--beige)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "14px 32px",
+                borderRadius: "12px",
+                background: "var(--green)",
+                color: "var(--green-ink)",
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "1rem",
+                textDecoration: "none",
+                boxShadow: "0 0 24px rgba(63,237,30,0.35)",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = "translateY(-2px)";
+                el.style.boxShadow = "0 0 32px rgba(63,237,30,0.55)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.transform = "translateY(0)";
+                el.style.boxShadow = "0 0 24px rgba(63,237,30,0.35)";
               }}
             >
-              <Download width={18} height={18} aria-hidden="true" />
-              <span>Download for Linux</span>
-            </Button>
+              Open Editor →
+            </Link>
+
+            <a
+              href="https://github.com/ImageMagick/ImageMagick"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "14px 28px",
+                borderRadius: "12px",
+                background: "var(--surface-2)",
+                border: "1px solid var(--line-strong)",
+                color: "var(--ink)",
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+                textDecoration: "none",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "var(--surface-2)";
+              }}
+            >
+              <Download size={17} />
+              Download App
+            </a>
           </div>
 
-          {/* Checkmarks */}
+          {/* Two checkmark lines */}
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "28px",
               flexWrap: "wrap",
-              marginTop: "12px",
-              color: "var(--ink)",
-              fontSize: "0.95rem",
-              fontWeight: 700,
+              gap: "24px",
+              justifyContent: "center",
+              fontSize: "0.88rem",
+              color: "var(--muted)",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  borderRadius: "50%",
-                  backgroundColor: "var(--green)",
-                  border: "1.5px solid var(--ink)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Check width={12} height={12} color="var(--ink)" strokeWidth={3} aria-hidden="true" />
-              </div>
+              <Check size={16} color="var(--green)" />
               <span>No sign-up required</span>
             </div>
-
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  borderRadius: "50%",
-                  backgroundColor: "var(--green)",
-                  border: "1.5px solid var(--ink)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Check width={12} height={12} color="var(--ink)" strokeWidth={3} aria-hidden="true" />
-              </div>
-              <span>Works offline in the app</span>
+              <Check size={16} color="var(--green)" />
+              <span>Free and private</span>
             </div>
           </div>
-        </ClayCard>
+        </div>
       </div>
     </section>
   );
