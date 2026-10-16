@@ -21,8 +21,11 @@ import {
   Palette,
   Brush,
   Clock,
+  Monitor,
+  Check,
 } from "lucide-react";
 import { OPERATIONS, OperationDef } from "@/ops/definitions";
+import { COVERAGE_STATS } from "@/ops/stats";
 import { useEditorStore } from "@/store/editorStore";
 import ToolRow from "./ToolRow";
 
@@ -30,103 +33,74 @@ interface ToolLibraryProps {
   onSelectOp?: () => void;
 }
 
-const TOOL_DESCRIPTIONS: Record<string, string> = {
-  resize: "Scale dimensions by percentage",
-  rotate: "Rotate degrees clockwise",
-  flip: "Flip vertically top-to-bottom",
-  flop: "Mirror horizontally left-to-right",
-  modulate: "Tune brightness, saturation & hue",
-  gamma: "Adjust mid-tone luminance",
-  sigmoidalContrast: "S-curve filmic contrast",
-  level: "Remap black & white points",
-  grayscale: "Monochromatic black & white",
-  sepia: "Warm vintage photo tint",
-  negate: "Invert all color channels",
-  blur: "Soft Gaussian smoothing",
-  sharpen: "Crisp edge accentuation",
-  motionBlur: "Directional motion streak",
-  noise: "Add photographic sensor grain",
-  oilPaint: "Painterly artistic canvas strokes",
-  charcoal: "Graphite & charcoal drawing",
-};
-
-const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
-  Geometry: { bg: "bg-[rgba(48,137,197,0.15)]", text: "text-[#70b8f0]" },
-  Color: { bg: "bg-[rgba(240,100,100,0.12)]", text: "text-[#f09090]" },
-  Filters: { bg: "bg-[rgba(63,237,30,0.12)]", text: "text-[var(--green)]" },
-  Effects: { bg: "bg-[rgba(130,100,220,0.15)]", text: "text-[#b09ee0]" },
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  Geometry: Crop,
+  Color: Palette,
+  Filters: Sparkles,
+  "Edges & Structure": Contrast,
+  Effects: Brush,
+  "Draw & Text": Sliders,
+  Composite: Layers,
+  "Stack & Layers": Layers,
 };
 
 const OP_ICONS: Record<string, React.ElementType> = {
-  blur: Droplets,
-  sharpen: Sparkles,
-  motionBlur: Wind,
-  noise: Layers,
   resize: Crop,
   rotate: RotateCw,
   flip: ArrowUpDown,
   flop: ArrowLeftRight,
-  grayscale: Contrast,
-  negate: CircleDot,
-  modulate: Sun,
+  modulate: Sliders,
+  gamma: Sun,
   sigmoidalContrast: Contrast,
-  gamma: Sliders,
-  level: Layers,
-  sepia: Palette,
+  level: CircleDot,
+  grayscale: Droplets,
+  sepia: Sparkles,
+  negate: Contrast,
+  blur: Wind,
+  sharpen: Sparkles,
+  motionBlur: Wind,
+  noise: Sparkles,
   oilPaint: Brush,
   charcoal: Brush,
 };
 
-const RECENT_KEY = "magick_recent_tools";
-
 export default function ToolLibrary({ onSelectOp }: ToolLibraryProps) {
+  const { addStep, addToast } = useEditorStore();
+
   const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<"all" | "browser" | "desktop" | "second">("all");
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
   const [recentOpIds, setRecentOpIds] = useState<string[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const { addStep, addToast } = useEditorStore();
-
-  // Load recent tools from localStorage
+  // Load recently used tools from localStorage
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(RECENT_KEY);
-      if (stored) {
-        setRecentOpIds(JSON.parse(stored));
+      const saved = localStorage.getItem("magick_recent_tools");
+      if (saved) {
+        setRecentOpIds(JSON.parse(saved).slice(0, 5));
       }
     } catch {
       // ignore
     }
   }, []);
 
-  // Hotkey / focuses search
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "/" && document.activeElement?.tagName !== "INPUT") {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   const saveRecent = (opId: string) => {
     try {
-      const updated = [opId, ...recentOpIds.filter((id) => id !== opId)].slice(0, 3);
+      const updated = [opId, ...recentOpIds.filter((id) => id !== opId)].slice(0, 5);
       setRecentOpIds(updated);
-      localStorage.setItem(RECENT_KEY, JSON.stringify(updated));
+      localStorage.setItem("magick_recent_tools", JSON.stringify(updated));
     } catch {
       // ignore
     }
   };
 
-  const handleAddOp = (op: OperationDef) => {
-    const defaults: Record<string, number | string | boolean> = {};
-    for (const p of op.params) {
-      defaults[p.id] = p.default;
+  const handleAddTool = (op: OperationDef) => {
+    if (op.engine === "native") {
+      addToast(`${op.name} requires the Desktop ImageMagick engine`, "info");
+      return;
     }
-    addStep(op.id, defaults);
+    addStep(op.id);
     saveRecent(op.id);
     addToast(`Added ${op.name}`, "info");
     if (onSelectOp) onSelectOp();
@@ -136,26 +110,34 @@ export default function ToolLibrary({ onSelectOp }: ToolLibraryProps) {
     setCollapsedCategories((prev) => ({ ...prev, [cat]: !prev[cat] }));
   };
 
+  // Filter tools by search query and active filter chip
   const filteredOps = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return OPERATIONS;
-    return OPERATIONS.filter(
-      (op) =>
-        op.name.toLowerCase().includes(q) ||
-        op.category.toLowerCase().includes(q) ||
-        op.id.toLowerCase().includes(q) ||
-        (TOOL_DESCRIPTIONS[op.id] && TOOL_DESCRIPTIONS[op.id].toLowerCase().includes(q))
-    );
-  }, [search]);
+    return OPERATIONS.filter((op) => {
+      // Filter chip
+      if (filterType === "browser" && op.engine === "native") return false;
+      if (filterType === "desktop" && op.engine !== "native") return false;
+      if (filterType === "second" && !op.needs?.includes("secondImage")) return false;
+
+      // Search query
+      if (!q) return true;
+      const matchName = op.name.toLowerCase().includes(q);
+      const matchCategory = op.category.toLowerCase().includes(q);
+      const matchId = op.id.toLowerCase().includes(q);
+      const matchFlags = op.cliFlags?.some((f) => f.toLowerCase().includes(q));
+      const matchDesc = op.description?.toLowerCase().includes(q);
+      return matchName || matchCategory || matchId || matchFlags || matchDesc;
+    });
+  }, [search, filterType]);
 
   const categories = useMemo(() => {
-    const order = ["Geometry", "Color", "Filters", "Effects"];
-    return order
-      .map((cat) => ({
-        name: cat,
-        ops: filteredOps.filter((o) => o.category === cat),
-      }))
-      .filter((cat) => cat.ops.length > 0);
+    const catMap = new Map<string, OperationDef[]>();
+    for (const op of filteredOps) {
+      const cat = op.category || "General";
+      if (!catMap.has(cat)) catMap.set(cat, []);
+      catMap.get(cat)!.push(op);
+    }
+    return Array.from(catMap.entries()).map(([name, ops]) => ({ name, ops }));
   }, [filteredOps]);
 
   const recentOps = useMemo(() => {
@@ -166,101 +148,262 @@ export default function ToolLibrary({ onSelectOp }: ToolLibraryProps) {
   }, [recentOpIds, search]);
 
   return (
-    <div className="w-full h-full flex flex-col bg-[var(--surface)] border-r border-[var(--line)] select-none text-[var(--ink)]">
-      {/* ── Sticky Top Search Field ── */}
-      <div className="p-3 border-b border-[var(--line)] bg-[var(--surface)] shrink-0">
-        <div className="relative">
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "var(--surface)",
+        borderRight: "1px solid var(--line)",
+        userSelect: "none",
+        color: "var(--ink)",
+      }}
+    >
+      {/* ── Top Header with Live Count ── */}
+      <div
+        style={{
+          padding: "12px 14px 10px",
+          borderBottom: "1px solid var(--line)",
+          backgroundColor: "var(--surface)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "10px",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "0.82rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: "var(--muted)",
+            }}
+          >
+            Tool Library
+          </span>
+          <span
+            style={{
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              color: "var(--green)",
+              backgroundColor: "rgba(63,237,30,0.1)",
+              padding: "2px 7px",
+              borderRadius: "4px",
+            }}
+          >
+            {COVERAGE_STATS.ui} in browser
+          </span>
+        </div>
+
+        {/* Search input */}
+        <div style={{ position: "relative", marginBottom: "8px" }}>
           <input
             ref={searchInputRef}
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search tools (/)"
-            className="w-full h-[32px] pl-8 pr-7 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] text-xs text-[var(--ink)] placeholder:text-[var(--muted)]/70 focus:bg-[var(--surface-2)] focus:outline-none focus:border-ink transition-colors font-medium"
-            aria-label="Search tools"
+            placeholder="Search tools or -flag..."
+            style={{
+              width: "100%",
+              height: "32px",
+              paddingLeft: "30px",
+              paddingRight: "26px",
+              borderRadius: "8px",
+              border: "1px solid var(--line)",
+              backgroundColor: "var(--surface-2)",
+              fontSize: "0.82rem",
+              color: "var(--ink)",
+              outline: "none",
+            }}
           />
           <Search
             size={13}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"
-            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: "9px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "var(--muted)",
+              pointerEvents: "none",
+            }}
           />
           {search && (
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--ink)] p-0.5 rounded cursor-pointer"
-              aria-label="Clear search"
+              style={{
+                position: "absolute",
+                right: "6px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "transparent",
+                border: "none",
+                color: "var(--muted)",
+                cursor: "pointer",
+                padding: "2px",
+              }}
             >
               <X size={12} />
             </button>
           )}
         </div>
+
+        {/* Filter chips */}
+        <div
+          style={{
+            display: "flex",
+            gap: "4px",
+            overflowX: "auto",
+            paddingBottom: "2px",
+          }}
+        >
+          {[
+            { id: "all", label: "All" },
+            { id: "browser", label: "Browser" },
+            { id: "desktop", label: "Desktop" },
+            { id: "second", label: "2nd Image" },
+          ].map((chip) => (
+            <button
+              key={chip.id}
+              type="button"
+              onClick={() => setFilterType(chip.id as any)}
+              style={{
+                padding: "3px 8px",
+                borderRadius: "6px",
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                backgroundColor:
+                  filterType === chip.id
+                    ? "var(--blue)"
+                    : "var(--surface-2)",
+                color: filterType === chip.id ? "#ffffff" : "var(--muted)",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Tools Scrollable List ── */}
-      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-3">
-        {/* Recently Used Section */}
-        {recentOps.length > 0 && (
-          <div>
-            <div className="px-2 py-1 flex items-center gap-1.5 text-[11px] font-bold text-[var(--muted)] uppercase tracking-wider">
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px 8px" }}>
+        {/* Recently Used section */}
+        {recentOps.length > 0 && !search && filterType === "all" && (
+          <div style={{ marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "4px 8px",
+                fontSize: "0.72rem",
+                fontWeight: 700,
+                color: "var(--muted)",
+                textTransform: "uppercase",
+              }}
+            >
               <Clock size={11} />
-              <span>Recent</span>
+              Recently Used
             </div>
-            <div className="space-y-0.5">
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
               {recentOps.map((op) => (
                 <ToolRow
                   key={`recent-${op.id}`}
                   op={op}
                   icon={OP_ICONS[op.id] || Sparkles}
-                  colorClass={CATEGORY_COLORS[op.category] || CATEGORY_COLORS.Geometry}
-                  description={TOOL_DESCRIPTIONS[op.id] || ""}
-                  onAdd={handleAddOp}
+                  colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#3089c5]" }}
+                  description={op.description || `${op.category} operation`}
+                  onAdd={handleAddTool}
                 />
               ))}
             </div>
-            <div className="h-px bg-[#cfc9c3]/60 my-2 mx-2" />
           </div>
         )}
 
         {/* Categorized Tools */}
         {categories.map((cat) => {
-          const isCollapsed = collapsedCategories[cat.name];
-          const color = CATEGORY_COLORS[cat.name] || CATEGORY_COLORS.Geometry;
+          const isCollapsed = Boolean(collapsedCategories[cat.name]);
+          const Icon = CATEGORY_ICONS[cat.name] || Sliders;
 
           return (
-            <div key={cat.name}>
+            <div key={cat.name} style={{ marginBottom: "10px" }}>
               {/* Category Header */}
               <button
                 type="button"
                 onClick={() => toggleCategory(cat.name)}
-                className="w-full px-2 py-1 flex items-center justify-between text-left hover:bg-[var(--surface-2)] rounded transition-colors cursor-pointer group"
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "6px 8px",
+                  borderRadius: "6px",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--ink)",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = "var(--surface-2)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                }}
               >
-                <div className="flex items-center gap-1.5">
-                  {isCollapsed ? (
-                    <ChevronRight size={13} className="text-[var(--muted)]" />
-                  ) : (
-                    <ChevronDown size={13} className="text-[var(--muted)]" />
-                  )}
-                  <span className="font-display font-bold text-xs uppercase tracking-wider text-[var(--muted)] group-hover:text-[var(--ink)]">
+                <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+                  <Icon size={14} color="#3089c5" />
+                  <span style={{ fontSize: "0.82rem", fontWeight: 700 }}>
                     {cat.name}
                   </span>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "var(--muted)",
+                      backgroundColor: "var(--surface-2)",
+                      padding: "1px 6px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    {cat.ops.length}
+                  </span>
                 </div>
-                <span className="text-[10px] font-mono text-[var(--muted)] px-1.5 py-0.2 rounded bg-[var(--surface-2)]">
-                  {cat.ops.length}
-                </span>
+                {isCollapsed ? (
+                  <ChevronRight size={14} color="var(--muted)" />
+                ) : (
+                  <ChevronDown size={14} color="var(--muted)" />
+                )}
               </button>
 
-              {/* Rows */}
+              {/* Category Tools */}
               {!isCollapsed && (
-                <div className="mt-0.5 space-y-0.5">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                    marginTop: "2px",
+                    paddingLeft: "4px",
+                  }}
+                >
                   {cat.ops.map((op) => (
                     <ToolRow
                       key={op.id}
                       op={op}
-                      icon={OP_ICONS[op.id] || Sparkles}
-                      colorClass={color}
-                      description={TOOL_DESCRIPTIONS[op.id] || ""}
-                      onAdd={handleAddOp}
+                      icon={OP_ICONS[op.id] || Icon}
+                      colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#3089c5]" }}
+                      description={op.description || `${op.category} tool`}
+                      onAdd={handleAddTool}
                     />
                   ))}
                 </div>
@@ -269,17 +412,16 @@ export default function ToolLibrary({ onSelectOp }: ToolLibraryProps) {
           );
         })}
 
-        {/* Empty Search Result */}
         {filteredOps.length === 0 && (
-          <div className="py-8 text-center text-[var(--muted)]">
-            <p className="text-xs font-semibold">No tools match &ldquo;{search}&rdquo;</p>
-            <button
-              type="button"
-              onClick={() => setSearch("")}
-              className="mt-2 text-xs font-bold text-[var(--green)] hover:underline cursor-pointer"
-            >
-              Clear search
-            </button>
+          <div
+            style={{
+              padding: "32px 16px",
+              textAlign: "center",
+              color: "var(--muted)",
+              fontSize: "0.85rem",
+            }}
+          >
+            No tools matching filter
           </div>
         )}
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus, Monitor } from "lucide-react";
 import { OperationDef } from "@/ops/definitions";
 
 interface ToolRowProps {
@@ -11,37 +11,145 @@ interface ToolRowProps {
   onAdd: (op: OperationDef) => void;
 }
 
-export default function ToolRow({ op, icon: Icon, colorClass, description, onAdd }: ToolRowProps) {
+export default function ToolRow({
+  op,
+  icon: Icon,
+  colorClass,
+  description,
+  onAdd,
+}: ToolRowProps) {
+  const isNative = op.engine === "native";
+
   return (
     <button
       type="button"
       onClick={() => onAdd(op)}
-      className="w-full h-[40px] px-2 flex items-center justify-between rounded-lg hover:bg-[var(--surface-2)] text-left transition-colors cursor-pointer group focus-visible:outline-2 focus-visible:outline-ink select-none"
-      title={`${op.name}: ${description}`}
+      title={`${op.name}${op.cliFlags?.[0] ? ` (${op.cliFlags[0]})` : ""}: ${description}${isNative ? " (Requires Desktop Engine)" : ""}`}
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "6px 8px",
+        borderRadius: "8px",
+        background: "transparent",
+        border: "1px solid transparent",
+        textAlign: "left",
+        cursor: "pointer",
+        transition: "all 0.15s ease",
+        color: "var(--ink)",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.backgroundColor = "var(--surface-2)";
+        el.style.borderColor = "var(--line)";
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.backgroundColor = "transparent";
+        el.style.borderColor = "transparent";
+      }}
     >
-      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-        {/* Pastel leading icon tile (28px) */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          minWidth: 0,
+          flex: 1,
+        }}
+      >
+        {/* Leading icon tile (26px) */}
         <div
-          className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 border border-ink/10 ${colorClass.bg} ${colorClass.text}`}
+          style={{
+            width: "26px",
+            height: "26px",
+            borderRadius: "6px",
+            backgroundColor: "var(--tile)",
+            color: "#3089c5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
         >
-          <Icon size={15} aria-hidden="true" />
+          <Icon size={14} aria-hidden="true" />
         </div>
 
-        {/* Name and description in one compact row */}
-        <div className="min-w-0 flex-1 pr-1">
-          <div className="flex items-baseline gap-1.5 truncate">
-            <span className="font-display font-semibold text-xs text-[var(--ink)] truncate">
+        {/* Name, flag, description */}
+        <div style={{ minWidth: 0, flex: 1, paddingRight: "4px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              overflow: "hidden",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                fontSize: "0.82rem",
+                color: "var(--ink)",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {op.name}
             </span>
-            <span className="text-[11px] text-[var(--muted)] truncate hidden sm:inline">
-              {description}
-            </span>
+
+            {op.cliFlags?.[0] && (
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.68rem",
+                  color: "var(--green)",
+                  backgroundColor: "rgba(63,237,30,0.08)",
+                  padding: "0 4px",
+                  borderRadius: "3px",
+                  flexShrink: 0,
+                }}
+              >
+                {op.cliFlags[0]}
+              </span>
+            )}
+          </div>
+
+          <div
+            style={{
+              fontSize: "0.72rem",
+              color: "var(--muted)",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {isNative ? (
+              <span style={{ color: "#70b8f0", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                <Monitor size={10} /> Desktop only
+              </span>
+            ) : (
+              description
+            )}
           </div>
         </div>
       </div>
 
-      {/* Ghost + button */}
-      <div className="w-5 h-5 rounded flex items-center justify-center text-[var(--muted)] group-hover:text-[var(--ink)] group-hover:bg-[var(--surface)] transition-colors shrink-0">
+      {/* Add indicator button */}
+      <div
+        style={{
+          width: "20px",
+          height: "20px",
+          borderRadius: "4px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "var(--muted)",
+          flexShrink: 0,
+        }}
+      >
         <Plus size={13} aria-hidden="true" />
       </div>
     </button>

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { PipelineStep } from "@/engine/types";
+import { OP_MAP } from "@/ops/definitions";
 
 const genId = (): string =>
   typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
@@ -48,7 +49,7 @@ interface EditorState {
     dims: { w: number; h: number },
     meta?: { size?: number; type?: string }
   ) => void;
-  addStep: (opId: string, defaults: Record<string, number | string | boolean>) => void;
+  addStep: (opId: string, defaults?: Record<string, number | string | boolean>) => void;
   updateStep: (
     uid: string,
     params: Record<string, number | string | boolean>,
@@ -114,8 +115,15 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     }),
 
   addStep: (opId, defaults) => {
+    const op = OP_MAP[opId];
+    const defParams: Record<string, any> = {};
+    if (op?.params) {
+      for (const p of op.params) {
+        if (p.default !== undefined) defParams[p.id] = p.default;
+      }
+    }
     const { steps, past } = get();
-    const newStep: PipelineStep = { uid: genId(), opId, params: { ...defaults }, enabled: true };
+    const newStep: PipelineStep = { uid: genId(), opId, params: { ...defParams, ...(defaults ?? {}) }, enabled: true };
     set({
       steps: [...steps, newStep],
       past: [...past, snapshot(steps)],

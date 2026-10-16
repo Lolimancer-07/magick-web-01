@@ -10,6 +10,7 @@ import CanvasView from "./canvas/CanvasView";
 import ToolLibrary from "./library/ToolLibrary";
 import Inspector from "./inspector/Inspector";
 import ExportDialog from "./export/ExportDialog";
+import CommandPalette from "./CommandPalette";
 import Toasts from "./feedback/Toasts";
 import ShortcutSheet from "./feedback/ShortcutSheet";
 import { Sparkles, Layers, Sliders, X } from "lucide-react";
@@ -40,6 +41,7 @@ export default function EditorShell() {
 
   const [hasImage, setHasImage] = useState(false);
   const [showExport, setShowExport] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(true);
   const [inspectorOpen, setInspectorOpen] = useState(true);
 
@@ -62,7 +64,7 @@ export default function EditorShell() {
     }
   }, [fileName]);
 
-  // Unsaved-work guard (Phase 8)
+  // Unsaved-work guard
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (steps.length > 0) {
@@ -79,127 +81,156 @@ export default function EditorShell() {
     if (!hasImage) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    const stepCountChanged = steps.length !== prevStepCountRef.current;
+    const isStepAdded = steps.length !== prevStepCountRef.current;
     prevStepCountRef.current = steps.length;
-    const delay = stepCountChanged ? DEBOUNCE_MS_ADD : DEBOUNCE_MS_SLIDER;
+    const delay = isStepAdded ? DEBOUNCE_MS_ADD : DEBOUNCE_MS_SLIDER;
 
     debounceRef.current = setTimeout(async () => {
       const renderId = ++latestRenderRef.current;
       setPreviewLoading(true);
       setPreviewError(null);
-      const startTime = performance.now();
 
+      const t0 = performance.now();
       try {
-        const result = await engine.render(steps, { preview: true });
-        if (renderId !== latestRenderRef.current) return;
-
-        const elapsed = Math.round(performance.now() - startTime);
-        setRenderTimeMs(elapsed);
-
-        if (currentBlobUrlRef.current && currentBlobUrlRef.current.startsWith("blob:")) {
-          URL.revokeObjectURL(currentBlobUrlRef.current);
-        }
-
-        const blob = new Blob([result.bytes], { type: result.mime });
-        const url = URL.createObjectURL(blob);
-        currentBlobUrlRef.current = url;
-        setPreviewUrl(url);
-      } catch (err: unknown) {
-        const errMsg = err instanceof Error ? err.message : String(err);
-        if (errMsg === "cancelled") {
-          if (renderId === latestRenderRef.current) setPreviewLoading(false);
+        const enabledSteps = steps.filter((s) => s.enabled);
+        if (enabledSteps.length === 0) {
+          if (currentBlobUrlRef.current) {
+            URL.revokeObjectURL(currentBlobUrlRef.current);
+            currentBlobUrlRef.current = null;
+          }
+          setPreviewUrl(null);
+          setPreviewLoading(false);
+          setRenderTimeMs(0);
           return;
         }
+
+        const res = await engine.render(steps, { preview: true });
         if (renderId !== latestRenderRef.current) return;
-        setPreviewError(errMsg || "Render failed");
+
+        if (currentBlobUrlRef.current) {
+          URL.revokeObjectURL(currentBlobUrlRef.current);
+        }
+        const blob = new Blob([res.bytes], { type: res.mime });
+        const newUrl = URL.createObjectURL(blob);
+        currentBlobUrlRef.current = newUrl;
+        setPreviewUrl(newUrl);
+        setRenderTimeMs(Math.round(performance.now() - t0));
+      } catch (err: unknown) {
+        if (renderId !== latestRenderRef.current) return;
+        const msg = err instanceof Error ? err.message : String(err);
+        setPreviewError(msg);
       } finally {
-        if (renderId === latestRenderRef.current) setPreviewLoading(false);
+        if (renderId === latestRenderRef.current) {
+          setPreviewLoading(false);
+        }
       }
     }, delay);
-  }, [hasImage, steps, setPreviewUrl, setPreviewLoading, setPreviewError, setRenderTimeMs]);
+  }, [hasImage, steps, setPreviewLoading, setPreviewError, setPreviewUrl, setRenderTimeMs]);
 
   useEffect(() => {
     triggerRender();
   }, [triggerRender]);
 
-  // Global Keyboard Shortcuts (Phase 6)
+  // Handle opening a new image
+  const handleOpenNew = () => {
+    if (steps.length > 0) {
+      const confirmed = window.confirm(
+        "Open a new image? Current unsaved edits will be discarded."
+      );
+      if (!confirmed) return;
+    }
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      reset();
+      const originalUrl = URL.createObjectURL(file);
+      setBeforeUrl(originalUrl);
+      setPreviewUrl(null);
+
+      const { width, height } = await engine.load(file);
+      setFile(file.name, { w: width, h: height });
+      addToast(`Opened ${file.name}`, "success");
+    } catch (err: unknown) {
+      console.error("Failed to load file:", err);
+      addToast("Failed to load image", "error");
+    } finally {
+      e.target.value = "";
+    }
+  };
+
+  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const isInput = document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "SELECT";
-      if (isInput) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Command palette: Ctrl+K / Cmd+K
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCommandPaletteOpen((prev) => !prev);
+        return;
+      }
 
       // Undo: Ctrl+Z / Cmd+Z
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !e.shiftKey) {
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
         undo();
         return;
       }
 
-      // Redo: Ctrl+Y / Cmd+Y or Ctrl+Shift+Z
+      // Redo: Ctrl+Shift+Z or Ctrl+Y
       if (
-        (e.ctrlKey || e.metaKey) &&
-        (e.key.toLowerCase() === "y" || (e.key.toLowerCase() === "z" && e.shiftKey))
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "z") ||
+        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y")
       ) {
         e.preventDefault();
         redo();
         return;
       }
 
-      // Peek original: Hold '\' key
-      if (e.key === "\\") {
-        setPeekOriginal(true);
+      // Export: Ctrl+E / Cmd+E
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "e") {
+        e.preventDefault();
+        if (hasImage) setShowExport(true);
         return;
       }
 
-      // Fit: '0'
+      // Delete selected step: Delete or Backspace
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedUid) {
+        e.preventDefault();
+        removeStep(selectedUid);
+        return;
+      }
+
+      // Reset Zoom: 0
       if (e.key === "0") {
+        e.preventDefault();
         setZoom(1);
         setPan({ x: 0, y: 0 });
         return;
       }
 
-      // 100%: '1'
-      if (e.key === "1") {
-        setZoom(1);
-        return;
-      }
-
-      // Zoom + / -
-      if (e.key === "=" || e.key === "+") {
-        setZoom((z) => Math.min(5, +(z + 0.25).toFixed(2)));
-        return;
-      }
-      if (e.key === "-") {
-        setZoom((z) => Math.max(0.15, +(z - 0.25).toFixed(2)));
-        return;
-      }
-
-      // Delete selected step
-      if (e.key === "Delete" || e.key === "Backspace") {
-        if (selectedUid) {
-          removeStep(selectedUid);
-          addToast("Removed step", "info");
-        }
-        return;
-      }
-
-      // Open new image: 'O'
-      if (e.key.toLowerCase() === "o" && !e.ctrlKey && !e.metaKey) {
+      // Spacebar hold peek original
+      if (e.key === " " && !e.repeat && hasImage) {
         e.preventDefault();
-        fileInputRef.current?.click();
-        return;
-      }
-
-      // Export: 'E'
-      if (e.key.toLowerCase() === "e" && !e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-        if (hasImage) setShowExport(true);
-        return;
+        setPeekOriginal(true);
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "\\") {
+      if (e.key === " ") {
         setPeekOriginal(false);
       }
     };
@@ -210,157 +241,267 @@ export default function EditorShell() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [undo, redo, setPeekOriginal, setZoom, setPan, selectedUid, removeStep, addToast, hasImage]);
-
-  // Handle direct file input change (for "New Image" / 'O' shortcut)
-  const handleNativeFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      const originalUrl = URL.createObjectURL(file);
-      setBeforeUrl(originalUrl);
-      setPreviewUrl(null);
-      const { width, height } = await engine.load(file);
-      setFile(file.name, { w: width, h: height }, { size: file.size, type: file.type });
-      setHasImage(true);
-      addToast(`Opened ${file.name}`, "success");
-    } catch (err: unknown) {
-      console.error(err);
-      addToast("Failed to decode image file", "error");
-    } finally {
-      e.target.value = "";
-    }
-  };
+  }, [
+    undo,
+    redo,
+    selectedUid,
+    removeStep,
+    setZoom,
+    setPan,
+    setPeekOriginal,
+    hasImage,
+  ]);
 
   return (
-    <div className="h-[100dvh] w-screen overflow-hidden flex flex-col bg-[var(--ed-bg)] font-sans select-none text-[var(--ink)]">
-      {/* Hidden file input for 'O' / New Image */}
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        backgroundColor: "var(--bg)",
+        color: "var(--ink)",
+      }}
+    >
+      {/* Hidden file input for "New Image" */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        onChange={handleNativeFileChange}
-        className="hidden"
-        aria-hidden="true"
+        style={{ display: "none" }}
+        onChange={handleFileInputChange}
       />
 
-      {/* ── Top Bar (56px) ── */}
+      {/* ── 1. Top Bar ── */}
       <TopBar
         onOpenExport={() => setShowExport(true)}
-        onOpenNew={() => fileInputRef.current?.click()}
-        onToggleLibrary={() => setLibraryOpen(!libraryOpen)}
-        onToggleInspector={() => setInspectorOpen(!inspectorOpen)}
+        onOpenNew={handleOpenNew}
+        onOpenCommandPalette={() => setCommandPaletteOpen(true)}
+        onToggleLibrary={() => setLibraryOpen((v) => !v)}
+        onToggleInspector={() => setInspectorOpen((v) => !v)}
         libraryOpen={libraryOpen}
         inspectorOpen={inspectorOpen}
       />
 
-      {/* ── Main App Shell Body ── */}
-      <main className="flex-1 min-h-0 flex flex-col relative overflow-hidden">
+      {/* ── 2. Main Middle Workspace ── */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          position: "relative",
+          overflow: "hidden",
+          minHeight: 0,
+        }}
+      >
         {!hasImage ? (
-          <EmptyState onImageLoaded={() => setHasImage(true)} />
+          <EmptyState onImageLoaded={() => triggerRender()} />
         ) : (
-          <div className="flex-1 min-h-0 flex flex-col md:flex-row relative overflow-hidden">
-            {/* Left Tool Library Panel (280px on desktop, collapsable on 900-1279px) */}
+          <>
+            {/* Desktop Left: Tool Library (260px) */}
             <aside
-              className={`hidden md:flex w-[280px] shrink-0 border-r border-[var(--line)] bg-[var(--surface)] flex-col transition-all duration-150 ${
-                !libraryOpen ? "md:hidden xl:flex" : ""
-              }`}
+              className="desktop-panel"
+              style={{
+                width: "280px",
+                flexShrink: 0,
+                height: "100%",
+                backgroundColor: "var(--surface)",
+                borderRight: "1px solid var(--line)",
+                display: libraryOpen ? "flex" : "none",
+                flexDirection: "column",
+                overflow: "hidden",
+              }}
             >
               <ToolLibrary />
             </aside>
 
-            {/* Center Canvas Viewport */}
-            <section className="flex-1 min-h-0 flex flex-col relative overflow-hidden bg-[var(--ed-bg)]">
-              <CanvasView onRetry={triggerRender} />
+            {/* Center: Canvas View Area */}
+            <main
+              style={{
+                flex: 1,
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+                overflow: "hidden",
+                minWidth: 0,
+                backgroundColor: "var(--bg)",
+              }}
+            >
+              <CanvasView />
+            </main>
 
-              {/* Mobile Bottom Tab Bar (<900px / md) */}
-              <div className="md:hidden h-[44px] px-3 bg-[var(--surface)] border-t border-[var(--line)] flex items-center justify-around gap-2 z-20 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setMobileSheet(mobileSheet === "tools" ? null : "tools")}
-                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
-                    mobileSheet === "tools" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
-                  }`}
-                >
-                  <Sparkles size={14} />
-                  <span>Tools</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setMobileSheet(mobileSheet === "edits" ? null : "edits")}
-                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
-                    mobileSheet === "edits" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
-                  }`}
-                >
-                  <Layers size={14} />
-                  <span>Edits ({steps.length})</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setMobileSheet(mobileSheet === "info" ? null : "info")}
-                  className={`flex-1 py-1 px-2 rounded-lg text-xs font-display font-bold flex items-center justify-center gap-1.5 transition-colors ${
-                    mobileSheet === "info" ? "bg-[var(--green)] text-[var(--ink)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
-                  }`}
-                >
-                  <Sliders size={14} />
-                  <span>Tune</span>
-                </button>
-              </div>
-            </section>
-
-            {/* Right Inspector Panel (340px) */}
-            <aside className="hidden md:flex w-[340px] shrink-0 border-l border-[var(--line)] bg-[var(--surface)] flex-col">
+            {/* Desktop Right: Inspector (300px) */}
+            <aside
+              className="desktop-panel"
+              style={{
+                width: "320px",
+                flexShrink: 0,
+                height: "100%",
+                backgroundColor: "var(--surface)",
+                borderLeft: "1px solid var(--line)",
+                display: inspectorOpen ? "flex" : "none",
+                flexDirection: "column",
+                overflow: "hidden",
+              }}
+            >
               <Inspector />
             </aside>
-
-            {/* Mobile Bottom Sheet (<900px) */}
-            {mobileSheet && (
-              <div className="md:hidden fixed inset-x-0 bottom-0 top-[35%] z-40 bg-[var(--surface)] border-t-2 border-[var(--line-2)] rounded-t-3xl shadow-[0_-10px_35px_rgba(0,0,0,0.5)] flex flex-col p-3 animate-in slide-in-from-bottom duration-200">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[var(--line)]">
-                  <span className="font-display font-bold text-xs uppercase tracking-wider text-[var(--ink)]">
-                    {mobileSheet === "tools" && "Tool Library"}
-                    {mobileSheet === "edits" && `Pipeline (${steps.length} steps)`}
-                    {mobileSheet === "info" && "Tune & Info"}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setMobileSheet(null)}
-                    className="p-1 rounded-lg hover:bg-[var(--surface-2)] text-[var(--ink)]"
-                    aria-label="Close Sheet"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto min-h-0">
-                  {mobileSheet === "tools" && (
-                    <ToolLibrary onSelectOp={() => setMobileSheet("edits")} />
-                  )}
-                  {mobileSheet === "edits" && <Inspector />}
-                  {mobileSheet === "info" && <Inspector />}
-                </div>
-              </div>
-            )}
-          </div>
+          </>
         )}
-      </main>
+      </div>
 
-      {/* ── Status Bar (28px) ── */}
-      <StatusBar />
+      {/* ── 3. Bottom Status Bar ── */}
+      {hasImage && <StatusBar />}
 
-      {/* Full-resolution Export Dialog */}
-      <ExportDialog
-        isOpen={showExport}
-        onClose={() => setShowExport(false)}
+      {/* ── Mobile Floating Action Bar ── */}
+      {hasImage && (
+        <div
+          className="mobile-only-bar"
+          style={{
+            position: "fixed",
+            bottom: "32px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 40,
+            display: "none",
+            gap: "8px",
+            background: "var(--bg-nav)",
+            border: "1px solid var(--line-strong)",
+            borderRadius: "9999px",
+            padding: "4px 8px",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.5)",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setMobileSheet("tools")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              borderRadius: "9999px",
+              border: "none",
+              background: mobileSheet === "tools" ? "var(--surface-2)" : "transparent",
+              color: "var(--ink)",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            <Sparkles size={14} color="var(--green)" />
+            Tools
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMobileSheet("edits")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              borderRadius: "9999px",
+              border: "none",
+              background: mobileSheet === "edits" ? "var(--surface-2)" : "transparent",
+              color: "var(--ink)",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            <Layers size={14} color="#70b8f0" />
+            Pipeline ({steps.length})
+          </button>
+        </div>
+      )}
+
+      {/* ── Mobile Bottom Sheet Drawer ── */}
+      {mobileSheet && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 50,
+            backgroundColor: "rgba(0,0,0,0.7)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setMobileSheet(null);
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "var(--surface)",
+              borderTopLeftRadius: "20px",
+              borderTopRightRadius: "20px",
+              borderTop: "1px solid var(--line-strong)",
+              maxHeight: "80vh",
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "14px 20px",
+                borderBottom: "1px solid var(--line)",
+              }}
+            >
+              <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
+                {mobileSheet === "tools" ? "Tool Library" : "Pipeline Inspector"}
+              </span>
+              <button
+                type="button"
+                onClick={() => setMobileSheet(null)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "var(--muted)",
+                  cursor: "pointer",
+                  padding: "4px",
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ flex: 1, overflowY: "auto" }}>
+              {mobileSheet === "tools" ? (
+                <ToolLibrary onSelectOp={() => setMobileSheet("edits")} />
+              ) : (
+                <Inspector />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modals & Feedback ── */}
+      <ExportDialog isOpen={showExport} onClose={() => setShowExport(false)} />
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
       />
-
-      {/* Non-blocking Toasts */}
+      <ShortcutSheet />
       <Toasts />
 
-      {/* Keyboard Shortcuts Sheet Modal */}
-      <ShortcutSheet />
+      <style jsx>{`
+        @media (max-width: 900px) {
+          .desktop-panel {
+            display: none !important;
+          }
+          .mobile-only-bar {
+            display: flex !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

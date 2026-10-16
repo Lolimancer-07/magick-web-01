@@ -7968,34 +7968,95 @@ var OPERATIONS = [
     name: "Gaussian Blur",
     icon: "\u25CE",
     category: "Filters",
+    kind: "operator",
+    cliFlags: ["-blur"],
+    description: "Smooth image with Gaussian kernel",
+    engine: "wasm",
     params: [{ id: "sigma", label: "Amount", type: "number", min: 0, max: 30, step: 0.5, default: 2 }],
-    apply: (img, p2) => img.blur(0, p2.sigma)
+    apply: (img, p2) => img.blur(0, p2.sigma),
+    toCli: (p2) => ["-blur", `0x${p2.sigma}`]
+  },
+  {
+    id: "gaussianBlur",
+    name: "Full Gaussian Blur",
+    icon: "\u25CE",
+    category: "Filters",
+    kind: "operator",
+    cliFlags: ["-gaussian-blur"],
+    description: "Gaussian blur with custom radius and sigma",
+    engine: "wasm",
+    params: [
+      { id: "radius", label: "Radius", type: "number", min: 0, max: 30, step: 1, default: 0 },
+      { id: "sigma", label: "Sigma", type: "number", min: 0.1, max: 20, step: 0.5, default: 2 }
+    ],
+    apply: (img, p2) => img.gaussianBlur(p2.radius, p2.sigma),
+    toCli: (p2) => ["-gaussian-blur", `${p2.radius}x${p2.sigma}`]
   },
   {
     id: "sharpen",
     name: "Sharpen",
     icon: "\u25C8",
     category: "Filters",
+    kind: "operator",
+    cliFlags: ["-sharpen"],
+    description: "Accentuate high-frequency edge details",
+    engine: "wasm",
     params: [{ id: "sigma", label: "Amount", type: "number", min: 0, max: 10, step: 0.5, default: 1.5 }],
-    apply: (img, p2) => img.sharpen(0, p2.sigma)
+    apply: (img, p2) => img.sharpen(0, p2.sigma),
+    toCli: (p2) => ["-sharpen", `0x${p2.sigma}`]
+  },
+  {
+    id: "adaptiveSharpen",
+    name: "Adaptive Sharpen",
+    icon: "\u25C8",
+    category: "Filters",
+    kind: "operator",
+    cliFlags: ["-adaptive-sharpen"],
+    description: "Sharpen edges while preserving smooth areas",
+    engine: "wasm",
+    params: [{ id: "sigma", label: "Sigma", type: "number", min: 0, max: 10, step: 0.5, default: 1.5 }],
+    apply: (img, p2) => img.adaptiveSharpen(0, p2.sigma),
+    toCli: (p2) => ["-adaptive-sharpen", `0x${p2.sigma}`]
+  },
+  {
+    id: "adaptiveBlur",
+    name: "Adaptive Blur",
+    icon: "\u25CE",
+    category: "Filters",
+    kind: "operator",
+    cliFlags: ["-adaptive-blur"],
+    description: "Adaptively blur interior while protecting edges",
+    engine: "wasm",
+    params: [{ id: "sigma", label: "Sigma", type: "number", min: 0, max: 20, step: 0.5, default: 2 }],
+    apply: (img, p2) => img.adaptiveBlur(0, p2.sigma),
+    toCli: (p2) => ["-adaptive-blur", `0x${p2.sigma}`]
   },
   {
     id: "motionBlur",
     name: "Motion Blur",
     icon: "\u224B",
     category: "Filters",
+    kind: "operator",
+    cliFlags: ["-motion-blur"],
+    description: "Simulate directional linear motion blur",
+    engine: "wasm",
     params: [
       { id: "radius", label: "Radius", type: "number", min: 1, max: 30, step: 1, default: 10 },
       { id: "sigma", label: "Sigma", type: "number", min: 1, max: 20, step: 1, default: 5 },
       { id: "angle", label: "Angle", type: "number", min: -180, max: 180, step: 5, default: 0 }
     ],
-    apply: (img, p2) => img.motionBlur(p2.radius, p2.sigma, p2.angle)
+    apply: (img, p2) => img.motionBlur(p2.radius, p2.sigma, p2.angle),
+    toCli: (p2) => ["-motion-blur", `${p2.radius}x${p2.sigma}+${p2.angle}`]
   },
   {
     id: "noise",
     name: "Add Noise",
     icon: "\u2056",
     category: "Filters",
+    kind: "operator",
+    cliFlags: ["-noise"],
+    description: "Simulate sensor grain or photographic noise",
+    engine: "wasm",
     params: [
       {
         id: "noiseType",
@@ -8005,7 +8066,8 @@ var OPERATIONS = [
         default: "Gaussian"
       }
     ],
-    apply: (img, p2, ctx) => img.addNoise(noiseType(ctx, p2.noiseType))
+    apply: (img, p2, ctx) => img.addNoise(noiseType(ctx, p2.noiseType)),
+    toCli: (p2) => ["+noise", String(p2.noiseType)]
   },
   // ── Geometry ──
   {
@@ -8013,35 +8075,100 @@ var OPERATIONS = [
     name: "Resize",
     icon: "\u2921",
     category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-resize"],
+    description: "Scale image dimensions by percentage",
+    engine: "wasm",
     params: [{ id: "percent", label: "Scale %", type: "number", min: 5, max: 200, default: 50 }],
     apply: (img, p2) => img.resize(
       Math.max(1, Math.round(img.width * p2.percent / 100)),
       Math.max(1, Math.round(img.height * p2.percent / 100))
-    )
+    ),
+    toCli: (p2) => ["-resize", `${p2.percent}%`]
+  },
+  {
+    id: "adaptiveResize",
+    name: "Adaptive Resize",
+    icon: "\u2922",
+    category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-adaptive-resize"],
+    description: "Data-dependent adaptive resizing with edge preservation",
+    engine: "wasm",
+    params: [{ id: "percent", label: "Scale %", type: "number", min: 5, max: 200, default: 50 }],
+    apply: (img, p2) => img.adaptiveResize(
+      Math.max(1, Math.round(img.width * p2.percent / 100)),
+      Math.max(1, Math.round(img.height * p2.percent / 100))
+    ),
+    toCli: (p2) => ["-adaptive-resize", `${p2.percent}%`]
   },
   {
     id: "rotate",
     name: "Rotate",
     icon: "\u21BB",
     category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-rotate"],
+    description: "Rotate image by degrees",
+    engine: "wasm",
     params: [{ id: "deg", label: "Degrees", type: "number", min: -180, max: 180, default: 90 }],
-    apply: (img, p2) => img.rotate(p2.deg)
+    apply: (img, p2) => img.rotate(p2.deg),
+    toCli: (p2) => ["-rotate", String(p2.deg)]
   },
   {
     id: "flip",
     name: "Flip Vertical",
     icon: "\u21C5",
     category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-flip"],
+    description: "Reflect scanlines vertically top to bottom",
+    engine: "wasm",
     params: [],
-    apply: (img) => img.flip()
+    apply: (img) => img.flip(),
+    toCli: () => ["-flip"]
   },
   {
     id: "flop",
     name: "Flip Horizontal",
     icon: "\u21C4",
     category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-flop"],
+    description: "Reflect scanlines horizontally left to right",
+    engine: "wasm",
     params: [],
-    apply: (img) => img.flop()
+    apply: (img) => img.flop(),
+    toCli: () => ["-flop"]
+  },
+  {
+    id: "roll",
+    name: "Roll Canvas",
+    icon: "\u2941",
+    category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-roll"],
+    description: "Roll canvas offsets horizontally and vertically",
+    engine: "wasm",
+    params: [
+      { id: "x", label: "Offset X", type: "number", min: -200, max: 200, default: 20 },
+      { id: "y", label: "Offset Y", type: "number", min: -200, max: 200, default: 20 }
+    ],
+    apply: (img, p2) => img.roll(p2.x, p2.y),
+    toCli: (p2) => ["-roll", `+${p2.x}+${p2.y}`]
+  },
+  {
+    id: "trim",
+    name: "Trim Background",
+    icon: "\u2702",
+    category: "Geometry",
+    kind: "operator",
+    cliFlags: ["-trim"],
+    description: "Trim uniform background border colors",
+    engine: "wasm",
+    params: [],
+    apply: (img) => img.trim(),
+    toCli: () => ["-trim"]
   },
   // ── Color ──
   {
@@ -8049,60 +8176,220 @@ var OPERATIONS = [
     name: "Grayscale",
     icon: "\u25D1",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-grayscale"],
+    description: "Transform image to monochromatic grayscale",
+    engine: "wasm",
     params: [],
-    apply: (img) => img.grayscale()
+    apply: (img) => img.grayscale(),
+    toCli: () => ["-grayscale", "Rec709Luminance"]
   },
   {
     id: "negate",
     name: "Invert Colors",
     icon: "\u2298",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-negate"],
+    description: "Invert all channel color intensities",
+    engine: "wasm",
     params: [],
-    apply: (img) => img.negate()
+    apply: (img) => img.negate(),
+    toCli: () => ["-negate"]
   },
   {
     id: "modulate",
     name: "Brightness / Saturation / Hue",
     icon: "\u2600",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-modulate"],
+    description: "Fine-tune brightness, saturation and hue",
+    engine: "wasm",
     params: [
       { id: "brightness", label: "Brightness %", type: "number", min: 0, max: 200, step: 1, default: 100 },
       { id: "saturation", label: "Saturation %", type: "number", min: 0, max: 200, step: 1, default: 100 },
       { id: "hue", label: "Hue %", type: "number", min: 0, max: 200, step: 1, default: 100 }
     ],
-    apply: (img, p2, ctx) => img.modulate(pct(ctx, p2.brightness), pct(ctx, p2.saturation), pct(ctx, p2.hue))
+    apply: (img, p2, ctx) => img.modulate(pct(ctx, p2.brightness), pct(ctx, p2.saturation), pct(ctx, p2.hue)),
+    toCli: (p2) => ["-modulate", `${p2.brightness},${p2.saturation},${p2.hue}`]
+  },
+  {
+    id: "brightnessContrast",
+    name: "Brightness & Contrast",
+    icon: "\u25D0",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-brightness-contrast"],
+    description: "Linear adjustment of brightness and contrast levels",
+    engine: "wasm",
+    params: [
+      { id: "brightness", label: "Brightness", type: "number", min: -100, max: 100, step: 1, default: 10 },
+      { id: "contrast", label: "Contrast", type: "number", min: -100, max: 100, step: 1, default: 15 }
+    ],
+    apply: (img, p2, ctx) => img.brightnessContrast(pct(ctx, p2.brightness), pct(ctx, p2.contrast)),
+    toCli: (p2) => ["-brightness-contrast", `${p2.brightness}x${p2.contrast}`]
   },
   {
     id: "sigmoidalContrast",
     name: "Contrast (Sigmoidal)",
     icon: "\u25D0",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-sigmoidal-contrast"],
+    description: "Sigmoidal non-linear S-curve filmic contrast",
+    engine: "wasm",
     params: [
       { id: "contrast", label: "Contrast", type: "number", min: 0, max: 10, step: 0.5, default: 3 }
     ],
-    apply: (img, p2) => img.sigmoidalContrast(p2.contrast)
+    apply: (img, p2) => img.sigmoidalContrast(p2.contrast),
+    toCli: (p2) => ["-sigmoidal-contrast", `${p2.contrast}x50%`]
   },
   {
     id: "gamma",
     name: "Gamma",
     icon: "\u03B3",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-gamma"],
+    description: "Apply power-law mid-tone gamma luminance correction",
+    engine: "wasm",
     params: [{ id: "value", label: "Gamma", type: "number", min: 0.1, max: 5, step: 0.1, default: 1 }],
-    apply: (img, p2) => {
-      img.gammaCorrect(p2.value);
-    }
+    apply: (img, p2) => img.gammaCorrect(p2.value),
+    toCli: (p2) => ["-gamma", String(p2.value)]
+  },
+  {
+    id: "autoGamma",
+    name: "Auto Gamma",
+    icon: "\u03B3",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-auto-gamma"],
+    description: "Automatically calculate and apply mid-tone gamma",
+    engine: "wasm",
+    params: [],
+    apply: (img) => img.autoGamma(),
+    toCli: () => ["-auto-gamma"]
+  },
+  {
+    id: "autoLevel",
+    name: "Auto Level",
+    icon: "\u25A4",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-auto-level"],
+    description: "Automatically normalize full dynamic range",
+    engine: "wasm",
+    params: [],
+    apply: (img) => img.autoLevel(),
+    toCli: () => ["-auto-level"]
+  },
+  {
+    id: "normalize",
+    name: "Normalize",
+    icon: "\u25A4",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-normalize"],
+    description: "Transform image to span full color histogram range",
+    engine: "wasm",
+    params: [],
+    apply: (img) => img.normalize(),
+    toCli: () => ["-normalize"]
+  },
+  {
+    id: "solarize",
+    name: "Solarize",
+    icon: "\u263C",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-solarize"],
+    description: "Invert pixels above threshold (Sabattier effect)",
+    engine: "wasm",
+    params: [
+      { id: "threshold", label: "Threshold %", type: "number", min: 0, max: 100, step: 5, default: 50 }
+    ],
+    apply: (img, p2, ctx) => img.solarize(pct(ctx, p2.threshold)),
+    toCli: (p2) => ["-solarize", `${p2.threshold}%`]
+  },
+  {
+    id: "blueShift",
+    name: "Blue Shift",
+    icon: "\u263D",
+    category: "Color",
+    kind: "operator",
+    cliFlags: ["-blue-shift"],
+    description: "Mute warm colors and simulate moonlight night scene",
+    engine: "wasm",
+    params: [
+      { id: "factor", label: "Factor", type: "number", min: 0.5, max: 3, step: 0.1, default: 1.5 }
+    ],
+    apply: (img, p2) => img.blueShift(p2.factor),
+    toCli: (p2) => ["-blue-shift", String(p2.factor)]
   },
   {
     id: "level",
     name: "Levels",
     icon: "\u25A4",
     category: "Color",
+    kind: "operator",
+    cliFlags: ["-level"],
+    description: "Remap black point, white point and mid-tone gamma",
+    engine: "wasm",
     params: [
       { id: "blackPoint", label: "Black Point %", type: "number", min: 0, max: 50, step: 1, default: 0 },
       { id: "whitePoint", label: "White Point %", type: "number", min: 50, max: 100, step: 1, default: 100 },
       { id: "gamma", label: "Gamma", type: "number", min: 0.1, max: 5, step: 0.1, default: 1 }
     ],
-    apply: (img, p2, ctx) => img.level(pct(ctx, p2.blackPoint), pct(ctx, p2.whitePoint), p2.gamma)
+    apply: (img, p2, ctx) => img.level(pct(ctx, p2.blackPoint), pct(ctx, p2.whitePoint), p2.gamma),
+    toCli: (p2) => ["-level", `${p2.blackPoint}%,${p2.whitePoint}%,${p2.gamma}`]
+  },
+  // ── Edges & Structure ──
+  {
+    id: "cannyEdge",
+    name: "Canny Edge Detector",
+    icon: "\u229E",
+    category: "Edges & Structure",
+    kind: "operator",
+    cliFlags: ["-canny"],
+    description: "Multi-stage optimal edge detection algorithm",
+    engine: "wasm",
+    params: [
+      { id: "radius", label: "Radius", type: "number", min: 0, max: 5, step: 0.5, default: 0 },
+      { id: "sigma", label: "Sigma", type: "number", min: 0.5, max: 5, step: 0.5, default: 1 },
+      { id: "lower", label: "Lower %", type: "number", min: 1, max: 50, step: 1, default: 10 },
+      { id: "upper", label: "Upper %", type: "number", min: 10, max: 99, step: 1, default: 30 }
+    ],
+    apply: (img, p2, ctx) => img.cannyEdge(p2.radius, p2.sigma, pct(ctx, p2.lower), pct(ctx, p2.upper)),
+    toCli: (p2) => ["-canny", `${p2.radius}x${p2.sigma}+${p2.lower}%+${p2.upper}%`]
+  },
+  {
+    id: "fft",
+    name: "Fast Fourier Transform",
+    icon: "\u223F",
+    category: "Edges & Structure",
+    kind: "operator",
+    cliFlags: ["-fft"],
+    description: "Fast Fourier Transform frequency magnitude (Desktop only)",
+    engine: "native",
+    params: [],
+    apply: () => {
+    },
+    toCli: () => ["-fft"]
+  },
+  {
+    id: "ift",
+    name: "Inverse Fourier Transform",
+    icon: "\u223F",
+    category: "Edges & Structure",
+    kind: "operator",
+    cliFlags: ["-ift"],
+    description: "Inverse Fast Fourier Transform reconstruction (Desktop only)",
+    engine: "native",
+    params: [],
+    apply: () => {
+    },
+    toCli: () => ["-ift"]
   },
   // ── Effects ──
   {
@@ -8110,29 +8397,76 @@ var OPERATIONS = [
     name: "Sepia Tone",
     icon: "\u{1F7EB}",
     category: "Effects",
+    kind: "operator",
+    cliFlags: ["-sepia-tone"],
+    description: "Warm vintage photograph sepia tint",
+    engine: "wasm",
     params: [
       { id: "threshold", label: "Threshold %", type: "number", min: 0, max: 100, step: 5, default: 80 }
     ],
-    apply: (img, p2, ctx) => img.sepiaTone(pct(ctx, p2.threshold))
+    apply: (img, p2, ctx) => img.sepiaTone(pct(ctx, p2.threshold)),
+    toCli: (p2) => ["-sepia-tone", `${p2.threshold}%`]
   },
   {
     id: "oilPaint",
     name: "Oil Paint",
     icon: "\u{1F58C}",
     category: "Effects",
+    kind: "operator",
+    cliFlags: ["-paint"],
+    description: "Simulate painterly oil canvas brushstrokes",
+    engine: "wasm",
     params: [{ id: "radius", label: "Radius", type: "number", min: 0.5, max: 10, step: 0.5, default: 3 }],
-    apply: (img, p2) => img.oilPaint(p2.radius)
+    apply: (img, p2) => img.oilPaint(p2.radius),
+    toCli: (p2) => ["-paint", String(p2.radius)]
   },
   {
     id: "charcoal",
     name: "Charcoal",
     icon: "\u270F",
     category: "Effects",
+    kind: "operator",
+    cliFlags: ["-charcoal"],
+    description: "Simulate fine graphite and charcoal drawing",
+    engine: "wasm",
     params: [
       { id: "radius", label: "Radius", type: "number", min: 0, max: 10, step: 0.5, default: 1.5 },
       { id: "sigma", label: "Sigma", type: "number", min: 0, max: 10, step: 0.5, default: 0.5 }
     ],
-    apply: (img, p2) => img.charcoal(p2.radius, p2.sigma)
+    apply: (img, p2) => img.charcoal(p2.radius, p2.sigma),
+    toCli: (p2) => ["-charcoal", `${p2.radius}x${p2.sigma}`]
+  },
+  {
+    id: "vignette",
+    name: "Vignette",
+    icon: "\u25C9",
+    category: "Effects",
+    kind: "operator",
+    cliFlags: ["-vignette"],
+    description: "Soften outer corners with radial camera vignette",
+    engine: "wasm",
+    params: [
+      { id: "radius", label: "Radius", type: "number", min: 0, max: 50, step: 5, default: 0 },
+      { id: "sigma", label: "Sigma", type: "number", min: 0, max: 50, step: 5, default: 15 }
+    ],
+    apply: (img, p2) => img.vignette(p2.radius, p2.sigma, 0, 0),
+    toCli: (p2) => ["-vignette", `${p2.radius}x${p2.sigma}`]
+  },
+  {
+    id: "wave",
+    name: "Wave Distortion",
+    icon: "\u3030",
+    category: "Effects",
+    kind: "operator",
+    cliFlags: ["-wave"],
+    description: "Alter scanlines with periodic sine wave displacement",
+    engine: "wasm",
+    params: [
+      { id: "amplitude", label: "Amplitude", type: "number", min: 1, max: 50, step: 1, default: 10 },
+      { id: "wavelength", label: "Wavelength", type: "number", min: 10, max: 150, step: 5, default: 50 }
+    ],
+    apply: (img, p2) => img.wave(p2.amplitude, p2.wavelength),
+    toCli: (p2) => ["-wave", `${p2.amplitude}x${p2.wavelength}`]
   }
 ];
 var OP_MAP = Object.fromEntries(OPERATIONS.map((o) => [o.id, o]));
