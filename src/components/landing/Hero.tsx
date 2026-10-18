@@ -111,7 +111,7 @@ export default function Hero() {
             }}
           >
             <Link
-              href="/editor"
+              href="/app"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -138,11 +138,11 @@ export default function Hero() {
                 el.style.boxShadow = "0 0 24px rgba(63,237,30,0.35)";
               }}
             >
-              Start Editing →
+              Launch Tool Hub →
             </Link>
 
-            <a
-              href="#tools"
+            <Link
+              href="/editor"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -150,7 +150,7 @@ export default function Hero() {
                 padding: "14px 24px",
                 borderRadius: "12px",
                 background: "var(--surface)",
-                border: "1px solid var(--line-strong)",
+                border: "1px solid var(--line-strong, var(--line-2))",
                 color: "var(--ink)",
                 fontFamily: "var(--font-display)",
                 fontWeight: 600,
@@ -160,15 +160,15 @@ export default function Hero() {
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "var(--surface-2)";
+                el.style.borderColor = "var(--green)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "var(--surface)";
+                el.style.borderColor = "var(--line-strong, var(--line-2))";
               }}
             >
-              Browse Tools
-            </a>
+              Desktop Editor
+            </Link>
           </div>
 
           {/* Trust items */}
