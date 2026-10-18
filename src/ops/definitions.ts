@@ -1,6 +1,5 @@
 import type { ParamDef } from "@/engine/types";
 
-// Helpers injected at runtime from the worker context
 export interface OpContext {
   Percentage: new (value: number) => unknown;
   NoiseType: Record<string, number>;
