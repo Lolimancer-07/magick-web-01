@@ -88,6 +88,48 @@
   --statusbar-h: 26px;
   --left-w:     272px;
   --right-w:    320px;
+
+  /* ── Mobile-First Design Tokens (Spec 3.1) ── */
+  --m-radius-card: 24px;
+  --m-radius-chip: 999px;
+  --m-radius-input: 16px;
+  --m-tap: 48px;                 /* minimum touch target */
+  --m-gap: 12px;
+  --m-pad: 16px;
+  --m-bottom-nav-h: 72px;
+  --m-action-bar-h: 72px;
+  --m-topbar-h: 56px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* tonal layers */
+  --m-surface-1: #1c233c;        /* cards */
+  --m-surface-2: #222a46;        /* chips, inputs */
+  --m-surface-3: #2a3252;        /* pressed, selected container */
+}
+
+/* Optional Alternate Mauve Theme (Spec 3.1) */
+[data-theme="mauve"] {
+  --bg: #1b1618;
+  --surface: #251f22;
+  --surface-2: #2d2629;
+  --surface-3: #382e33;
+  --m-surface-1: #251f22;
+  --m-surface-2: #2d2629;
+  --m-surface-3: #382e33;
+  --ink: #f0e6eb;
+  --muted: #a698a0;
+  --dim: #6b5c65;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+  --green: #ead6f2;              /* selected chip fill */
+  --green-ink: #2b1f2e;
+  --green-glow: rgba(234, 214, 242, 0.3);
+  --blue: #9a6fb0;
+  --tertiary: #b5827a;
+  --tile-teal: #362933;
+  --tile-purple: #3e2d3b;
+  --tile-rose: #42292f;
+  --tile-amber: #3d2f26;
 }
 
 /* ==========================================================================

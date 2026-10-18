@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -16,10 +16,23 @@ const inter = Inter({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#141930",
+};
+
 export const metadata: Metadata = {
   title: "Magick Studio — Pro In-Browser Image Editor",
   description:
     "Edit any image with full ImageMagick power. 100% private, runs in your browser with WebAssembly.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Magick Studio",
+  },
 };
 
 export default function RootLayout({
