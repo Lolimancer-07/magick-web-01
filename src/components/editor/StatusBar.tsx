@@ -58,10 +58,10 @@ export default function StatusBar() {
               </>
             )}
             {formattedSize && (
-              <>
+              <span className="hidden sm:inline-flex items-center gap-2">
                 <span style={{ color: "var(--line-2)" }}>·</span>
                 <span>{formattedSize}</span>
-              </>
+              </span>
             )}
             <span style={{ color: "var(--line-2)" }}>·</span>
             <span>{steps.length} {steps.length === 1 ? "step" : "steps"}</span>

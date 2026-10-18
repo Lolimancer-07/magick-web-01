@@ -99,7 +99,7 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
         style={{
           position: "relative",
           borderRadius: "20px",
-          padding: "48px 36px",
+          padding: "32px 18px",
           textAlign: "center",
           cursor: "pointer",
           userSelect: "none",
@@ -216,22 +216,25 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
               {isDragActive ? "Release to start editing!" : "Drop your image here"}
             </h2>
 
-            <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginBottom: "28px", lineHeight: 1.6 }}>
-              Drag & drop, browse, or paste with{" "}
-              <kbd
-                style={{
-                  padding: "2px 7px",
-                  borderRadius: "5px",
-                  background: "var(--surface-2)",
-                  border: "1px solid var(--line-2)",
-                  fontSize: "0.78rem",
-                  fontFamily: "var(--font-mono)",
-                  fontWeight: 700,
-                  color: "var(--ink)",
-                }}
-              >
-                Ctrl + V
-              </kbd>
+            <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginBottom: "24px", lineHeight: 1.6 }}>
+              <span className="hidden sm:inline">
+                Drag & drop, browse, or paste with{" "}
+                <kbd
+                  style={{
+                    padding: "2px 7px",
+                    borderRadius: "5px",
+                    background: "var(--surface-2)",
+                    border: "1px solid var(--line-2)",
+                    fontSize: "0.78rem",
+                    fontFamily: "var(--font-mono)",
+                    fontWeight: 700,
+                    color: "var(--ink)",
+                  }}
+                >
+                  Ctrl + V
+                </kbd>
+              </span>
+              <span className="sm:hidden">Tap below to choose an image from your device</span>
             </p>
 
             {/* Browse button */}

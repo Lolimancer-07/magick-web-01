@@ -88,6 +88,65 @@ export default function CanvasView({ onRetry }: CanvasViewProps) {
     setIsPanning(false);
   }, []);
 
+  // Mobile touch pan & pinch zoom
+  const touchStartRef = useRef<{ x: number; y: number; dist?: number; panX: number; panY: number; zoom: number }>({
+    x: 0,
+    y: 0,
+    panX: 0,
+    panY: 0,
+    zoom: 1,
+  });
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      touchStartRef.current = {
+        x: t.clientX,
+        y: t.clientY,
+        panX: pan.x,
+        panY: pan.y,
+        zoom,
+      };
+      setIsPanning(true);
+    } else if (e.touches.length === 2) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      touchStartRef.current = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2,
+        dist,
+        panX: pan.x,
+        panY: pan.y,
+        zoom,
+      };
+      setIsPanning(true);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      const dx = t.clientX - touchStartRef.current.x;
+      const dy = t.clientY - touchStartRef.current.y;
+      setPan({
+        x: touchStartRef.current.panX + dx,
+        y: touchStartRef.current.panY + dy,
+      });
+    } else if (e.touches.length === 2 && touchStartRef.current.dist) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      const scale = dist / touchStartRef.current.dist;
+      const nextZoom = Math.min(5, Math.max(0.15, +(touchStartRef.current.zoom * scale).toFixed(2)));
+      setZoom(nextZoom);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsPanning(false);
+  };
+
   // Display URL: if holding peekOriginal, show beforeUrl; otherwise previewUrl or beforeUrl
   const activeUrl = peekOriginal ? beforeUrl : (previewUrl || beforeUrl);
 
@@ -99,6 +158,10 @@ export default function CanvasView({ onRetry }: CanvasViewProps) {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       className={`relative flex-1 w-full h-full flex items-center justify-center overflow-hidden canvas-checkerboard select-none ${
         spacePressed || isPanning ? "cursor-grab active:cursor-grabbing" : "cursor-default"
       }`}
