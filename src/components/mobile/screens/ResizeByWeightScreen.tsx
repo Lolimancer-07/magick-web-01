@@ -95,7 +95,7 @@ export default function ResizeByWeightScreen() {
         );
         setResult(res);
         if (res.resultBytes) {
-          const blob = new Blob([res.resultBytes], { type: `image/${format}` });
+          const blob = new Blob([res.resultBytes as BlobPart], { type: `image/${format}` });
           downloadBlob(blob, `compressed-${currentImage.name}.${format}`);
         }
       }
