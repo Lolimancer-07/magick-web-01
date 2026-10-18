@@ -15,7 +15,7 @@ export default function Footer() {
       style={{
         backgroundColor: "var(--bg)",
         borderTop: "1px solid var(--line)",
-        padding: "60px 24px 32px",
+        padding: "48px 16px 28px",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -97,7 +97,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }}>
+          <div className="footer-links-grid" style={{ display: "grid", gap: "24px" }}>
             {Object.entries(LINKS).map(([section, items]) => (
               <div key={section}>
                 <div
@@ -145,6 +145,17 @@ export default function Footer() {
           </p>
         </div>
       </div>
+      <style jsx>{`
+        .footer-links-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width: 600px) {
+          .footer-links-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

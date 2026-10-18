@@ -421,9 +421,21 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   RESPONSIVE LAYOUT HELPERS
+   RESPONSIVE LAYOUT HELPERS  (mobile-first)
    ========================================================================== */
 
+/* ── Prevent horizontal overflow globally ── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+section {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* ── Nav toggle defaults (mobile-first) ── */
 .desktop-nav-links {
   display: none !important;
 }
@@ -436,6 +448,32 @@ input:focus, select:focus, textarea:focus {
   display: flex !important;
 }
 
+/* ── Hero floating chips: hidden on small screens to prevent overflow ── */
+@media (max-width: 899px) {
+  .hero-float-chip {
+    display: none !important;
+  }
+}
+
+/* ── sm: 480px — pip ticker keeps stacking but items separate ── */
+@media (max-width: 479px) {
+  /* Ticker items stack vertically on very small screens */
+  .ticker-inner-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── md: 600px ── */
+@media (min-width: 600px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── md-lg: 768px ── */
 @media (min-width: 768px) {
   .desktop-nav-links {
     display: flex !important;
@@ -447,31 +485,53 @@ input:focus, select:focus, textarea:focus {
     display: none !important;
   }
   .catalog-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
   }
   .footer-top-grid {
     grid-template-columns: 1.3fr 2fr !important;
   }
-}
-
-@media (min-width: 600px) {
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+  .footer-links-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
+/* ── lg: 900px ── */
 @media (min-width: 900px) {
   .hero-grid {
     grid-template-columns: 1.15fr 0.85fr !important;
+  }
+  .hero-float-chip {
+    display: flex !important;
   }
   .testimonials-grid {
     grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
+/* ── xl: 1024px ── */
 @media (min-width: 1024px) {
   .features-grid {
     grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* ── Editor: hide desktop panels on mobile, show floating bar ── */
+@media (max-width: 900px) {
+  .desktop-panel {
+    display: none !important;
+  }
+  .mobile-only-bar {
+    display: flex !important;
+    /* push bar up above safe-area (iOS home bar) */
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* ── Ensure all interactive targets are ≥44px tall on touch ── */
+@media (hover: none) and (pointer: coarse) {
+  button, a, [role="button"], select {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 

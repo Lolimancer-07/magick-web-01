@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 
 const TICKER_ITEMS = [
   {
@@ -29,36 +29,32 @@ const TICKER_ITEMS = [
 export default function PipelineTicker() {
   return (
     <section
+      className="ticker-section"
       style={{
         maxWidth: "1240px",
-        margin: "0 auto 60px",
-        padding: "0 24px",
+        margin: "0 auto 50px",
       }}
     >
       <div
+        className="ticker-card"
         style={{
           backgroundColor: "var(--surface)",
           border: "1px solid var(--line)",
           borderRadius: "16px",
-          padding: "18px 28px",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "20px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
+          gap: "16px",
           boxShadow: "0 8px 30px rgba(0,0,0,0.25)",
         }}
       >
         {TICKER_ITEMS.map((item, index) => (
           <div
             key={item.name}
+            className={`ticker-item ${index < TICKER_ITEMS.length - 1 ? "ticker-has-next" : ""}`}
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              paddingRight: index < TICKER_ITEMS.length - 1 ? "16px" : 0,
-              borderRight:
-                index < TICKER_ITEMS.length - 1
-                  ? "1px solid var(--line)"
-                  : "none",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -75,24 +71,31 @@ export default function PipelineTicker() {
                   alignItems: "center",
                   justifyContent: "center",
                   fontFamily: "var(--font-mono)",
+                  flexShrink: 0,
                 }}
               >
                 {item.step}
               </div>
-              <div>
+              <div style={{ minWidth: 0 }}>
                 <div
                   style={{
-                    fontSize: "0.92rem",
+                    fontSize: "0.88rem",
                     fontWeight: 700,
                     color: "var(--ink)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
                   {item.name}
                 </div>
                 <div
                   style={{
-                    fontSize: "0.78rem",
+                    fontSize: "0.75rem",
                     color: "var(--muted)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
                   {item.param}
@@ -105,26 +108,49 @@ export default function PipelineTicker() {
                 display: "flex",
                 alignItems: "center",
                 gap: "4px",
-                fontSize: "0.82rem",
+                fontSize: "0.8rem",
                 fontWeight: 700,
                 color: item.positive ? "var(--green)" : "var(--red)",
                 backgroundColor: item.positive
                   ? "rgba(63,237,30,0.1)"
                   : "rgba(255,84,112,0.1)",
-                padding: "4px 8px",
+                padding: "3px 7px",
                 borderRadius: "6px",
+                flexShrink: 0,
               }}
             >
               {item.positive ? (
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={13} />
               ) : (
-                <ArrowDownRight size={14} />
+                <ArrowDownRight size={13} />
               )}
               {item.delta}
             </div>
           </div>
         ))}
       </div>
+
+      <style jsx>{`
+        .ticker-section {
+          padding: 0 16px;
+        }
+        .ticker-card {
+          padding: 14px 16px;
+        }
+        @media (min-width: 600px) {
+          .ticker-section {
+            padding: 0 24px;
+          }
+          .ticker-card {
+            padding: 18px 28px;
+            gap: 20px;
+          }
+          .ticker-has-next {
+            padding-right: 16px;
+            border-right: 1px solid var(--line);
+          }
+        }
+      `}</style>
     </section>
   );
 }

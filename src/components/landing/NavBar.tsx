@@ -21,10 +21,10 @@ export default function NavBar() {
       }}
     >
       <div
+        className="navbar-container"
         style={{
           maxWidth: "1240px",
           margin: "0 auto",
-          padding: "14px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -112,6 +112,7 @@ export default function NavBar() {
 
           <Link
             href="/editor"
+            className="nav-cta-btn"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -199,6 +200,20 @@ export default function NavBar() {
       )}
 
       <style jsx>{`
+        .navbar-container {
+          padding: 12px 16px;
+        }
+        @media (min-width: 600px) {
+          .navbar-container {
+            padding: 14px 24px;
+          }
+        }
+        @media (max-width: 480px) {
+          .nav-cta-btn {
+            padding: 7px 12px !important;
+            font-size: 0.8rem !important;
+          }
+        }
         @media (min-width: 768px) {
           .desktop-nav-links {
             display: flex !important;

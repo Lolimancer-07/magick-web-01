@@ -9,9 +9,9 @@ export default function Hero() {
 
   return (
     <section
+      className="hero-section"
       style={{
         position: "relative",
-        padding: "80px 24px 100px",
         maxWidth: "1240px",
         margin: "0 auto",
         overflow: "hidden",
@@ -67,7 +67,7 @@ export default function Hero() {
           <h1
             className="font-display"
             style={{
-              fontSize: "clamp(2.4rem, 5.5vw, 4.2rem)",
+              fontSize: "clamp(1.9rem, 5.5vw, 4.2rem)",
               fontWeight: 800,
               lineHeight: 1.08,
               letterSpacing: "-0.03em",
@@ -199,7 +199,7 @@ export default function Hero() {
 
             {/* Floating Chip 1 (Top Left): Blur */}
             <div
-              className="floating-chip"
+              className="floating-chip hero-float-chip"
               style={{
                 position: "absolute",
                 top: "-18px",
@@ -240,7 +240,7 @@ export default function Hero() {
 
             {/* Floating Chip 2 (Bottom Right): Sharpen */}
             <div
-              className="floating-chip"
+              className="floating-chip hero-float-chip"
               style={{
                 position: "absolute",
                 bottom: "-18px",
@@ -430,6 +430,14 @@ export default function Hero() {
       </div>
 
       <style jsx>{`
+        .hero-section {
+          padding: 60px 16px 70px;
+        }
+        @media (min-width: 600px) {
+          .hero-section {
+            padding: 80px 24px 100px;
+          }
+        }
         @media (min-width: 960px) {
           .hero-two-column {
             grid-template-columns: 1.15fr 0.85fr !important;

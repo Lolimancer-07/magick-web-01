@@ -71,29 +71,29 @@ export default function StepRow({
           type="button"
           onClick={onMoveUp}
           disabled={index === 0}
-          className="p-1 rounded text-[var(--ink)]/60 hover:text-[var(--ink)] disabled:opacity-20 disabled:hover:text-[var(--ink)]/60 transition-colors"
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface-2)] disabled:opacity-20 disabled:hover:text-[var(--muted)] disabled:hover:bg-transparent transition-colors cursor-pointer"
           title="Move Step Up (Alt+Up)"
           aria-label="Move step up"
         >
-          <ChevronUp size={12} />
+          <ChevronUp size={13} />
         </button>
         <button
           type="button"
           onClick={onMoveDown}
           disabled={index === total - 1}
-          className="p-1 rounded text-[var(--ink)]/60 hover:text-[var(--ink)] disabled:opacity-20 disabled:hover:text-[var(--ink)]/60 transition-colors"
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface-2)] disabled:opacity-20 disabled:hover:text-[var(--muted)] disabled:hover:bg-transparent transition-colors cursor-pointer"
           title="Move Step Down (Alt+Down)"
           aria-label="Move step down"
         >
-          <ChevronDown size={12} />
+          <ChevronDown size={13} />
         </button>
 
         {/* Toggle Enabled */}
         <button
           type="button"
           onClick={onToggle}
-          className={`p-1 rounded transition-colors ${
-            step.enabled ? "text-[var(--green)] hover:bg-[var(--green)]/15" : "text-[var(--muted)] hover:bg-slate-200"
+          className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
+            step.enabled ? "text-[var(--green)] hover:bg-[var(--green)]/15" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
           }`}
           title={step.enabled ? "Disable Step" : "Enable Step"}
           aria-label={step.enabled ? "Disable step" : "Enable step"}
@@ -105,7 +105,7 @@ export default function StepRow({
         <button
           type="button"
           onClick={onDelete}
-          className="p-1 rounded text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors"
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors cursor-pointer"
           title="Remove Step (Delete)"
           aria-label="Remove step"
         >

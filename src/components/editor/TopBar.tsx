@@ -59,7 +59,7 @@ export default function TopBar({
     <header
       style={{
         height: "var(--topbar-h)",
-        padding: "0 14px",
+        padding: "0 8px",
         background: "var(--bg-nav)",
         borderBottom: "1px solid var(--line)",
         display: "flex",
@@ -140,7 +140,7 @@ export default function TopBar({
             <Wand2 size={13} color="#f2f4fb" />
           </div>
           <span
-            className="font-display"
+            className="font-display topbar-brand-name"
             style={{
               fontSize: "0.88rem",
               fontWeight: 700,
@@ -148,7 +148,7 @@ export default function TopBar({
               letterSpacing: "-0.01em",
             }}
           >
-            Magick Studio
+            Magick<span className="topbar-desktop-label"> Studio</span>
           </span>
         </div>
 
@@ -182,7 +182,7 @@ export default function TopBar({
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                maxWidth: "160px",
+                maxWidth: "100px",
               }}
               title={fileName}
             >
@@ -191,6 +191,7 @@ export default function TopBar({
 
             {originalDimensions && (
               <span
+                className="topbar-desktop-tools"
                 style={{
                   fontSize: "0.72rem",
                   color: "var(--muted)",
@@ -199,6 +200,7 @@ export default function TopBar({
                   borderRadius: "4px",
                   fontFamily: "var(--font-mono)",
                   whiteSpace: "nowrap",
+                  display: "none",
                 }}
               >
                 {originalDimensions.w}×{originalDimensions.h}
@@ -241,6 +243,7 @@ export default function TopBar({
             <Search size={13} />
             <span style={{ display: "none" }} className="topbar-desktop-label">Quick Search</span>
             <kbd
+              className="topbar-desktop-label"
               style={{
                 fontSize: "0.68rem",
                 padding: "1px 5px",
@@ -248,6 +251,7 @@ export default function TopBar({
                 backgroundColor: "var(--surface-2)",
                 border: "1px solid var(--line)",
                 color: "var(--muted)",
+                display: "none",
               }}
             >
               Ctrl+K
@@ -493,6 +497,11 @@ export default function TopBar({
       </div>
 
       <style jsx>{`
+        @media (min-width: 600px) {
+          header {
+            padding: 0 14px !important;
+          }
+        }
         @media (min-width: 768px) {
           .topbar-desktop-label {
             display: inline !important;

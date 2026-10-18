@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Download, FileDown, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { X, Download, FileDown, AlertTriangle } from "lucide-react";
 import { engine } from "@/engine/engineClient";
 import { useEditorStore } from "@/store/editorStore";
 
@@ -68,32 +68,35 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="export-dialog-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isExporting) onClose();
+      }}
     >
-      <div className="relative w-full max-w-md p-6 bg-[var(--surface)] rounded-3xl border border-[var(--line-2)]/10 shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+      <div className="relative w-full max-w-md p-5 sm:p-6 bg-[var(--surface)] rounded-2xl border border-[var(--line-2)] shadow-[0_20px_50px_rgba(0,0,0,0.6)] text-[var(--ink)]">
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
           disabled={isExporting}
-          className="absolute top-4 right-4 p-1.5 rounded-xl border border-[var(--line-2)]/10 bg-slate-100 hover:bg-slate-200 text-[var(--ink)]/70 hover:text-[var(--ink)] transition-colors cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface-3)] text-[var(--muted)] hover:text-[var(--ink)] transition-colors cursor-pointer"
           aria-label="Close export dialog"
         >
           <X size={16} aria-hidden="true" />
         </button>
 
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-green-d flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[var(--green)]/15 border border-[var(--green)]/30 text-[var(--green)] flex items-center justify-center shrink-0">
             <Download size={20} aria-hidden="true" />
           </div>
           <div>
             <h3 id="export-dialog-title" className="font-display font-bold text-lg text-[var(--ink)]">
               Export Image
             </h3>
-            <p className="text-xs text-muted">
+            <p className="text-xs text-[var(--muted)]">
               {originalDimensions
                 ? `Full resolution · ${originalDimensions.w} × ${originalDimensions.h} px`
                 : "Full resolution export"}
@@ -114,8 +117,8 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
                 onClick={() => setFormat(fmt)}
                 className={`py-2 px-3 rounded-xl border text-xs font-bold uppercase transition-all cursor-pointer ${
                   format === fmt
-                    ? "bg-ink text-white border-[var(--line-2)] shadow-sm"
-                    : "bg-slate-50 text-[var(--ink)]/70 border-slate-200 hover:bg-slate-100"
+                    ? "bg-[var(--green)] text-[var(--green-ink)] border-[var(--green)] shadow-[0_0_12px_rgba(63,237,30,0.3)]"
+                    : "bg-[var(--surface-2)] text-[var(--muted)] border-[var(--line)] hover:bg-[var(--surface-3)] hover:text-[var(--ink)]"
                 }`}
               >
                 {fmt}
@@ -129,7 +132,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
           <div className="mb-5">
             <div className="flex justify-between items-center text-xs font-semibold text-[var(--ink)] mb-1.5">
               <label htmlFor="export-quality">Quality</label>
-              <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-[var(--line-2)]/10 font-mono text-[11px]">
+              <span className="px-2 py-0.5 rounded-md bg-[var(--surface-2)] border border-[var(--line)] font-mono text-[11px] text-[var(--ink)]">
                 {quality}%
               </span>
             </div>
@@ -141,7 +144,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
               step={5}
               value={quality}
               onChange={(e) => setQuality(parseInt(e.target.value, 10))}
-              className="w-full accent-green h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+              className="w-full accent-[var(--green)] h-2 bg-[var(--surface-2)] rounded-lg appearance-none cursor-pointer"
             />
           </div>
         )}
@@ -153,9 +156,9 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
               <span>Encoding in WebAssembly...</span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div className="w-full h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
               <div
-                className="h-full bg-green transition-all duration-200 rounded-full"
+                className="h-full bg-[var(--green)] transition-all duration-200 rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -164,19 +167,19 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
 
         {/* Error message */}
         {error && (
-          <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-center gap-2 text-xs font-medium">
-            <AlertTriangle size={15} className="shrink-0 text-red-600" aria-hidden="true" />
+          <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 flex items-center gap-2 text-xs font-medium">
+            <AlertTriangle size={15} className="shrink-0 text-red-400" aria-hidden="true" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[var(--line-2)]/10">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[var(--line)]">
           <button
             type="button"
             onClick={onClose}
             disabled={isExporting}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-[var(--ink)]/70 hover:text-[var(--ink)] hover:bg-slate-100 transition-colors cursor-pointer"
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-semibold text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface-2)] transition-colors cursor-pointer text-center"
           >
             Cancel
           </button>
@@ -184,7 +187,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
             type="button"
             onClick={handleExport}
             disabled={isExporting}
-            className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl font-display font-bold text-xs text-white bg-green hover:bg-green-d transition-all shadow-[0_4px_12px_rgba(42,188,96,0.3)] hover:shadow-[0_6px_16px_rgba(42,188,96,0.4)] active:translate-y-0.5 cursor-pointer disabled:opacity-50"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl font-display font-bold text-xs text-[var(--green-ink)] bg-[var(--green)] hover:bg-[var(--green-d)] transition-all shadow-[0_0_16px_rgba(63,237,30,0.3)] active:translate-y-0.5 cursor-pointer disabled:opacity-50"
           >
             <FileDown size={15} aria-hidden="true" />
             <span>{isExporting ? "Exporting..." : "Download Image"}</span>
