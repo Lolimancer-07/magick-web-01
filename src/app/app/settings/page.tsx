@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TopBar from "@/components/mobile/TopBar";
 import SettingsCard from "@/components/mobile/SettingsCard";
 import Segmented from "@/components/mobile/Segmented";
 import { useMobileImageStore, triggerHaptic } from "@/store/mobileImageStore";
-import { Palette, Vibrate, Zap, Cpu, Info, ShieldCheck } from "lucide-react";
+import { Palette, Vibrate, Zap, Cpu, Info, ShieldCheck, Copy, Check } from "lucide-react";
 
 export default function SettingsPage() {
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
   const {
     theme,
     setTheme,
@@ -30,6 +31,47 @@ export default function SettingsPage() {
   const handleThemeChange = (newTheme: "default" | "mauve") => {
     triggerHaptic(15);
     setTheme(newTheme);
+  };
+
+  const handleCopyDiagnostics = async () => {
+    triggerHaptic(20);
+    const hasWasm = typeof WebAssembly !== "undefined";
+    const hasSimd =
+      typeof WebAssembly !== "undefined" &&
+      typeof WebAssembly.validate === "function" &&
+      WebAssembly.validate(
+        new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 123, 3, 2, 1, 0, 10, 10, 1, 8, 0, 65, 0, 253, 15, 26, 11])
+      );
+
+    const diagnostics = {
+      userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "N/A",
+      deviceMemory:
+        typeof navigator !== "undefined" && "deviceMemory" in navigator
+          ? `${(navigator as any).deviceMemory} GB`
+          : "N/A",
+      hardwareConcurrency:
+        typeof navigator !== "undefined" ? navigator.hardwareConcurrency : "N/A",
+      viewport:
+        typeof window !== "undefined"
+          ? `${window.innerWidth}x${window.innerHeight} (dpr: ${window.devicePixelRatio})`
+          : "N/A",
+      crossOriginIsolated:
+        typeof window !== "undefined" ? window.crossOriginIsolated : false,
+      webAssembly: hasWasm,
+      wasmSimd: hasSimd,
+      timestamp: new Date().toISOString(),
+    };
+
+    const text = JSON.stringify(diagnostics, null, 2);
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.warn("Failed to copy diagnostics:", err);
+    }
   };
 
   return (
@@ -144,6 +186,38 @@ export default function SettingsPage() {
                 <p style={{ margin: "2px 0 0" }}>Preview proxy clamp 1600px, 60fps slider interactions, debounced 400ms renders.</p>
               </div>
             </div>
+          </div>
+        </SettingsCard>
+
+        {/* About & Diagnostics (Spec 6.1) */}
+        <SettingsCard title="About & Diagnostics">
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px" }}>
+            <p style={{ margin: 0, color: "var(--muted, #8a93b8)", lineHeight: 1.4 }}>
+              Inspect your runtime environment to diagnose mobile hardware, memory limits, and WebAssembly capabilities.
+            </p>
+            <button
+              type="button"
+              id="copy-diagnostics-btn"
+              onClick={handleCopyDiagnostics}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                padding: "10px 16px",
+                borderRadius: "10px",
+                backgroundColor: copied ? "rgba(63, 237, 30, 0.15)" : "var(--surface-2, #212946)",
+                border: `1px solid ${copied ? "var(--green, #3fed1e)" : "var(--line, rgba(255,255,255,0.08))"}`,
+                color: copied ? "var(--green, #3fed1e)" : "var(--ink, #f2f4fb)",
+                fontSize: "13px",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {copied ? <Check size={16} /> : <Copy size={16} />}
+              <span>{copied ? "Diagnostics Copied to Clipboard!" : "Copy Diagnostics"}</span>
+            </button>
           </div>
         </SettingsCard>
       </main>
