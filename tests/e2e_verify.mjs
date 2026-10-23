@@ -10,7 +10,7 @@ async function run() {
   // ── 1. Desktop Viewport (1440 × 900) Empty State ──
   console.log('1. Testing Desktop (1440x900) Empty State...');
   const page1440 = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page1440.goto('http://localhost:3000/editor/', { waitUntil: 'networkidle' });
+  await page1440.goto('http://localhost:3030/editor/', { waitUntil: 'networkidle' });
   await page1440.waitForTimeout(1000);
   await page1440.screenshot({ path: path.join(ARTIFACT_DIR, 'redesign_1440_empty.png') });
   console.log('Saved redesign_1440_empty.png');
@@ -18,7 +18,7 @@ async function run() {
   // ── 2. Mobile Viewport (375 × 667) Empty State ──
   console.log('2. Testing Mobile (375x667) Empty State...');
   const page375 = await browser.newPage({ viewport: { width: 375, height: 667 } });
-  await page375.goto('http://localhost:3000/editor/', { waitUntil: 'networkidle' });
+  await page375.goto('http://localhost:3030/editor/', { waitUntil: 'networkidle' });
   await page375.waitForTimeout(1000);
   await page375.screenshot({ path: path.join(ARTIFACT_DIR, 'redesign_375_empty.png') });
   console.log('Saved redesign_375_empty.png');

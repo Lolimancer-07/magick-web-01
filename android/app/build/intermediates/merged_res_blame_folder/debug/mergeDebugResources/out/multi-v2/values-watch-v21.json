@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.magickstudio.app-mergeDebugResources-66:/values-watch-v21/values-watch-v21.xml",
+            "map": [
+                {
+                    "source": "/home/rishi/.gradle/caches/9.6.0/transforms/13e7e3e2b924c48fecf648a4e4b69370/transformed/appcompat-1.7.0/res/values-watch-v21/values-watch-v21.xml",
+                    "from": {
+                        "startLines": "2,6,10",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,271,499",
+                        "endLines": "5,9,13",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "266,494,724"
+                    }
+                }
+            ]
+        }
+    ]
+}

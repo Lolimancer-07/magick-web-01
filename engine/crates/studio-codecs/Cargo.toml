@@ -1,0 +1,8 @@
+[package]
+name = "studio-codecs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+studio-core = { path = "../studio-core" }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp", "bmp"] }

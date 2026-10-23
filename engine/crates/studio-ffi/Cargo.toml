@@ -1,0 +1,13 @@
+[package]
+name = "studio-ffi"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+studio-core = { path = "../studio-core" }
+studio-ops = { path = "../studio-ops" }
+studio-codecs = { path = "../studio-codecs" }
+studio-exif = { path = "../studio-exif" }

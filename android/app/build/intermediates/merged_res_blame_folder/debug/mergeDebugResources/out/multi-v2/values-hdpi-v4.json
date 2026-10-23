@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.magickstudio.app-mergeDebugResources-66:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/home/rishi/.gradle/caches/9.6.0/transforms/13e7e3e2b924c48fecf648a4e4b69370/transformed/appcompat-1.7.0/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        }
+    ]
+}

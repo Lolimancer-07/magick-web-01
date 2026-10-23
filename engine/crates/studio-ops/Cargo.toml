@@ -1,0 +1,8 @@
+[package]
+name = "studio-ops"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+studio-core = { path = "../studio-core" }
+rayon = "1.10"
