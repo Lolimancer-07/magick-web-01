@@ -174,7 +174,7 @@ export default function ToolCatalog() {
           {CATALOG_ITEMS.map((item) => (
             <Link
               key={item.title}
-              href={`/editor?op=${item.opId}`}
+              href={`/app/?op=${item.opId}`}
               style={{ textDecoration: "none", display: "block" }}
             >
               <div
@@ -276,7 +276,7 @@ export default function ToolCatalog() {
         {/* View All Link */}
         <div style={{ textAlign: "center" }}>
           <Link
-            href="/editor"
+            href="/app/"
             style={{
               display: "inline-flex",
               alignItems: "center",

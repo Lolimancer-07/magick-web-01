@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { Wand2, Code2, Heart } from "lucide-react";
 
-const LINKS = {
-  Product: ["Editor", "Features", "Changelog"],
-  Resources: ["Docs", "GitHub", "ImageMagick"],
-  Legal: ["Privacy", "Terms", "License"],
+const LINKS: Record<string, { label: string; href: string }[]> = {
+  Product: [
+    { label: "Open Editor", href: "/app/" },
+    { label: "Features", href: "/#features" },
+  ],
+  Resources: [
+    { label: "GitHub", href: "https://github.com/rishi-raj-jain/magick-web" },
+    { label: "ImageMagick", href: "https://imagemagick.org" },
+    { label: "Coverage Map", href: "/docs/COVERAGE" },
+  ],
 };
 
 export default function Footer() {
@@ -108,14 +114,16 @@ export default function Footer() {
                 </div>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
                   {items.map((item) => (
-                    <li key={item}>
+                    <li key={item.label}>
                       <a
-                        href="#"
+                        href={item.href}
+                        target={item.href.startsWith("http") ? "_blank" : undefined}
+                        rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
                         style={{ fontSize: "0.88rem", color: "var(--muted)", fontWeight: 500, transition: "color .15s" }}
                         onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--ink)")}
                         onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--muted)")}
                       >
-                        {item}
+                        {item.label}
                       </a>
                     </li>
                   ))}

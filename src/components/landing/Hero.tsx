@@ -111,7 +111,8 @@ export default function Hero() {
             }}
           >
             <Link
-              href="/app"
+              href="/app/"
+              id="hero-open-editor-btn"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -138,36 +139,7 @@ export default function Hero() {
                 el.style.boxShadow = "0 0 24px rgba(63,237,30,0.35)";
               }}
             >
-              Launch Tool Hub →
-            </Link>
-
-            <Link
-              href="/editor"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "14px 24px",
-                borderRadius: "12px",
-                background: "var(--surface)",
-                border: "1px solid var(--line-strong, var(--line-2))",
-                color: "var(--ink)",
-                fontFamily: "var(--font-display)",
-                fontWeight: 600,
-                fontSize: "0.95rem",
-                textDecoration: "none",
-                transition: "all 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "var(--green)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "var(--line-strong, var(--line-2))";
-              }}
-            >
-              Desktop Editor
+              Open Editor →
             </Link>
           </div>
 
@@ -184,11 +156,11 @@ export default function Hero() {
           >
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <Shield size={16} color="var(--green)" />
-              <span>Private: nothing is uploaded</span>
+              <span>Nothing is uploaded — 100% private</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <Zap size={16} color="#3089c5" />
-              <span>Works offline in the app</span>
+              <span>No sign-up, free, open source</span>
             </div>
           </div>
         </div>
@@ -304,7 +276,7 @@ export default function Hero() {
                     Live Tone Curve & Pipeline
                   </div>
                   <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--ink)", fontFamily: "var(--font-display)" }}>
-                    24-Bit HDRI
+                    Live Histogram
                   </div>
                 </div>
 

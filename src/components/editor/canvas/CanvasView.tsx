@@ -8,9 +8,10 @@ import CompareSlider from "./CompareSlider";
 
 interface CanvasViewProps {
   onRetry?: () => void;
+  compact?: boolean;
 }
 
-export default function CanvasView({ onRetry }: CanvasViewProps) {
+export default function CanvasView({ onRetry, compact }: CanvasViewProps) {
   const {
     previewUrl,
     beforeUrl,

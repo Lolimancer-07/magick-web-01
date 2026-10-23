@@ -31,6 +31,7 @@ import ToolRow from "./ToolRow";
 
 interface ToolLibraryProps {
   onSelectOp?: () => void;
+  compact?: boolean;
 }
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -64,7 +65,7 @@ const OP_ICONS: Record<string, React.ElementType> = {
   charcoal: Brush,
 };
 
-export default function ToolLibrary({ onSelectOp }: ToolLibraryProps) {
+export default function ToolLibrary({ onSelectOp, compact }: ToolLibraryProps) {
   const { addStep, addToast } = useEditorStore();
 
   const [search, setSearch] = useState("");

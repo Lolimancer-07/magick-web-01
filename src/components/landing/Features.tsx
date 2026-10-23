@@ -18,7 +18,7 @@ const FEATURES_3x2 = [
   {
     icon: Eye,
     title: "Live Previews",
-    desc: "Inspect adjustments instantaneously with real-time hardware-accelerated preview rendering.",
+    desc: "Inspect adjustments instantaneously with real-time preview rendering directly in your browser.",
   },
   {
     icon: Layers,
@@ -43,7 +43,7 @@ const FEATURES_3x2 = [
   {
     icon: Terminal,
     title: "Native Linux Desktop App",
-    desc: "Run fully offline with multi-threaded FFTW, OpenMP, and raw hardware access via the desktop build.",
+    desc: "Run fully offline with dedicated system resources and raw file access via the desktop build.",
   },
 ];
 
@@ -217,7 +217,7 @@ export default function Features() {
             {
               num: `${COVERAGE_STATS.ui}`,
               label: "WASM In-Browser Tools",
-              sub: "Zero latency client execution",
+              sub: "In-browser client execution",
             },
             {
               num: `${COVERAGE_STATS.formatsCount}+`,
@@ -439,10 +439,10 @@ export default function Features() {
                 }}
               >
                 {[
-                  { label: "Network Activity", val: "0.0 KB/s", color: "var(--green)" },
-                  { label: "Memory Isolation", val: "Sandbox", color: "#3089c5" },
-                  { label: "Telemetry", val: "Disabled", color: "var(--green)" },
-                  { label: "App Persistence", val: "IndexedDB", color: "#3089c5" },
+                  { label: "Network Egress", val: "0 Bytes (Local)", color: "var(--green)" },
+                  { label: "Engine Runtime", val: "WebAssembly", color: "#3089c5" },
+                  { label: "Telemetry", val: "None / Disabled", color: "var(--green)" },
+                  { label: "Local State", val: "IndexedDB", color: "#3089c5" },
                 ].map((tile) => (
                   <div
                     key={tile.label}
@@ -464,7 +464,7 @@ export default function Features() {
                     </div>
                     <div
                       style={{
-                        fontSize: "1.05rem",
+                        fontSize: "0.95rem",
                         fontWeight: 700,
                         color: tile.color,
                       }}
@@ -473,6 +473,21 @@ export default function Features() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div
+                style={{
+                  marginTop: "16px",
+                  fontSize: "0.76rem",
+                  color: "var(--muted)",
+                  lineHeight: 1.5,
+                  borderTop: "1px solid var(--line)",
+                  paddingTop: "12px",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                Verify in DevTools: Open the Network tab while editing — zero image requests leave your device.
               </div>
             </div>
           </div>

@@ -111,7 +111,7 @@ export default function NavBar() {
           </a>
 
           <Link
-            href="/editor"
+            href="/app/"
             className="nav-cta-btn"
             style={{
               display: "inline-flex",

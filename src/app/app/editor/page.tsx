@@ -1,52 +1,60 @@
 "use client";
 
-import { Suspense } from "react";
-import EditorShell from "@/components/editor/EditorShell";
+import { useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+function AppEditorRedirectContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const qs = searchParams.toString();
+    const target = qs ? `/app/?${qs}` : "/app/";
+    router.replace(target);
+  }, [router, searchParams]);
+
+  return (
+    <div
+      style={{
+        minHeight: "100dvh",
+        backgroundColor: "var(--bg, #0f1320)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "var(--ink, #f2f4fb)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          padding: "16px 24px",
+          backgroundColor: "var(--surface, #1a2035)",
+          border: "1px solid var(--line, rgba(255,255,255,0.08))",
+          borderRadius: "16px",
+        }}
+      >
+        <span
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: "var(--green, #3fed1e)",
+          }}
+        />
+        <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>
+          Redirecting to Magick Studio…
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function AppEditorPage() {
   return (
-    <Suspense
-      fallback={
-        <div
-          style={{
-            minHeight: "100vh",
-            backgroundColor: "var(--bg)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "16px 24px",
-              backgroundColor: "var(--surface)",
-              border: "1px solid var(--line)",
-              borderRadius: "16px",
-            }}
-          >
-            <span
-              style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                backgroundColor: "var(--green)",
-                boxShadow: "0 0 12px var(--green)",
-              }}
-            />
-            <span
-              className="font-display"
-              style={{ fontWeight: 700, color: "var(--ink)", fontSize: "0.95rem" }}
-            >
-              Loading Magick Studio Full Editor...
-            </span>
-          </div>
-        </div>
-      }
-    >
-      <EditorShell />
+    <Suspense fallback={null}>
+      <AppEditorRedirectContent />
     </Suspense>
   );
 }

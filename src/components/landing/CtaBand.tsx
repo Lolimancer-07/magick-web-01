@@ -90,7 +90,8 @@ export default function CtaBand() {
             }}
           >
             <Link
-              href="/editor"
+              href="/app/"
+              id="cta-band-open-editor-btn"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -119,36 +120,6 @@ export default function CtaBand() {
             >
               Open Editor →
             </Link>
-
-            <a
-              href="https://github.com/ImageMagick/ImageMagick"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "14px 28px",
-                borderRadius: "12px",
-                background: "var(--surface-2)",
-                border: "1px solid var(--line-strong)",
-                color: "var(--ink)",
-                fontFamily: "var(--font-display)",
-                fontWeight: 600,
-                fontSize: "0.95rem",
-                textDecoration: "none",
-                transition: "all 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "var(--surface-2)";
-              }}
-            >
-              <Download size={17} />
-              Download App
-            </a>
           </div>
 
           {/* Two checkmark lines */}
