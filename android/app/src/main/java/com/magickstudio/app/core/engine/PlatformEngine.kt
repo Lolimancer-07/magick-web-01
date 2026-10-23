@@ -291,4 +291,177 @@ object PlatformEngine {
             null
         }
     }
+
+    suspend fun cropBitmap(
+        src: Bitmap,
+        x: Int,
+        y: Int,
+        w: Int,
+        h: Int,
+        straightenAngle: Float = 0f
+    ): Bitmap = withContext(Dispatchers.Default) {
+        val rotated = if (straightenAngle != 0f) {
+            val matrix = Matrix().apply { postRotate(straightenAngle) }
+            Bitmap.createBitmap(src, 0, 0, src.width, src.height, matrix, true)
+        } else {
+            src
+        }
+
+        val clampX = x.coerceIn(0, rotated.width - 1)
+        val clampY = y.coerceIn(0, rotated.height - 1)
+        val clampW = w.coerceIn(1, rotated.width - clampX)
+        val clampH = h.coerceIn(1, rotated.height - clampY)
+
+        Bitmap.createBitmap(rotated, clampX, clampY, clampW, clampH)
+    }
+
+    suspend fun chopBitmap(
+        src: Bitmap,
+        isVertical: Boolean,
+        startPct: Float, // 0..100
+        endPct: Float,   // 0..100
+        isInverse: Boolean = false
+    ): Bitmap = withContext(Dispatchers.Default) {
+        val s = (startPct / 100f).coerceIn(0f, 1f)
+        val e = (endPct / 100f).coerceIn(s, 1f)
+
+        if (isVertical) {
+            // Cut or keep vertical slice
+            val xStart = (src.width * s).roundToInt()
+            val xEnd = (src.width * e).roundToInt()
+            val sliceW = (xEnd - xStart).coerceAtLeast(1)
+
+            if (isInverse) {
+                // Keep slice
+                Bitmap.createBitmap(src, xStart, 0, sliceW, src.height)
+            } else {
+                // Remove slice and join left + right
+                val leftW = xStart
+                val rightW = (src.width - xEnd).coerceAtLeast(0)
+                val newW = (leftW + rightW).coerceAtLeast(1)
+
+                val result = Bitmap.createBitmap(newW, src.height, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(result)
+                if (leftW > 0) {
+                    canvas.drawBitmap(Bitmap.createBitmap(src, 0, 0, leftW, src.height), 0f, 0f, null)
+                }
+                if (rightW > 0) {
+                    canvas.drawBitmap(Bitmap.createBitmap(src, xEnd, 0, rightW, src.height), leftW.toFloat(), 0f, null)
+                }
+                result
+            }
+        } else {
+            // Horizontal cut
+            val yStart = (src.height * s).roundToInt()
+            val yEnd = (src.height * e).roundToInt()
+            val sliceH = (yEnd - yStart).coerceAtLeast(1)
+
+            if (isInverse) {
+                Bitmap.createBitmap(src, 0, yStart, src.width, sliceH)
+            } else {
+                val topH = yStart
+                val bottomH = (src.height - yEnd).coerceAtLeast(0)
+                val newH = (topH + bottomH).coerceAtLeast(1)
+
+                val result = Bitmap.createBitmap(src.width, newH, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(result)
+                if (topH > 0) {
+                    canvas.drawBitmap(Bitmap.createBitmap(src, 0, 0, src.width, topH), 0f, 0f, null)
+                }
+                if (bottomH > 0) {
+                    canvas.drawBitmap(Bitmap.createBitmap(src, 0, yEnd, src.width, bottomH), 0f, topH.toFloat(), null)
+                }
+                result
+            }
+        }
+    }
+
+    suspend fun runResizeByWeight(
+        src: Bitmap,
+        targetBytes: Long,
+        format: ImageFormat,
+        mode: String = "never-exceed"
+    ): Pair<Bitmap, Int> = withContext(Dispatchers.Default) {
+        var lowQ = 20
+        var highQ = 100
+        var bestQ = 80
+        var bestDiff = Long.MAX_VALUE
+
+        for (i in 0 until 8) {
+            val midQ = (lowQ + highQ) / 2
+            val est = estimateSize(src, ExportSettings(format = format, quality = midQ))
+            val diff = kotlin.math.abs(est - targetBytes)
+
+            if (mode == "never-exceed") {
+                if (est <= targetBytes) {
+                    bestQ = midQ
+                    lowQ = midQ + 1
+                } else {
+                    highQ = midQ - 1
+                }
+            } else {
+                if (diff < bestDiff) {
+                    bestDiff = diff
+                    bestQ = midQ
+                }
+                if (est > targetBytes) highQ = midQ - 1 else lowQ = midQ + 1
+            }
+            if (lowQ > highQ) break
+        }
+
+        Pair(src, bestQ)
+    }
+
+    fun computeBatchRename(
+        names: List<String>,
+        pattern: String,
+        start: Int = 1,
+        step: Int = 1,
+        padding: Int = 2
+    ): List<Pair<String, String>> {
+        val raw = names.mapIndexed { idx, name ->
+            val lastDot = name.lastIndexOf('.')
+            val base = if (lastDot > 0) name.substring(0, lastDot) else name
+            val ext = if (lastDot > 0) name.substring(lastDot + 1) else ""
+            val num = start + idx * step
+            val paddedNum = num.toString().padStart(padding, '0')
+
+            var res = pattern
+                .replace("{name}", base, ignoreCase = true)
+                .replace("{index}", paddedNum, ignoreCase = true)
+                .replace("{counter}", num.toString(), ignoreCase = true)
+                .replace("{ext}", ext, ignoreCase = true)
+
+            if (!res.contains('.') && ext.isNotEmpty()) {
+                res = "$res.$ext"
+            }
+            res
+        }
+
+        // Duplicate conflict resolution
+        val counts = mutableMapOf<String, Int>()
+        raw.forEach { counts[it] = (counts[it] ?: 0) + 1 }
+
+        val seen = mutableMapOf<String, Int>()
+        return names.zip(raw).map { (orig, formatted) ->
+            if ((counts[formatted] ?: 0) > 1) {
+                val occ = (seen[formatted] ?: 0) + 1
+                seen[formatted] = occ
+                if (occ > 1) {
+                    val lastDot = formatted.lastIndexOf('.')
+                    val resolved = if (lastDot > 0) {
+                        "${formatted.substring(0, lastDot)}(${occ - 1}).${formatted.substring(lastDot + 1)}"
+                    } else {
+                        "${formatted}(${occ - 1})"
+                    }
+                    Pair(orig, resolved)
+                } else {
+                    Pair(orig, formatted)
+                }
+            } else {
+                Pair(orig, formatted)
+            }
+        }
+    }
 }
+

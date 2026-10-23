@@ -16,6 +16,14 @@ pub extern "C" fn studio_probe_capabilities() -> u32 {
     1 | 2 | 4
 }
 
+#[no_mangle]
+pub extern "system" fn Java_com_magickstudio_app_core_engine_NativeBridge_nativeProbeCapabilities(
+    _env: *mut std::ffi::c_void,
+    _class: *mut std::ffi::c_void,
+) -> i32 {
+    (1 | 2 | 4) as i32
+}
+
 /// Simple C-compatible FFI entry point for fast image resizing
 #[no_mangle]
 pub extern "C" fn studio_resize_rgba(

@@ -1,0 +1,1 @@
+/home/rishi/magick-web/engine/target/release/libstudio_ffi.rlib: /home/rishi/magick-web/engine/crates/studio-codecs/src/lib.rs /home/rishi/magick-web/engine/crates/studio-core/src/lib.rs /home/rishi/magick-web/engine/crates/studio-exif/src/lib.rs /home/rishi/magick-web/engine/crates/studio-ffi/src/lib.rs /home/rishi/magick-web/engine/crates/studio-ops/src/lib.rs
