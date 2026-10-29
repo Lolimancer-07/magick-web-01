@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   },
   trailingSlash: true,
   turbopack: {},
+  experimental: {
+    agentUpgrade: "security",
+  },
 };
 
 export default nextConfig;
