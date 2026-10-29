@@ -53,7 +53,7 @@ export default function QuickActions({
             WebkitTapHighlightColor: "transparent",
           }}
         >
-          <FileCode size={18} style={{ color: "var(--green, #3fed1e)" }} />
+          <FileCode size={18} style={{ color: "var(--green, #30d158)" }} />
           <span>Edit EXIF</span>
         </button>
       )}

@@ -159,11 +159,11 @@ export default function PaletteExtractorScreen() {
                     </div>
 
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "12px", color: "var(--green, #3fed1e)", fontWeight: 600 }}>
+                      <span style={{ fontSize: "12px", color: "var(--green, #30d158)", fontWeight: 600 }}>
                         {s.percent}%
                       </span>
                       {copiedHex === s.hex ? (
-                        <Check size={16} style={{ color: "var(--green, #3fed1e)" }} />
+                        <Check size={16} style={{ color: "var(--green, #30d158)" }} />
                       ) : (
                         <Copy size={16} style={{ color: "var(--muted, #8a93b8)" }} />
                       )}

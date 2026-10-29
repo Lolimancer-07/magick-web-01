@@ -66,7 +66,7 @@ export default function ToolRow({
             height: "26px",
             borderRadius: "6px",
             backgroundColor: "var(--tile)",
-            color: "#3089c5",
+            color: "#0a84ff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -106,7 +106,7 @@ export default function ToolRow({
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.68rem",
                   color: "var(--green)",
-                  backgroundColor: "rgba(63,237,30,0.08)",
+                  backgroundColor: "rgba(48,209,88,0.08)",
                   padding: "0 4px",
                   borderRadius: "3px",
                   flexShrink: 0,
@@ -127,7 +127,7 @@ export default function ToolRow({
             }}
           >
             {isNative ? (
-              <span style={{ color: "#70b8f0", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+              <span style={{ color: "#6db5ff", display: "inline-flex", alignItems: "center", gap: "3px" }}>
                 <Monitor size={10} /> Desktop only
               </span>
             ) : (

@@ -62,6 +62,8 @@ export default function TopBar({
         padding: "0 8px",
         background: "var(--bg-nav)",
         borderBottom: "1px solid var(--line)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -79,7 +81,7 @@ export default function TopBar({
             onClick={onToggleLibrary}
             style={{
               padding: "7px",
-              borderRadius: "8px",
+              borderRadius: "10px",
               border: `1px solid ${libraryOpen ? "var(--line-2)" : "transparent"}`,
               background: libraryOpen ? "var(--surface-2)" : "transparent",
               color: "var(--muted)",
@@ -106,7 +108,7 @@ export default function TopBar({
             fontWeight: 500,
             textDecoration: "none",
             padding: "5px 8px",
-            borderRadius: "6px",
+            borderRadius: "8px",
             transition: "all .15s",
           }}
           onMouseEnter={(e) => {
@@ -130,7 +132,7 @@ export default function TopBar({
               width: "26px",
               height: "26px",
               borderRadius: "8px",
-              background: "linear-gradient(135deg, #1b4052, #3089c5)",
+              background: "linear-gradient(135deg, #0a84ff, #bf5af2)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -197,7 +199,7 @@ export default function TopBar({
                   color: "var(--muted)",
                   background: "var(--surface-2)",
                   padding: "2px 6px",
-                  borderRadius: "4px",
+                  borderRadius: "8px",
                   fontFamily: "var(--font-mono)",
                   whiteSpace: "nowrap",
                   display: "none",
@@ -222,7 +224,7 @@ export default function TopBar({
               alignItems: "center",
               gap: "8px",
               padding: "5px 12px",
-              borderRadius: "8px",
+              borderRadius: "10px",
               background: "var(--surface)",
               border: "1px solid var(--line)",
               color: "var(--muted)",
@@ -270,7 +272,7 @@ export default function TopBar({
               aria-label="Undo"
               style={{
                 padding: "6px 8px",
-                borderRadius: "6px",
+                borderRadius: "8px",
                 border: "none",
                 background: "transparent",
                 color: canUndo ? "var(--ink)" : "var(--dim)",
@@ -288,7 +290,7 @@ export default function TopBar({
               aria-label="Redo"
               style={{
                 padding: "6px 8px",
-                borderRadius: "6px",
+                borderRadius: "8px",
                 border: "none",
                 background: "transparent",
                 color: canRedo ? "var(--ink)" : "var(--dim)",
@@ -309,7 +311,7 @@ export default function TopBar({
               gap: "2px",
               background: "var(--surface-2)",
               padding: "2px",
-              borderRadius: "7px",
+              borderRadius: "10px",
             }}
             className="topbar-desktop-tools"
           >
@@ -320,7 +322,7 @@ export default function TopBar({
               aria-label="Zoom Out"
               style={{
                 padding: "4px 6px",
-                borderRadius: "5px",
+                borderRadius: "8px",
                 border: "none",
                 background: "transparent",
                 color: "var(--muted)",
@@ -336,7 +338,7 @@ export default function TopBar({
               aria-label="Reset Zoom"
               style={{
                 padding: "2px 6px",
-                borderRadius: "4px",
+                borderRadius: "8px",
                 border: "none",
                 background: "transparent",
                 color: "var(--ink)",
@@ -356,7 +358,7 @@ export default function TopBar({
               aria-label="Zoom In"
               style={{
                 padding: "4px 6px",
-                borderRadius: "5px",
+                borderRadius: "8px",
                 border: "none",
                 background: "transparent",
                 color: "var(--muted)",
@@ -378,9 +380,9 @@ export default function TopBar({
               alignItems: "center",
               gap: "5px",
               padding: "5px 9px",
-              borderRadius: "7px",
+              borderRadius: "10px",
               border: `1px solid ${beforeAfterMode ? "var(--green)" : "var(--line)"}`,
-              background: beforeAfterMode ? "rgba(63,237,30,.15)" : "transparent",
+              background: beforeAfterMode ? "rgba(48,209,88,.15)" : "transparent",
               color: beforeAfterMode ? "var(--green)" : "var(--muted)",
               fontSize: "0.75rem",
               fontWeight: 600,
@@ -410,7 +412,7 @@ export default function TopBar({
                 alignItems: "center",
                 gap: "5px",
                 padding: "6px 12px",
-                borderRadius: "8px",
+                borderRadius: "10px",
                 border: "1px solid var(--line)",
                 background: "transparent",
                 color: "var(--muted)",
@@ -443,7 +445,7 @@ export default function TopBar({
                 alignItems: "center",
                 gap: "6px",
                 padding: "7px 16px",
-                borderRadius: "10px",
+                borderRadius: "999px",
                 border: "none",
                 background: "var(--green)",
                 color: "var(--green-ink)",
@@ -451,15 +453,15 @@ export default function TopBar({
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
                 cursor: "pointer",
-                boxShadow: "0 0 16px rgba(63,237,30,.35)",
+                boxShadow: "0 6px 20px rgba(48,209,88,.3)",
                 transition: "all .15s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(63,237,30,.55)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(48,209,88,.42)";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(63,237,30,.35)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 20px rgba(48,209,88,.3)";
                 (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
               }}
             >
@@ -477,7 +479,7 @@ export default function TopBar({
           aria-label="Keyboard Shortcuts"
           style={{
             padding: "6px",
-            borderRadius: "7px",
+            borderRadius: "10px",
             border: "1px solid transparent",
             background: "transparent",
             color: "var(--dim)",

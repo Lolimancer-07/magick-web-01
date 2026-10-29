@@ -95,7 +95,7 @@ export default function CompareImagesScreen() {
                     left: 0,
                     width: `${splitPos}%`,
                     overflow: "hidden",
-                    borderRight: "2px solid var(--green, #3fed1e)",
+                    borderRight: "2px solid var(--green, #30d158)",
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -140,7 +140,7 @@ export default function CompareImagesScreen() {
                   width: "36px",
                   height: "36px",
                   borderRadius: "50%",
-                  backgroundColor: "var(--green, #3fed1e)",
+                  backgroundColor: "var(--green, #30d158)",
                   color: "var(--green-ink, #07110a)",
                   display: "flex",
                   alignItems: "center",

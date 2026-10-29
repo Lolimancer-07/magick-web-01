@@ -4,88 +4,52 @@ import { useState } from "react";
 import Link from "next/link";
 import { Wand2, Menu, X } from "lucide-react";
 
+const NAV_LINKS = [
+  { label: "Features", href: "#features" },
+  { label: "Tools", href: "#tools" },
+  { label: "Formats", href: "#formats" },
+  { label: "Download", href: "#download" },
+];
+
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header
+      className="sticky top-0 z-50 w-full border-b border-[var(--line)] backdrop-saturate-150"
       style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        width: "100%",
-        backgroundColor: "rgba(20, 25, 48, 0.85)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderBottom: "1px solid var(--line)",
+        backgroundColor: "var(--bg-nav)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
       }}
     >
-      <div
-        className="navbar-container"
-        style={{
-          maxWidth: "1240px",
-          margin: "0 auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="navbar-container mx-auto flex max-w-[1240px] items-center justify-between px-4 py-3 md:px-6 md:py-3.5">
         {/* Brand */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+        <Link href="/" className="flex items-center gap-2.5">
           <div
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
             style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "10px",
-              background: "linear-gradient(135deg, #1b4052, #3089c5)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 10px rgba(48,137,197,0.3)",
+              background: "linear-gradient(135deg, #0a84ff, #bf5af2)",
+              boxShadow: "0 2px 12px rgba(10,132,255,0.35)",
             }}
           >
-            <Wand2 size={18} color="#f2f4fb" aria-hidden="true" />
+            <Wand2 size={17} aria-hidden="true" />
           </div>
           <span
-            className="font-display"
-            style={{
-              fontSize: "1.15rem",
-              fontWeight: 700,
-              color: "var(--ink)",
-              letterSpacing: "-0.02em",
-            }}
+            className="font-display text-[1.1rem] font-bold tracking-tight"
+            style={{ color: "var(--ink)" }}
           >
             Magick Studio
           </span>
         </Link>
 
         {/* Center Desktop Links */}
-        <div
-          style={{
-            display: "none",
-            alignItems: "center",
-            gap: "28px",
-          }}
-          className="desktop-nav-links"
-        >
-          {[
-            { label: "Features", href: "#features" },
-            { label: "Tools", href: "#tools" },
-            { label: "Formats", href: "#formats" },
-            { label: "Download", href: "#download" },
-          ].map((item) => (
+        <div className="desktop-nav-links items-center gap-7">
+          {NAV_LINKS.map((item) => (
             <a
               key={item.label}
               href={item.href}
-              style={{
-                fontSize: "0.9rem",
-                fontWeight: 500,
-                color: "var(--muted)",
-                textDecoration: "none",
-                transition: "color 0.15s ease",
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--ink)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--muted)")}
+              className="text-[0.9rem] font-medium text-[var(--muted)] transition-colors duration-150 hover:text-[var(--ink)]"
             >
               {item.label}
             </a>
@@ -93,50 +57,22 @@ export default function NavBar() {
         </div>
 
         {/* Right CTA */}
-        <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+        <div className="flex items-center gap-4">
           <a
             href="#download"
-            className="desktop-nav-download"
-            style={{
-              fontSize: "0.9rem",
-              fontWeight: 500,
-              color: "var(--muted)",
-              textDecoration: "none",
-              display: "none",
-            }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--ink)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--muted)")}
+            className="desktop-nav-download text-[0.9rem] font-medium text-[var(--muted)] transition-colors duration-150 hover:text-[var(--ink)]"
           >
             Download
           </a>
 
           <Link
             href="/app/"
-            className="nav-cta-btn"
+            className="nav-cta-btn inline-flex items-center justify-center rounded-full px-[18px] py-2 text-[0.88rem] font-bold transition-transform duration-150 hover:scale-[1.03] active:scale-95"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "9px 20px",
-              borderRadius: "10px",
               background: "var(--green)",
               color: "var(--green-ink)",
               fontFamily: "var(--font-display)",
-              fontSize: "0.88rem",
-              fontWeight: 700,
-              textDecoration: "none",
-              boxShadow: "0 0 16px rgba(63,237,30,0.3)",
-              transition: "all 0.15s ease",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(-1px)";
-              el.style.boxShadow = "0 0 24px rgba(63,237,30,0.5)";
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(0)";
-              el.style.boxShadow = "0 0 16px rgba(63,237,30,0.3)";
+              boxShadow: "0 2px 14px rgba(48,209,88,0.3)",
             }}
           >
             Open Editor
@@ -145,18 +81,8 @@ export default function NavBar() {
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="mobile-hamburger"
+            className="mobile-hamburger items-center justify-center p-1.5 text-[var(--ink)]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "transparent",
-              border: "none",
-              color: "var(--ink)",
-              cursor: "pointer",
-              padding: "6px",
-            }}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -167,31 +93,15 @@ export default function NavBar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          style={{
-            padding: "16px 24px 24px",
-            borderTop: "1px solid var(--line)",
-            backgroundColor: "var(--bg-nav)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-          }}
+          className="flex flex-col gap-5 border-t border-[var(--line)] px-6 pb-6 pt-4"
+          style={{ backgroundColor: "var(--bg-nav)", backdropFilter: "blur(20px)" }}
         >
-          {[
-            { label: "Features", href: "#features" },
-            { label: "Tools", href: "#tools" },
-            { label: "Formats", href: "#formats" },
-            { label: "Download", href: "#download" },
-          ].map((item) => (
+          {NAV_LINKS.map((item) => (
             <a
               key={item.label}
               href={item.href}
               onClick={() => setMobileMenuOpen(false)}
-              style={{
-                fontSize: "1rem",
-                fontWeight: 500,
-                color: "var(--ink)",
-                textDecoration: "none",
-              }}
+              className="text-base font-medium text-[var(--ink)]"
             >
               {item.label}
             </a>
@@ -200,29 +110,10 @@ export default function NavBar() {
       )}
 
       <style jsx>{`
-        .navbar-container {
-          padding: 12px 16px;
-        }
-        @media (min-width: 600px) {
-          .navbar-container {
-            padding: 14px 24px;
-          }
-        }
         @media (max-width: 480px) {
           .nav-cta-btn {
-            padding: 7px 12px !important;
+            padding: 7px 13px !important;
             font-size: 0.8rem !important;
-          }
-        }
-        @media (min-width: 768px) {
-          .desktop-nav-links {
-            display: flex !important;
-          }
-          .desktop-nav-download {
-            display: inline-block !important;
-          }
-          .mobile-hamburger {
-            display: none !important;
           }
         }
       `}</style>

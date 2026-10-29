@@ -1,65 +1,87 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ArrowRight, Download } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 
 export default function CtaBand() {
   return (
     <section
       id="download"
-      style={{
-        maxWidth: "1240px",
-        margin: "0 auto 100px",
-        padding: "0 24px",
-      }}
+      className="mx-auto mb-24 max-w-[1240px] scroll-mt-20 px-4 md:px-6"
     >
       <div
+        className="relative overflow-hidden rounded-3xl px-8 py-16 text-center"
         style={{
           backgroundColor: "var(--surface)",
           border: "1px solid var(--line)",
-          borderRadius: "20px",
-          padding: "64px 32px",
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.35)",
+          boxShadow: "var(--shadow-lg)",
         }}
       >
-        {/* Subtle background glow */}
+        {/* Colorful aurora glow */}
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
             top: "50%",
-            left: "50%",
+            left: "18%",
             transform: "translate(-50%, -50%)",
-            width: "500px",
+            width: "480px",
             height: "300px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(63,237,30,0.12) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(10,132,255,0.14) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "82%",
+            transform: "translate(-50%, -50%)",
+            width: "480px",
+            height: "300px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(191,90,242,0.13) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "20%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "600px",
+            height: "240px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(48,209,88,0.10) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
 
-        <div style={{ position: "relative", zIndex: 1, maxWidth: "640px", margin: "0 auto" }}>
+        <div className="relative z-[1] mx-auto max-w-[640px]">
           <h2
-            className="font-display"
+            className="font-display mb-4"
             style={{
               fontSize: "clamp(2.2rem, 4.5vw, 3.4rem)",
-              fontWeight: 800,
-              color: "#ffffff",
-              marginBottom: "16px",
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
+              fontWeight: 700,
+              color: "var(--ink)",
+              lineHeight: 1.12,
+              letterSpacing: "-0.035em",
             }}
           >
             Start Editing in{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #3089c5, #3fed1e)",
+                background: "linear-gradient(90deg, #0a84ff, #bf5af2)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
               }}
             >
               Seconds
@@ -67,78 +89,37 @@ export default function CtaBand() {
           </h2>
 
           <p
-            style={{
-              fontSize: "1.05rem",
-              color: "var(--muted)",
-              lineHeight: 1.65,
-              marginBottom: "36px",
-            }}
+            className="mb-9 text-[1.05rem] leading-[1.65]"
+            style={{ color: "var(--muted)" }}
           >
             Experience the complete ImageMagick engine directly inside your browser.
             No account creation, no cloud sync lag, and completely free.
           </p>
 
           {/* Action buttons */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "16px",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: "32px",
-            }}
-          >
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/app/"
               id="cta-band-open-editor-btn"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "14px 32px",
-                borderRadius: "12px",
-                background: "var(--green)",
-                color: "var(--green-ink)",
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: "1rem",
-                textDecoration: "none",
-                boxShadow: "0 0 24px rgba(63,237,30,0.35)",
-                transition: "all 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(-2px)";
-                el.style.boxShadow = "0 0 32px rgba(63,237,30,0.55)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(0)";
-                el.style.boxShadow = "0 0 24px rgba(63,237,30,0.35)";
-              }}
+              className="btn-clay btn-green text-base"
+              style={{ padding: "14px 32px", fontSize: "1rem" }}
             >
-              Open Editor →
+              Open Studio
+              <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
 
           {/* Two checkmark lines */}
           <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "24px",
-              justifyContent: "center",
-              fontSize: "0.88rem",
-              color: "var(--muted)",
-            }}
+            className="flex flex-wrap items-center justify-center gap-6 text-[0.88rem]"
+            style={{ color: "var(--muted)" }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Check size={16} color="var(--green)" />
+            <div className="flex items-center gap-2">
+              <Check size={16} color="var(--green)" aria-hidden="true" />
               <span>No sign-up required</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Check size={16} color="var(--green)" />
+            <div className="flex items-center gap-2">
+              <Check size={16} color="var(--green)" aria-hidden="true" />
               <span>Free and private</span>
             </div>
           </div>

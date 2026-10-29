@@ -93,7 +93,7 @@ export default function DeleteExifScreen() {
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            color: "var(--green, #3fed1e)",
+            color: "var(--green, #30d158)",
             fontSize: "13px",
           }}
         >
@@ -137,7 +137,7 @@ export default function DeleteExifScreen() {
               type="checkbox"
               checked={preserveOrientation}
               onChange={(e) => setPreserveOrientation(e.target.checked)}
-              style={{ width: "20px", height: "20px", accentColor: "var(--green, #3fed1e)" }}
+              style={{ width: "20px", height: "20px", accentColor: "var(--green, #30d158)" }}
             />
           </label>
         </SettingsCard>
@@ -155,7 +155,7 @@ export default function DeleteExifScreen() {
               margin: "0 16px",
               padding: "12px 16px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

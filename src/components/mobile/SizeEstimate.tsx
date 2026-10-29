@@ -30,9 +30,9 @@ export default function SizeEstimate({
   if (originalBytes > 0 && estimatedBytes !== undefined && estimatedBytes > 0) {
     const diff = (estimatedBytes - originalBytes) / originalBytes;
     if (diff < -0.02) {
-      tintColor = "var(--green, #3fed1e)"; // shrank
+      tintColor = "var(--green, #30d158)"; // shrank
     } else if (diff > 0.02) {
-      tintColor = "var(--red, #f04040)"; // grew
+      tintColor = "var(--red, #ff453a)"; // grew
     } else {
       tintColor = "var(--muted, #8a93b8)"; // roughly identical
     }

@@ -42,7 +42,7 @@ function EditorRedirectContent() {
             width: "10px",
             height: "10px",
             borderRadius: "50%",
-            backgroundColor: "var(--green, #3fed1e)",
+            backgroundColor: "var(--green, #30d158)",
           }}
         />
         <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>

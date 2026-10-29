@@ -208,7 +208,7 @@ export default function CropScreen() {
             left: `${cropRect.x}%`,
             width: `${cropRect.w}%`,
             height: `${cropRect.h}%`,
-            border: "2px solid var(--green, #3fed1e)",
+            border: "2px solid var(--green, #30d158)",
             boxShadow: "0 0 16px rgba(0,0,0,0.6)",
             cursor: "move",
             touchAction: "none",
@@ -271,7 +271,7 @@ export default function CropScreen() {
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
               <span>Rotation Angle</span>
-              <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>
+              <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>
                 {straightenDeg}°
               </span>
             </div>
@@ -281,7 +281,7 @@ export default function CropScreen() {
               max={45}
               value={straightenDeg}
               onChange={(e) => setStraightenDeg(parseInt(e.target.value, 10))}
-              style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+              style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
             />
           </div>
         </SettingsCard>
@@ -299,7 +299,7 @@ function cornerHandleStyle(v: "top" | "bottom", h: "left" | "right"): React.CSSP
     [h]: "-6px",
     width: "18px",
     height: "18px",
-    backgroundColor: "var(--green, #3fed1e)",
+    backgroundColor: "var(--green, #30d158)",
     borderRadius: "3px",
     cursor: `${v === "top" ? "n" : "s"}${h === "left" ? "w" : "e"}-resize`,
     boxShadow: "0 2px 6px rgba(0,0,0,0.6)",

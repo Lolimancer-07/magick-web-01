@@ -116,7 +116,7 @@ export default function FormatConversionScreen() {
               margin: "0 16px",
               padding: "12px 16px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

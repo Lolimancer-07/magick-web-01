@@ -117,7 +117,7 @@ export default function EnhanceSheet({
                   <div style={{ fontSize: "14px", fontWeight: 700 }}>{opt.label}</div>
                   <div style={{ fontSize: "12px", color: "var(--muted, #8a93b8)" }}>{opt.desc}</div>
                 </div>
-                <Wand2 size={16} style={{ color: "var(--green, #3fed1e)", flexShrink: 0 }} />
+                <Wand2 size={16} style={{ color: "var(--green, #30d158)", flexShrink: 0 }} />
               </button>
             ))}
           </div>
@@ -136,7 +136,7 @@ export default function EnhanceSheet({
                       padding: "12px",
                       borderRadius: "14px",
                       backgroundColor: isSelected ? "var(--m-surface-3, #2a3252)" : "var(--m-surface-2, #222a46)",
-                      border: `1px solid ${isSelected ? "var(--green, #3fed1e)" : "var(--line, rgba(255,255,255,0.06))"}`,
+                      border: `1px solid ${isSelected ? "var(--green, #30d158)" : "var(--line, rgba(255,255,255,0.06))"}`,
                       color: "var(--ink, #f2f4fb)",
                       textAlign: "left",
                       cursor: "pointer",
@@ -166,7 +166,7 @@ export default function EnhanceSheet({
             >
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
                 <span>Intensity</span>
-                <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{intensity}%</span>
+                <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{intensity}%</span>
               </div>
               <input
                 type="range"
@@ -174,7 +174,7 @@ export default function EnhanceSheet({
                 max={100}
                 value={intensity}
                 onChange={(e) => setIntensity(parseInt(e.target.value, 10))}
-                style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
               />
             </div>
 
@@ -184,7 +184,7 @@ export default function EnhanceSheet({
               style={{
                 height: "48px",
                 borderRadius: "var(--m-radius-chip, 999px)",
-                backgroundColor: "var(--green, #3fed1e)",
+                backgroundColor: "var(--green, #30d158)",
                 color: "var(--green-ink, #07110a)",
                 fontSize: "15px",
                 fontWeight: 700,

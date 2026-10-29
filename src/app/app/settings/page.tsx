@@ -111,7 +111,7 @@ export default function SettingsPage() {
         <SettingsCard title="Haptic Feedback">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Vibrate size={18} style={{ color: "var(--green, #3fed1e)" }} />
+              <Vibrate size={18} style={{ color: "var(--green, #30d158)" }} />
               <div>
                 <div style={{ fontSize: "14px", fontWeight: 600 }}>Vibration on Touch</div>
                 <div style={{ fontSize: "12px", color: "var(--muted, #8a93b8)" }}>
@@ -129,7 +129,7 @@ export default function SettingsPage() {
               style={{
                 width: "22px",
                 height: "22px",
-                accentColor: "var(--green, #3fed1e)",
+                accentColor: "var(--green, #30d158)",
                 cursor: "pointer",
               }}
             />
@@ -164,7 +164,7 @@ export default function SettingsPage() {
         <SettingsCard title="Engine & Privacy Architecture">
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "13px", color: "var(--muted, #8a93b8)" }}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-              <Cpu size={18} style={{ color: "var(--blue, #3089c5)", flexShrink: 0, marginTop: "2px" }} />
+              <Cpu size={18} style={{ color: "var(--blue, #0a84ff)", flexShrink: 0, marginTop: "2px" }} />
               <div>
                 <strong style={{ color: "var(--ink, #f2f4fb)" }}>ImageMagick WebAssembly 0.0.44</strong>
                 <p style={{ margin: "2px 0 0" }}>Runs entirely on client Web Workers with hardware isolation.</p>
@@ -172,7 +172,7 @@ export default function SettingsPage() {
             </div>
 
             <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-              <ShieldCheck size={18} style={{ color: "var(--green, #3fed1e)", flexShrink: 0, marginTop: "2px" }} />
+              <ShieldCheck size={18} style={{ color: "var(--green, #30d158)", flexShrink: 0, marginTop: "2px" }} />
               <div>
                 <strong style={{ color: "var(--ink, #f2f4fb)" }}>100% Private & Local</strong>
                 <p style={{ margin: "2px 0 0" }}>Zero photos are uploaded to any server. All processing is strictly in-browser.</p>
@@ -207,8 +207,8 @@ export default function SettingsPage() {
                 padding: "10px 16px",
                 borderRadius: "10px",
                 backgroundColor: copied ? "rgba(63, 237, 30, 0.15)" : "var(--surface-2, #212946)",
-                border: `1px solid ${copied ? "var(--green, #3fed1e)" : "var(--line, rgba(255,255,255,0.08))"}`,
-                color: copied ? "var(--green, #3fed1e)" : "var(--ink, #f2f4fb)",
+                border: `1px solid ${copied ? "var(--green, #30d158)" : "var(--line, rgba(255,255,255,0.08))"}`,
+                color: copied ? "var(--green, #30d158)" : "var(--ink, #f2f4fb)",
                 fontSize: "13px",
                 fontWeight: 600,
                 cursor: "pointer",

@@ -113,7 +113,7 @@ export default function SettingsCard({
             }}
           >
             {collapsed && collapsedSummary && (
-              <span style={{ color: "var(--green, #3fed1e)", fontWeight: 500 }}>
+              <span style={{ color: "var(--green, #30d158)", fontWeight: 500 }}>
                 {collapsedSummary}
               </span>
             )}

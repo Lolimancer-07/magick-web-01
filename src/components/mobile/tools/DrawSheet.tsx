@@ -30,7 +30,7 @@ export default function DrawSheet({
   onSaveStrokes,
 }: DrawSheetProps) {
   const [mode, setMode] = useState<DrawToolMode>("pencil");
-  const [color, setColor] = useState("#3fed1e");
+  const [color, setColor] = useState("#30d158");
   const [strokeSize, setStrokeSize] = useState(6);
   const [textInput, setTextInput] = useState("");
   const [strokes, setStrokes] = useState<DrawStroke[]>([]);
@@ -81,7 +81,7 @@ export default function DrawSheet({
                   minWidth: "64px",
                   height: "44px",
                   borderRadius: "14px",
-                  backgroundColor: isActive ? "var(--green, #3fed1e)" : "var(--m-surface-2, #222a46)",
+                  backgroundColor: isActive ? "var(--green, #30d158)" : "var(--m-surface-2, #222a46)",
                   color: isActive ? "var(--green-ink, #07110a)" : "var(--ink, #f2f4fb)",
                   border: "none",
                   display: "flex",
@@ -125,7 +125,7 @@ export default function DrawSheet({
               style={{
                 padding: "0 16px",
                 borderRadius: "12px",
-                backgroundColor: "var(--green, #3fed1e)",
+                backgroundColor: "var(--green, #30d158)",
                 color: "var(--green-ink, #07110a)",
                 fontWeight: 700,
                 border: "none",
@@ -151,7 +151,7 @@ export default function DrawSheet({
         >
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
             <span>Stroke Width</span>
-            <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{strokeSize} px</span>
+            <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{strokeSize} px</span>
           </div>
           <input
             type="range"
@@ -159,7 +159,7 @@ export default function DrawSheet({
             max={32}
             value={strokeSize}
             onChange={(e) => setStrokeSize(parseInt(e.target.value, 10))}
-            style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+            style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
           />
         </div>
 
@@ -202,7 +202,7 @@ export default function DrawSheet({
             style={{
               padding: "10px 24px",
               borderRadius: "var(--m-radius-chip, 999px)",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

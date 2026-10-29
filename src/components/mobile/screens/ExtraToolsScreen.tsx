@@ -60,7 +60,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
   const [savedPresets, setSavedPresets] = useState<SavedPresetState[]>([]);
 
   // Color picker states
-  const [pickedColor, setPickedColor] = useState("#3fed1e");
+  const [pickedColor, setPickedColor] = useState("#30d158");
   const [coords, setCoords] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
@@ -241,7 +241,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
             <SettingsCard title="Watermark Opacity">
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
                 <span>Opacity</span>
-                <span style={{ color: "var(--green, #3fed1e)" }}>{wmOpacity}%</span>
+                <span style={{ color: "var(--green, #30d158)" }}>{wmOpacity}%</span>
               </div>
               <input
                 type="range"
@@ -249,7 +249,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
                 max={100}
                 value={wmOpacity}
                 onChange={(e) => setWmOpacity(parseInt(e.target.value, 10))}
-                style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
               />
             </SettingsCard>
           </>
@@ -271,7 +271,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     wordBreak: "break-all",
-                    color: "var(--green, #3fed1e)",
+                    color: "var(--green, #30d158)",
                     marginTop: "4px",
                   }}
                 >
@@ -291,7 +291,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
                     fontSize: "12px",
                     fontFamily: "var(--font-mono)",
                     wordBreak: "break-all",
-                    color: "var(--blue, #3089c5)",
+                    color: "var(--blue, #0a84ff)",
                     marginTop: "4px",
                   }}
                 >
@@ -376,7 +376,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
                       style={{
                         background: "none",
                         border: "none",
-                        color: "var(--red, #f04040)",
+                        color: "var(--red, #ff453a)",
                         cursor: "pointer",
                       }}
                     >
@@ -404,7 +404,7 @@ export default function ExtraToolsScreen({ toolId }: ExtraToolsScreenProps) {
               margin: "0 16px",
               padding: "12px 16px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

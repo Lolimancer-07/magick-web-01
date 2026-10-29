@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="color_count">
+        <item quantity="other">%1$s colors</item>
+        <item quantity="one">%1$s color</item>
+        <item quantity="few">%1$s colors</item>
+        <item quantity="many">%1$s colors</item>
+    </plurals>
+</resources>

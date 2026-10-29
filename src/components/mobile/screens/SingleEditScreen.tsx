@@ -399,7 +399,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                   borderRadius: "12px",
                   overflow: "hidden",
                   border: isSelected
-                    ? "2px solid var(--green, #3fed1e)"
+                    ? "2px solid var(--green, #30d158)"
                     : "1px solid var(--line-2, rgba(255,255,255,0.12))",
                   flexShrink: 0,
                   cursor: "pointer",
@@ -447,7 +447,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
               borderRadius: "12px",
               border: "1px dashed var(--line-2, rgba(255,255,255,0.2))",
               backgroundColor: "var(--m-surface-2, #222a46)",
-              color: "var(--green, #3fed1e)",
+              color: "var(--green, #30d158)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -541,7 +541,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                   style={{
                     padding: "4px 10px",
                     borderRadius: "999px",
-                    backgroundColor: quality === q ? "var(--green, #3fed1e)" : "var(--m-surface-2, #222a46)",
+                    backgroundColor: quality === q ? "var(--green, #30d158)" : "var(--m-surface-2, #222a46)",
                     color: quality === q ? "var(--green-ink, #07110a)" : "var(--ink, #f2f4fb)",
                     border: "none",
                     fontSize: "12px",
@@ -571,14 +571,14 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                   borderRadius: "16px",
                 }}
               >
-                <Percent size={18} style={{ color: "var(--green, #3fed1e)" }} />
+                <Percent size={18} style={{ color: "var(--green, #30d158)" }} />
                 <input
                   type="range"
                   min={5}
                   max={200}
                   value={scalePercent}
                   onChange={(e) => setScalePercent(parseInt(e.target.value, 10))}
-                  style={{ flex: 1, accentColor: "var(--green, #3fed1e)" }}
+                  style={{ flex: 1, accentColor: "var(--green, #30d158)" }}
                 />
                 <span style={{ fontSize: "14px", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
                   {scalePercent}%
@@ -595,7 +595,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                     width: "44px",
                     height: "44px",
                     borderRadius: "50%",
-                    backgroundColor: linkAspect ? "var(--green, #3fed1e)" : "var(--m-surface-2, #222a46)",
+                    backgroundColor: linkAspect ? "var(--green, #30d158)" : "var(--m-surface-2, #222a46)",
                     color: linkAspect ? "var(--green-ink, #07110a)" : "var(--muted, #8a93b8)",
                     border: "none",
                     display: "flex",
@@ -618,7 +618,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                 style={{
                   background: "none",
                   border: "none",
-                  color: "var(--green, #3fed1e)",
+                  color: "var(--green, #30d158)",
                   fontSize: "12px",
                   fontWeight: 600,
                   cursor: "pointer",
@@ -671,7 +671,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                 padding: "2px 6px",
                 borderRadius: "999px",
                 backgroundColor: "var(--m-surface-3, #2a3252)",
-                color: "var(--green, #3fed1e)",
+                color: "var(--green, #30d158)",
               }}
             >
               {SCALE_FILTERS.length}
@@ -744,7 +744,7 @@ export default function SingleEditScreen({ isBatchMode = false }: SingleEditScre
                 padding: "2px 6px",
                 borderRadius: "999px",
                 backgroundColor: "var(--m-surface-3, #2a3252)",
-                color: "var(--green, #3fed1e)",
+                color: "var(--green, #30d158)",
               }}
             >
               {FORMAT_ITEMS.filter((f) => !f.disabled).length} active

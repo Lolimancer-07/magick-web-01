@@ -82,11 +82,11 @@ export default function PresetsSheet({
                 style={presetRowStyle}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <Share2 size={16} style={{ color: "var(--blue, #3089c5)" }} />
+                  <Share2 size={16} style={{ color: "var(--blue, #0a84ff)" }} />
                   <span style={{ fontSize: "14px", fontWeight: 600 }}>{p.name}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span style={{ fontSize: "12px", color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>
+                  <span style={{ fontSize: "12px", color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>
                     {p.width} × {p.height}
                   </span>
                   <span style={{ fontSize: "11px", color: "var(--muted, #8a93b8)", padding: "1px 5px", borderRadius: "4px", backgroundColor: "rgba(255,255,255,0.06)" }}>
@@ -112,7 +112,7 @@ export default function PresetsSheet({
                 style={presetRowStyle}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <Maximize size={16} style={{ color: "var(--green, #3fed1e)" }} />
+                  <Maximize size={16} style={{ color: "var(--green, #30d158)" }} />
                   <span style={{ fontSize: "14px", fontWeight: 600 }}>{p.name}</span>
                 </div>
                 <span style={{ fontSize: "13px", color: "var(--ink, #f2f4fb)", fontFamily: "var(--font-mono)" }}>
@@ -139,7 +139,7 @@ export default function PresetsSheet({
                         flex: 1,
                         height: "44px",
                         backgroundColor: "var(--m-surface-2, #222a46)",
-                        border: "1px solid var(--green, #3fed1e)",
+                        border: "1px solid var(--green, #30d158)",
                         borderRadius: "12px",
                         padding: "0 12px",
                         color: "var(--ink, #f2f4fb)",
@@ -152,7 +152,7 @@ export default function PresetsSheet({
                       style={{
                         padding: "0 16px",
                         borderRadius: "12px",
-                        backgroundColor: "var(--green, #3fed1e)",
+                        backgroundColor: "var(--green, #30d158)",
                         color: "var(--green-ink, #07110a)",
                         fontWeight: 700,
                         border: "none",
@@ -190,7 +190,7 @@ export default function PresetsSheet({
                       borderRadius: "14px",
                       backgroundColor: "var(--m-surface-2, #222a46)",
                       border: "1px dashed var(--line-2, rgba(255,255,255,0.14))",
-                      color: "var(--green, #3fed1e)",
+                      color: "var(--green, #30d158)",
                       fontWeight: 600,
                       fontSize: "13px",
                       cursor: "pointer",
@@ -236,7 +236,7 @@ export default function PresetsSheet({
                           style={{
                             padding: "4px 10px",
                             borderRadius: "8px",
-                            backgroundColor: "var(--green, #3fed1e)",
+                            backgroundColor: "var(--green, #30d158)",
                             color: "var(--green-ink, #07110a)",
                             fontWeight: 700,
                             fontSize: "12px",
@@ -256,7 +256,7 @@ export default function PresetsSheet({
                           borderRadius: "50%",
                           background: "none",
                           border: "none",
-                          color: "var(--red, #f04040)",
+                          color: "var(--red, #ff453a)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",

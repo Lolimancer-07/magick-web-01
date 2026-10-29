@@ -94,7 +94,7 @@ export default function EditExifScreen() {
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            color: "var(--green, #3fed1e)",
+            color: "var(--green, #30d158)",
             fontSize: "13px",
           }}
         >
@@ -109,7 +109,7 @@ export default function EditExifScreen() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: 600 }}>
-                <MapPin size={18} style={{ color: "var(--blue, #3089c5)" }} />
+                <MapPin size={18} style={{ color: "var(--blue, #0a84ff)" }} />
                 <span>Location Coordinates</span>
               </div>
               <button
@@ -121,8 +121,8 @@ export default function EditExifScreen() {
                   gap: "4px",
                   padding: "4px 10px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(240, 64, 64, 0.15)",
-                  color: "var(--red, #f04040)",
+                  backgroundColor: "rgba(255,69,58, 0.15)",
+                  color: "var(--red, #ff453a)",
                   fontSize: "12px",
                   fontWeight: 600,
                   border: "none",
@@ -269,7 +269,7 @@ export default function EditExifScreen() {
               margin: "0 16px",
               padding: "12px 16px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

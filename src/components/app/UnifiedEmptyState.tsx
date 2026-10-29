@@ -273,8 +273,8 @@ export default function UnifiedEmptyState() {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(63,237,30,.025) 1px, transparent 1px)," +
-            "linear-gradient(90deg, rgba(63,237,30,.025) 1px, transparent 1px)",
+            "linear-gradient(rgba(48,209,88,.025) 1px, transparent 1px)," +
+            "linear-gradient(90deg, rgba(48,209,88,.025) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           pointerEvents: "none",
         }}
@@ -289,7 +289,7 @@ export default function UnifiedEmptyState() {
           transform: "translate(-50%, -50%)",
           width: "500px",
           height: "400px",
-          background: "radial-gradient(ellipse, rgba(63,237,30,.06) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse, rgba(48,209,88,.06) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -313,11 +313,11 @@ export default function UnifiedEmptyState() {
               style={{
                 width: "52px", height: "52px",
                 borderRadius: "14px",
-                background: "rgba(63,237,30,.12)",
-                border: "1px solid rgba(63,237,30,.25)",
+                background: "rgba(48,209,88,.12)",
+                border: "1px solid rgba(48,209,88,.25)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: "var(--green)",
-                boxShadow: "0 0 20px rgba(63,237,30,.15)",
+                boxShadow: "0 0 20px rgba(48,209,88,.15)",
               }}
             >
               <Wand2 size={24} aria-hidden="true" />
@@ -347,8 +347,8 @@ export default function UnifiedEmptyState() {
                 marginTop: "12px",
                 padding: "8px 14px",
                 borderRadius: "10px",
-                background: "rgba(63,237,30,.1)",
-                border: "1px solid rgba(63,237,30,.25)",
+                background: "rgba(48,209,88,.1)",
+                border: "1px solid rgba(48,209,88,.25)",
                 fontSize: "0.82rem",
                 color: "var(--green)",
                 fontWeight: 600,
@@ -368,9 +368,9 @@ export default function UnifiedEmptyState() {
           style={{
             width: "100%",
             borderRadius: "20px",
-            background: isDragActive ? "rgba(63,237,30,.08)" : "var(--surface)",
+            background: isDragActive ? "rgba(48,209,88,.08)" : "var(--surface)",
             border: isDragActive
-              ? "2px dashed rgba(63,237,30,.5)"
+              ? "2px dashed rgba(48,209,88,.5)"
               : "1px solid var(--line-strong)",
             boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
             padding: "32px 24px",
@@ -391,8 +391,8 @@ export default function UnifiedEmptyState() {
                   style={{
                     width: "72px", height: "72px",
                     borderRadius: "20px",
-                    background: isDragActive ? "rgba(63,237,30,.15)" : "var(--surface-2)",
-                    border: isDragActive ? "1px solid rgba(63,237,30,.35)" : "1px solid var(--line)",
+                    background: isDragActive ? "rgba(48,209,88,.15)" : "var(--surface-2)",
+                    border: isDragActive ? "1px solid rgba(48,209,88,.35)" : "1px solid var(--line)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     color: isDragActive ? "var(--green)" : "var(--muted)",
                     transition: "all .2s",
@@ -581,8 +581,8 @@ function LoadingState({ fileName }: { fileName: string }) {
         style={{
           width: "64px", height: "64px",
           borderRadius: "18px",
-          background: "rgba(63,237,30,.1)",
-          border: "1px solid rgba(63,237,30,.2)",
+          background: "rgba(48,209,88,.1)",
+          border: "1px solid rgba(48,209,88,.2)",
           display: "flex", alignItems: "center", justifyContent: "center",
           color: "var(--green)",
         }}
@@ -611,7 +611,7 @@ function LoadingState({ fileName }: { fileName: string }) {
       }}>
         <div style={{
           width: "60%", height: "100%",
-          background: "linear-gradient(90deg, var(--green), #7fff6a)",
+          background: "linear-gradient(90deg, var(--green), #64d2ff)",
           borderRadius: "9999px",
           animation: "magick-shimmer 1.5s linear infinite",
         }} />
@@ -635,7 +635,7 @@ const primaryBtn: React.CSSProperties = {
   fontWeight: 700,
   fontSize: "0.9rem",
   cursor: "pointer",
-  boxShadow: "0 0 20px rgba(63,237,30,.3)",
+  boxShadow: "0 0 20px rgba(48,209,88,.3)",
   WebkitTapHighlightColor: "transparent",
   // Minimum 48px touch target height
   minHeight: "48px",

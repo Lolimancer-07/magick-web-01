@@ -370,7 +370,9 @@ export default function EditorShell() {
             border: "1px solid var(--line-strong)",
             borderRadius: "9999px",
             padding: "4px 8px",
-            boxShadow: "0 8px 30px rgba(0,0,0,0.5)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            boxShadow: "0 12px 40px rgba(0,0,0,0.55)",
           }}
         >
           <button
@@ -411,7 +413,7 @@ export default function EditorShell() {
               cursor: "pointer",
             }}
           >
-            <Layers size={14} color="#70b8f0" />
+            <Layers size={14} color="#6db5ff" />
             Pipeline ({steps.length})
           </button>
         </div>
@@ -436,21 +438,33 @@ export default function EditorShell() {
           <div
             style={{
               backgroundColor: "var(--surface)",
-              borderTopLeftRadius: "20px",
-              borderTopRightRadius: "20px",
-              borderTop: "1px solid var(--line-strong)",
+              borderTopLeftRadius: "24px",
+              borderTopRightRadius: "24px",
+              borderTop: "1px solid var(--line)",
               maxHeight: "80vh",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
             }}
           >
+            {/* Grabber */}
+            <div style={{ display: "flex", justifyContent: "center", padding: "10px 20px 0" }}>
+              <div
+                style={{
+                  width: "40px",
+                  height: "4px",
+                  borderRadius: "9999px",
+                  background: "var(--line-2)",
+                }}
+              />
+            </div>
+
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: "14px 20px",
+                padding: "12px 20px 14px",
                 borderBottom: "1px solid var(--line)",
               }}
             >

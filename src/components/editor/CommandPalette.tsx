@@ -205,7 +205,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                         height: "30px",
                         borderRadius: "8px",
                         backgroundColor: "var(--tile)",
-                        color: "#3089c5",
+                        color: "#0a84ff",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -232,7 +232,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                               fontFamily: "var(--font-mono)",
                               fontSize: "0.75rem",
                               color: "var(--green)",
-                              backgroundColor: "rgba(63,237,30,0.1)",
+                              backgroundColor: "rgba(48,209,88,0.1)",
                               padding: "1px 6px",
                               borderRadius: "4px",
                             }}

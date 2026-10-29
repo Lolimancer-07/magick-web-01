@@ -73,7 +73,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 height: "32px",
                 borderRadius: "var(--m-radius-chip, 999px)",
                 backgroundColor: isActive ? "var(--m-surface-3, #2a3252)" : "transparent",
-                color: isActive ? "var(--green, #3fed1e)" : "inherit",
+                color: isActive ? "var(--green, #30d158)" : "inherit",
                 transition: "background-color 0.2s ease, transform 0.15s ease",
                 transform: isActive ? "scale(1.05)" : "scale(1)",
               }}

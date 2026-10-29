@@ -53,8 +53,8 @@ export default function MobileStyleGuide() {
       />
 
       <StickyPreview
-        previewUrl="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='400' height='300' fill='%231c233c'/><circle cx='200' cy='150' r='80' fill='%233fed1e'/><text x='200' y='155' font-size='20' font-family='sans-serif' font-weight='bold' fill='%2307110a' text-anchor='middle'>Preview Frame</text></svg>"
-        originalUrl="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23111524'/><circle cx='200' cy='150' r='80' fill='%233089c5'/><text x='200' y='155' font-size='20' font-family='sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>Original Frame</text></svg>"
+        previewUrl="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2316161b'/><circle cx='200' cy='150' r='80' fill='%2330d158'/><text x='200' y='155' font-size='20' font-family='sans-serif' font-weight='bold' fill='%2304180c' text-anchor='middle'>Preview Frame</text></svg>"
+        originalUrl="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='400' height='300' fill='%230a0a0c'/><circle cx='200' cy='150' r='80' fill='%230a84ff'/><text x='200' y='155' font-size='20' font-family='sans-serif' font-weight='bold' fill='%23ffffff' text-anchor='middle'>Original Frame</text></svg>"
         onOpenZoom={() => alert("Zoom viewer opened")}
         onToggleCompare={() => {}}
       />
@@ -121,7 +121,7 @@ export default function MobileStyleGuide() {
               padding: "2px 6px",
               borderRadius: "999px",
               backgroundColor: "var(--m-surface-3, #2a3252)",
-              color: "var(--green, #3fed1e)",
+              color: "var(--green, #30d158)",
             }}
           >
             12

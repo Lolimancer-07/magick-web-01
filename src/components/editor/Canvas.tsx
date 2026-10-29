@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import {
   ZoomIn,
   ZoomOut,
-  RotateCcw,
   AlertTriangle,
   Loader2,
   SplitSquareVertical,
@@ -120,15 +119,45 @@ export default function Canvas({ onRetry }: CanvasProps) {
 
   const activeUrl = previewUrl || beforeUrl;
 
+  const iconBtnStyle: React.CSSProperties = {
+    background: "transparent",
+    border: "none",
+    color: "var(--muted)",
+    cursor: "pointer",
+    padding: "6px",
+    borderRadius: "9999px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background 0.15s, color 0.15s",
+  };
+
+  const iconBtnHoverStyle: React.CSSProperties = {
+    ...iconBtnStyle,
+    background: "var(--surface-2)",
+    color: "var(--ink)",
+  };
+
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 select-none overflow-hidden">
       {/* Top Floating Glass Toolbar */}
-      <div className="absolute top-4 z-20 flex flex-wrap items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-xl rounded-2xl border border-ink/10 shadow-[0_8px_30px_rgba(46,54,69,0.1)]">
+      <div
+        className="absolute top-4 z-20 flex flex-wrap items-center gap-1.5 px-3 py-1.5"
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--line-2)",
+          borderRadius: "9999px",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          boxShadow: "0 8px 30px rgba(0,0,0,0.45)",
+        }}
+      >
         {/* Zoom Out */}
         <button
           type="button"
           onClick={handleZoomOut}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           aria-label="Zoom out"
           title="Zoom out"
         >
@@ -139,17 +168,20 @@ export default function Canvas({ onRetry }: CanvasProps) {
         <button
           type="button"
           onClick={handleResetZoom}
-          className="font-mono font-bold text-xs px-2 py-1 text-ink min-w-[50px] text-center hover:bg-slate-100 rounded-md transition-colors"
+          className=""
+          style={{ ...iconBtnStyle, minWidth: "46px", background: "transparent", color: "var(--ink)" }}
           title="Click to reset zoom to 100%"
+          aria-label="Reset zoom"
         >
-          {Math.round(zoom * 100)}%
+          {Math.round(zoom * 100)}
         </button>
 
         {/* Zoom In */}
         <button
           type="button"
           onClick={handleZoomIn}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           aria-label="Zoom in"
           title="Zoom in"
         >
@@ -160,20 +192,22 @@ export default function Canvas({ onRetry }: CanvasProps) {
         <button
           type="button"
           onClick={handleResetZoom}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           aria-label="Reset zoom and center"
           title="Reset Zoom & Pan"
         >
           <Maximize2 size={15} aria-hidden="true" />
         </button>
 
-        <div className="h-4 w-px bg-ink/15 mx-1" />
+        <div style={{ width: 1, height: 16, background: "var(--line-2)", margin: "0 2px" }} />
 
         {/* Quick Transforms */}
         <button
           type="button"
           onClick={() => addStep("rotate", { deg: 90 })}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           title="Rotate 90° Clockwise"
           aria-label="Rotate 90 degrees clockwise"
         >
@@ -183,7 +217,8 @@ export default function Canvas({ onRetry }: CanvasProps) {
         <button
           type="button"
           onClick={() => addStep("flop", {})}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           title="Flip Horizontal"
           aria-label="Flip Horizontal"
         >
@@ -193,24 +228,35 @@ export default function Canvas({ onRetry }: CanvasProps) {
         <button
           type="button"
           onClick={() => addStep("flip", {})}
-          className="p-1.5 rounded-lg text-ink/80 hover:text-ink hover:bg-slate-100 transition-colors cursor-pointer"
+          className=""
+          style={iconBtnStyle}
           title="Flip Vertical"
           aria-label="Flip Vertical"
         >
           <ArrowUpDown size={15} aria-hidden="true" />
         </button>
 
-        <div className="h-4 w-px bg-ink/15 mx-1" />
+        <div style={{ width: 1, height: 16, background: "var(--line-2)", margin: "0 2px" }} />
 
         {/* Before / After Compare Toggle */}
         <button
           type="button"
           onClick={() => setBeforeAfterMode(!beforeAfterMode)}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            beforeAfterMode
-              ? "bg-green text-white shadow-sm"
-              : "bg-slate-100 text-ink/80 hover:bg-slate-200"
-          }`}
+          className=""
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "6px 14px",
+            borderRadius: "9999px",
+            border: "none",
+            cursor: "pointer",
+            background: beforeAfterMode ? "var(--green)" : "var(--surface-2)",
+            color: beforeAfterMode ? "var(--green-ink)" : "var(--muted)",
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            transition: "background 0.2s, color 0.2s",
+          }}
           aria-pressed={beforeAfterMode}
           aria-label="Toggle split compare view"
         >
@@ -219,7 +265,10 @@ export default function Canvas({ onRetry }: CanvasProps) {
         </button>
 
         {originalDimensions && (
-          <span className="hidden lg:inline-block text-[11px] font-mono text-muted pl-2 border-l border-ink/10">
+          <span
+            className="text-[11px] font-mono pl-2"
+            style={{ color: "var(--muted)", paddingLeft: 8, borderLeft: "1px solid var(--line-2)" }}
+          >
             {originalDimensions.w} × {originalDimensions.h} px
           </span>
         )}
@@ -233,37 +282,66 @@ export default function Canvas({ onRetry }: CanvasProps) {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        className={`relative w-full h-[65vh] md:h-[78vh] flex items-center justify-center rounded-2xl border border-ink/10 overflow-hidden bg-[#dedad5] ${
+        className={`relative w-full h-[65vh] md:h-[78vh] flex items-center justify-center rounded-[18px] border overflow-hidden ${
           spacePressed || isPanning ? "cursor-grab active:cursor-grabbing" : "cursor-default"
         }`}
         style={{
+          backgroundColor: "var(--ed-bg)",
           backgroundImage:
-            "radial-gradient(circle, rgba(46,54,69,0.12) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
           backgroundPosition: "0 0",
         }}
       >
         {/* Loading overlay badge */}
         {previewLoading && (
-          <div className="absolute top-4 right-4 z-30 flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-md border border-ink/15 rounded-full shadow-md animate-in fade-in">
-            <Loader2 size={14} className="animate-spin text-green-d" aria-hidden="true" />
-            <span className="text-xs font-medium text-ink">Rendering in WASM...</span>
+          <div
+            className="absolute top-4 right-4 z-30 flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{
+              background: "var(--surface)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid var(--line-2)",
+              boxShadow: "var(--shadow-md)",
+            }}
+          >
+            <Loader2 size={14} className="animate-spin" style={{ color: "var(--green)" }} aria-hidden="true" />
+            <span className="text-xs font-medium" style={{ color: "var(--ink)" }}>
+              Rendering in WASM...
+            </span>
           </div>
         )}
 
         {/* Error overlay banner */}
         {previewError && (
-          <div className="absolute bottom-6 z-30 max-w-md mx-auto p-4 bg-red-50 border border-red-200 rounded-2xl shadow-xl flex items-start gap-3">
-            <AlertTriangle size={20} className="shrink-0 text-red-600 mt-0.5" aria-hidden="true" />
-            <div className="flex-1 text-sm text-red-900">
+          <div
+            className="absolute bottom-6 z-30 max-w-md mx-auto p-4 rounded-2xl flex items-start gap-3"
+            style={{
+              background: "var(--surface)",
+              border: "1px solid rgba(255,69,58,0.35)",
+              boxShadow: "var(--shadow-lg)",
+            }}
+          >
+            <AlertTriangle size={20} className="shrink-0 mt-0.5" style={{ color: "var(--red)" }} aria-hidden="true" />
+            <div className="flex-1 text-sm" style={{ color: "var(--ink)" }}>
               <p className="font-bold">Render Issue</p>
-              <p className="text-xs mt-0.5 text-red-700">{previewError}</p>
+              <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>{previewError}</p>
             </div>
             {onRetry && (
               <button
                 type="button"
                 onClick={onRetry}
-                className="px-3 py-1 rounded-lg bg-white border border-red-200 text-xs font-semibold text-red-800 hover:bg-red-100 cursor-pointer"
+                className=""
+                style={{
+                  padding: "4px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--line-2)",
+                  background: "transparent",
+                  color: "var(--ink)",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
               >
                 Retry
               </button>
@@ -282,13 +360,14 @@ export default function Canvas({ onRetry }: CanvasProps) {
           >
             {beforeAfterMode && beforeUrl && previewUrl ? (
               /* Before / After Comparison Split View */
-              <div className="relative select-none pointer-events-none rounded-2xl border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden bg-white">
+              <div className="relative select-none pointer-events-none rounded-[18px] overflow-hidden" style={{ border: "1px solid var(--line-2)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)", background: "var(--ed-bg)" }}>
                 {/* Before Image (underneath) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={beforeUrl}
                   alt="Original before edits"
                   className="max-h-[60vh] max-w-[80vw] object-contain block"
+                  style={{ background: "var(--ed-bg)" }}
                   draggable={false}
                 />
 
@@ -305,6 +384,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
                     style={{
                       width: containerRef.current?.querySelector("img")?.clientWidth || "auto",
                       height: containerRef.current?.querySelector("img")?.clientHeight || "auto",
+                      background: "var(--ed-bg)",
                     }}
                     draggable={false}
                   />
@@ -333,7 +413,7 @@ export default function Canvas({ onRetry }: CanvasProps) {
                   }}
                 >
                   <div className="w-0.5 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
-                  <div className="absolute w-7 h-7 rounded-full bg-white border border-ink/20 shadow-lg flex items-center justify-center text-ink text-[11px] font-bold select-none">
+                  <div className="absolute w-7 h-7 rounded-full bg-white border border-[var(--line-2)] shadow-lg flex items-center justify-center text-[var(--ink)] text-[11px] font-bold select-none">
                     ‹›
                   </div>
                 </div>
@@ -342,7 +422,10 @@ export default function Canvas({ onRetry }: CanvasProps) {
                 <span className="absolute top-3 left-3 px-2 py-0.5 bg-black/75 backdrop-blur-md text-white rounded-md text-[10px] font-bold uppercase tracking-wider">
                   Edited (After)
                 </span>
-                <span className="absolute top-3 right-3 px-2 py-0.5 bg-white/90 backdrop-blur-md text-ink border border-ink/15 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                <span
+                  className="absolute top-3 right-3 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider"
+                  style={{ background: "var(--surface-2)", backdropFilter: "blur(12px)", color: "var(--ink)", border: "1px solid var(--line-2)" }}
+                >
                   Original (Before)
                 </span>
               </div>
@@ -352,7 +435,18 @@ export default function Canvas({ onRetry }: CanvasProps) {
               <img
                 src={activeUrl}
                 alt="Image workspace canvas preview"
-                className="max-h-[60vh] max-w-[80vw] object-contain rounded-2xl border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.2)] block pointer-events-none bg-white"
+                className=""
+                style={{
+                  maxHeight: "60vh",
+                  maxWidth: "80vw",
+                  objectFit: "contain",
+                  borderRadius: "18px",
+                  border: "1px solid var(--line-2)",
+                  boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+                  background: "var(--ed-bg)",
+                  display: "block",
+                  pointerEvents: "none",
+                }}
                 draggable={false}
               />
             )}

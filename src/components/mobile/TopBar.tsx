@@ -124,7 +124,7 @@ export default function TopBar({ title, onBack, actions = [], subtitle }: TopBar
                 background: action.active ? "var(--m-surface-3, #2a3252)" : "transparent",
                 border: "none",
                 color: action.active
-                  ? "var(--green, #3fed1e)"
+                  ? "var(--green, #30d158)"
                   : action.disabled
                   ? "var(--dim, #4e5880)"
                   : "var(--ink, #f2f4fb)",

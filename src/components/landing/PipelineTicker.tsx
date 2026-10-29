@@ -26,25 +26,25 @@ const TICKER_ITEMS = [
   },
 ];
 
+const STEP_TINTS = [
+  { bg: "var(--tile-blue)", color: "var(--blue)" },
+  { bg: "var(--tile-teal)", color: "var(--teal)" },
+  { bg: "var(--tile-purple)", color: "var(--violet)" },
+];
+
 export default function PipelineTicker() {
   return (
     <section
-      className="ticker-section"
-      style={{
-        maxWidth: "1240px",
-        margin: "0 auto 50px",
-      }}
+      className="ticker-section mx-auto mb-12 max-w-[1240px] px-4 md:px-6"
     >
       <div
-        className="ticker-card"
+        className="ticker-card grid gap-4 rounded-3xl"
         style={{
           backgroundColor: "var(--surface)",
           border: "1px solid var(--line)",
-          borderRadius: "16px",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
-          gap: "16px",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.25)",
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         {TICKER_ITEMS.map((item, index) => (
@@ -57,72 +57,43 @@ export default function PipelineTicker() {
               justifyContent: "space-between",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div className="flex min-w-0 items-center gap-3">
               <div
+                className="font-mono flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-[0.72rem] font-bold"
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "8px",
-                  backgroundColor: "var(--tile)",
-                  color: "#3089c5",
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  backgroundColor: STEP_TINTS[index % STEP_TINTS.length].bg,
+                  color: STEP_TINTS[index % STEP_TINTS.length].color,
                   fontFamily: "var(--font-mono)",
-                  flexShrink: 0,
                 }}
               >
                 {item.step}
               </div>
-              <div style={{ minWidth: 0 }}>
+              <div className="min-w-0">
                 <div
-                  style={{
-                    fontSize: "0.88rem",
-                    fontWeight: 700,
-                    color: "var(--ink)",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
+                  className="truncate text-[0.88rem] font-bold"
+                  style={{ color: "var(--ink)" }}
                 >
                   {item.name}
                 </div>
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "var(--muted)",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
+                <div className="truncate text-[0.75rem]" style={{ color: "var(--muted)" }}>
                   {item.param}
                 </div>
               </div>
             </div>
 
             <div
+              className="flex flex-shrink-0 items-center gap-1 rounded-lg px-2 py-[3px] text-[0.8rem] font-bold"
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                fontSize: "0.8rem",
-                fontWeight: 700,
                 color: item.positive ? "var(--green)" : "var(--red)",
                 backgroundColor: item.positive
-                  ? "rgba(63,237,30,0.1)"
-                  : "rgba(255,84,112,0.1)",
-                padding: "3px 7px",
-                borderRadius: "6px",
-                flexShrink: 0,
+                  ? "rgba(48,209,88,0.1)"
+                  : "rgba(255,69,58,0.1)",
               }}
             >
               {item.positive ? (
-                <ArrowUpRight size={13} />
+                <ArrowUpRight size={13} aria-hidden="true" />
               ) : (
-                <ArrowDownRight size={13} />
+                <ArrowDownRight size={13} aria-hidden="true" />
               )}
               {item.delta}
             </div>
@@ -131,16 +102,10 @@ export default function PipelineTicker() {
       </div>
 
       <style jsx>{`
-        .ticker-section {
-          padding: 0 16px;
-        }
         .ticker-card {
           padding: 14px 16px;
         }
         @media (min-width: 600px) {
-          .ticker-section {
-            padding: 0 24px;
-          }
           .ticker-card {
             padding: 18px 28px;
             gap: 20px;

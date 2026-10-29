@@ -1,4 +1,4 @@
-// node_modules/.pnpm/@imagemagick+magick-wasm@0.0.44/node_modules/@imagemagick/magick-wasm/dist/index.js
+// node_modules/@imagemagick/magick-wasm/dist/index.js
 function e(e29) {
   return e29 instanceof Int8Array || e29 instanceof Uint8Array || e29 instanceof Uint8ClampedArray;
 }

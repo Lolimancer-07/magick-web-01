@@ -173,7 +173,7 @@ export default function ResizeByWeightScreen() {
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
               <span>Quality Threshold</span>
-              <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{floorQuality}%</span>
+              <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{floorQuality}%</span>
             </div>
             <input
               type="range"
@@ -181,7 +181,7 @@ export default function ResizeByWeightScreen() {
               max={60}
               value={floorQuality}
               onChange={(e) => setFloorQuality(parseInt(e.target.value, 10))}
-              style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+              style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
             />
             <div style={{ fontSize: "11px", color: "var(--muted, #8a93b8)" }}>
               If target cannot be achieved at this quality floor, dimensional downscaling kicks in.
@@ -204,7 +204,7 @@ export default function ResizeByWeightScreen() {
             }}
           >
             {isRunning && (
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "var(--green, #3fed1e)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "var(--green, #30d158)" }}>
                 <Loader2 size={18} className="animate-spin" />
                 <span style={{ fontSize: "14px", fontWeight: 600 }}>{progressMsg || "Searching optimal compression..."}</span>
               </div>
@@ -214,9 +214,9 @@ export default function ResizeByWeightScreen() {
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
                   {result.status === "success" ? (
-                    <CheckCircle2 size={18} style={{ color: "var(--green, #3fed1e)" }} />
+                    <CheckCircle2 size={18} style={{ color: "var(--green, #30d158)" }} />
                   ) : (
-                    <AlertTriangle size={18} style={{ color: "var(--amber, #f5a623)" }} />
+                    <AlertTriangle size={18} style={{ color: "var(--amber, #ff9f0a)" }} />
                   )}
                   <span style={{ fontSize: "14px", fontWeight: 700 }}>{result.message}</span>
                 </div>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="abc_action_bar_embed_tabs">true</bool>
+    <bool name="at_least_26">false</bool>
+    <bool name="m3_focus_rings_enabled">false</bool>
+</resources>

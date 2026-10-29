@@ -62,11 +62,11 @@ export default function CurvesSheet({
 
   const channelColor =
     channel === "red"
-      ? "#f04040"
+      ? "#ff453a"
       : channel === "green"
-      ? "#3fed1e"
+      ? "#30d158"
       : channel === "blue"
-      ? "#3089c5"
+      ? "#0a84ff"
       : "#ffffff";
 
   // Build SVG path string from points using monotonic cubic interpolation
@@ -273,7 +273,7 @@ export default function CurvesSheet({
               gap: "6px",
               padding: "10px 24px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontSize: "14px",
               fontWeight: 700,

@@ -37,7 +37,7 @@ export default function InfoSheet({ isOpen, onClose, info }: InfoSheetProps) {
               padding: "4px 10px",
               borderRadius: "6px",
               backgroundColor: "var(--m-surface-2, #222a46)",
-              color: "var(--green, #3fed1e)",
+              color: "var(--green, #30d158)",
               fontFamily: "var(--font-mono, monospace)",
               fontSize: "12px",
               fontWeight: 600,
@@ -59,7 +59,7 @@ export default function InfoSheet({ isOpen, onClose, info }: InfoSheetProps) {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--blue, #3089c5)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--blue, #0a84ff)" }}>
             <Lightbulb size={16} />
             <h3 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>
               When to use it
@@ -82,7 +82,7 @@ export default function InfoSheet({ isOpen, onClose, info }: InfoSheetProps) {
               gap: "6px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--green, #3fed1e)", fontSize: "12px", fontWeight: 700 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--green, #30d158)", fontSize: "12px", fontWeight: 700 }}>
               <CheckCircle2 size={15} />
               <span>Example / Best Practice</span>
             </div>

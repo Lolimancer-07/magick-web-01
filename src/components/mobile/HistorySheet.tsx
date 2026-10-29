@@ -41,7 +41,7 @@ export default function HistorySheet({
               style={{
                 background: "none",
                 border: "none",
-                color: "var(--red, #f04040)",
+                color: "var(--red, #ff453a)",
                 fontSize: "12px",
                 fontWeight: 600,
                 display: "flex",
@@ -77,7 +77,7 @@ export default function HistorySheet({
                     padding: "12px 14px",
                     borderRadius: "14px",
                     backgroundColor: isCurrent ? "var(--m-surface-3, #2a3252)" : "var(--m-surface-2, #222a46)",
-                    border: `1px solid ${isCurrent ? "var(--green, #3fed1e)" : "var(--line, rgba(255,255,255,0.06))"}`,
+                    border: `1px solid ${isCurrent ? "var(--green, #30d158)" : "var(--line, rgba(255,255,255,0.06))"}`,
                     color: "var(--ink, #f2f4fb)",
                     cursor: "pointer",
                     textAlign: "left",
@@ -90,7 +90,7 @@ export default function HistorySheet({
                         width: "24px",
                         height: "24px",
                         borderRadius: "50%",
-                        backgroundColor: isCurrent ? "var(--green, #3fed1e)" : "rgba(255,255,255,0.08)",
+                        backgroundColor: isCurrent ? "var(--green, #30d158)" : "rgba(255,255,255,0.08)",
                         color: isCurrent ? "var(--green-ink, #07110a)" : "var(--muted, #8a93b8)",
                         fontSize: "11px",
                         fontWeight: 700,
@@ -112,7 +112,7 @@ export default function HistorySheet({
                   </div>
 
                   {isCurrent && (
-                    <div style={{ color: "var(--green, #3fed1e)" }}>
+                    <div style={{ color: "var(--green, #30d158)" }}>
                       <Check size={18} />
                     </div>
                   )}

@@ -113,7 +113,7 @@ export default function BatchRenameScreen() {
             backgroundColor: "rgba(48, 137, 197, 0.12)",
             border: "1px solid rgba(48, 137, 197, 0.25)",
             fontSize: "12px",
-            color: "var(--blue, #3089c5)",
+            color: "var(--blue, #0a84ff)",
             lineHeight: 1.4,
           }}
         >
@@ -154,7 +154,7 @@ export default function BatchRenameScreen() {
                     borderRadius: "999px",
                     backgroundColor: "var(--m-surface-3, #2a3252)",
                     border: "1px solid var(--line, rgba(255,255,255,0.06))",
-                    color: "var(--green, #3fed1e)",
+                    color: "var(--green, #30d158)",
                     fontSize: "12px",
                     fontWeight: 600,
                     fontFamily: "var(--font-mono)",
@@ -245,7 +245,7 @@ export default function BatchRenameScreen() {
                   <div style={{ display: "flex", alignItems: "center", gap: "6px", maxWidth: "50%" }}>
                     <span
                       style={{
-                        color: r.hasConflict ? "var(--amber, #f5a623)" : "var(--green, #3fed1e)",
+                        color: r.hasConflict ? "var(--amber, #ff9f0a)" : "var(--green, #30d158)",
                         fontWeight: 600,
                         fontFamily: "var(--font-mono)",
                         overflow: "hidden",
@@ -256,7 +256,7 @@ export default function BatchRenameScreen() {
                       {r.conflictResolvedName}
                     </span>
                     {r.hasConflict && (
-                      <AlertCircle size={14} style={{ color: "var(--amber, #f5a623)", flexShrink: 0 }} />
+                      <AlertCircle size={14} style={{ color: "var(--amber, #ff9f0a)", flexShrink: 0 }} />
                     )}
                   </div>
                 </div>
@@ -271,7 +271,7 @@ export default function BatchRenameScreen() {
               margin: "0 16px",
               padding: "12px 16px",
               borderRadius: "14px",
-              backgroundColor: "var(--green, #3fed1e)",
+              backgroundColor: "var(--green, #30d158)",
               color: "var(--green-ink, #07110a)",
               fontWeight: 700,
               fontSize: "14px",

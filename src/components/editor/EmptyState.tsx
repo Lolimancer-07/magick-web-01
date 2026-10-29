@@ -32,7 +32,7 @@ export default function EmptyState({ onImageLoaded }: EmptyStateProps) {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(63,237,30,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(63,237,30,.025) 1px, transparent 1px)",
+            "linear-gradient(rgba(48,209,88,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(48,209,88,.025) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           pointerEvents: "none",
         }}
@@ -48,7 +48,7 @@ export default function EmptyState({ onImageLoaded }: EmptyStateProps) {
           transform: "translate(-50%, -50%)",
           width: "500px",
           height: "400px",
-          background: "radial-gradient(ellipse, rgba(63,237,30,.05) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse, rgba(48,209,88,.05) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -61,13 +61,13 @@ export default function EmptyState({ onImageLoaded }: EmptyStateProps) {
               width: "48px",
               height: "48px",
               borderRadius: "14px",
-              background: "rgba(63,237,30,.12)",
-              border: "1px solid rgba(63,237,30,.25)",
+              background: "rgba(48,209,88,.12)",
+              border: "1px solid rgba(48,209,88,.25)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "var(--green)",
-              boxShadow: "0 0 20px rgba(63,237,30,.15)",
+              boxShadow: "0 0 20px rgba(48,209,88,.15)",
             }}
           >
             <Wand2 size={22} aria-hidden="true" />

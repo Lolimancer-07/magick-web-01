@@ -82,7 +82,7 @@ export default function ResizeByLimitsScreen() {
                 padding: "4px 10px",
                 borderRadius: "6px",
                 backgroundColor: "var(--m-surface-2, #222a46)",
-                color: "var(--green, #3fed1e)",
+                color: "var(--green, #30d158)",
                 fontFamily: "var(--font-mono)",
                 fontSize: "12px",
                 width: "fit-content",
@@ -108,7 +108,7 @@ export default function ResizeByLimitsScreen() {
                 type="checkbox"
                 checked={onlyShrink}
                 onChange={(e) => setOnlyShrink(e.target.checked)}
-                style={{ width: "20px", height: "20px", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "20px", height: "20px", accentColor: "var(--green, #30d158)" }}
               />
             </label>
 
@@ -123,7 +123,7 @@ export default function ResizeByLimitsScreen() {
                 type="checkbox"
                 checked={keepAspect}
                 onChange={(e) => setKeepAspect(e.target.checked)}
-                style={{ width: "20px", height: "20px", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "20px", height: "20px", accentColor: "var(--green, #30d158)" }}
               />
             </label>
           </div>

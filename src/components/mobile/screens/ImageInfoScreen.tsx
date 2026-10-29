@@ -55,7 +55,7 @@ export default function ImageInfoScreen() {
             </div>
             <div style={infoRowStyle}>
               <span style={{ color: "var(--muted, #8a93b8)" }}>Dimensions:</span>
-              <span style={{ fontWeight: 600, color: "var(--green, #3fed1e)" }}>
+              <span style={{ fontWeight: 600, color: "var(--green, #30d158)" }}>
                 {currentImage?.width || 1920} × {currentImage?.height || 1080} px
               </span>
             </div>

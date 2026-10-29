@@ -68,7 +68,7 @@ export default function ChipGroup<T extends string = string>({
               padding: "0 16px",
               borderRadius: "var(--m-radius-chip, 999px)",
               backgroundColor: active
-                ? "var(--green, #3fed1e)"
+                ? "var(--green, #30d158)"
                 : item.disabled
                 ? "rgba(34, 42, 70, 0.4)"
                 : "var(--m-surface-2, #222a46)",
@@ -79,7 +79,7 @@ export default function ChipGroup<T extends string = string>({
                 : "var(--ink, #f2f4fb)",
               border: `1px solid ${
                 active
-                  ? "var(--green, #3fed1e)"
+                  ? "var(--green, #30d158)"
                   : item.disabled
                   ? "rgba(255,255,255,0.03)"
                   : "var(--line, rgba(255,255,255,0.08))"
@@ -112,7 +112,7 @@ export default function ChipGroup<T extends string = string>({
                   color: active
                     ? "var(--green-ink, #07110a)"
                     : item.badge === "Desktop" || item.badge === "Server"
-                    ? "var(--blue, #3089c5)"
+                    ? "var(--blue, #0a84ff)"
                     : "var(--muted, #8a93b8)",
                 }}
               >

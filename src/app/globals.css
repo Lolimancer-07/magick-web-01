@@ -1,99 +1,118 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   MAGICK STUDIO V3 — DARK FINTECH DASHBOARD DESIGN SYSTEM
+   MAGICK STUDIO V4 — APPLE-STYLE DARK DESIGN SYSTEM
+   Dark-first, minimal surfaces, colorful Apple system accents,
+   SF system typography, continuous-corner radii, soft depth.
    ========================================================================== */
 
 :root {
   color-scheme: dark;
 
-  /* ── Core Palette ── */
-  --bg:        #0f1320;          /* page background */
-  --surface:   #161b2e;          /* card / panel surface */
-  --surface-2: #1c2340;          /* elevated panel / hover */
-  --surface-3: #222a50;          /* deep nested / active */
-  --line:      rgba(255,255,255,.07);  /* subtle dividers */
-  --line-2:    rgba(255,255,255,.12);  /* stronger borders */
-  --ink:       #f2f4fb;          /* primary text */
-  --muted:     #8a93b8;          /* secondary text */
-  --dim:       #4e5880;          /* placeholder / disabled */
+  /* ── Core Palette (Apple dark neutrals) ── */
+  --bg:        #0a0a0c;                     /* page background */
+  --surface:   #16161b;                     /* card / panel surface */
+  --surface-2: #1f1f25;                    /* elevated panel / hover */
+  --surface-3: #28282f;                    /* deep nested / active */
+  --line:      rgba(255,255,255,.08);      /* subtle dividers */
+  --line-2:    rgba(255,255,255,.14);      /* stronger borders */
+  --line-strong: rgba(255,255,255,.22);    /* emphasized borders */
+  --ink:       #f5f5f7;                    /* primary text (Apple white) */
+  --muted:     #a1a1ab;                    /* secondary text */
+  --dim:       #63636d;                    /* placeholder / disabled */
 
-  /* ── Brand Green (Neon) ── */
-  --green:     #3fed1e;          /* primary accent / CTA */
-  --green-d:   #2cc412;          /* hover / darker green */
-  --green-glow: rgba(63,237,30,.22); /* glow shadow */
-  --green-ink: #07110a;          /* text on green bg */
+  /* ── Brand Green (primary accent — Apple systemGreen) ── */
+  --green:     #30d158;                     /* primary accent / CTA */
+  --green-d:   #2bc74d;                     /* hover */
+  --green-glow: rgba(48,209,88,.20);
+  --green-ink: #04180c;                    /* text on green bg */
 
-  /* ── Accent Blue ── */
-  --blue:      #3089c5;          /* info / secondary accent */
-  --blue-d:    #2070aa;
+  /* ── Accent Blue (secondary accent — Apple systemBlue) ── */
+  --blue:      #0a84ff;
+  --blue-d:    #3a9bff;                    /* hover (lighter on dark) */
 
-  /* ── Tile Colors ── */
-  --tile-teal: #1b4052;
-  --tile-purple: #2d1f4e;
-  --tile-rose:   #4a1f2e;
-  --tile-amber:  #3d2e0a;
+  /* ── Colorful system accents (Apple HIG) ── */
+  --teal:      #64d2ff;
+  --violet:    #bf5af2;
+  --pink:      #ff375f;
+  --orange:    #ff9f0a;
+  --yellow:    #ffd60a;
+  --indigo:    #5e5ce6;
+
+  /* ── Tile Colors (glassy colorful tints) ── */
+  --tile:        rgba(120,120,128,.12);
+  --tile-teal:   rgba(64,200,224,.12);
+  --tile-purple: rgba(191,90,242,.13);
+  --tile-rose:   rgba(255,55,95,.12);
+  --tile-amber:  rgba(255,159,10,.12);
+  --tile-blue:   rgba(10,132,255,.12);
+  --tile-green:  rgba(48,209,88,.12);
 
   /* ── Status Colors ── */
-  --red:       #f04040;
-  --amber:     #f5a623;
-  --gold:      #f5c518;
+  --red:       #ff453a;
+  --amber:     #ff9f0a;
+  --gold:      #ffd60a;
 
   /* Legacy alias for compat */
   --white: #ffffff;
   --beige: var(--bg);
   --gray:  var(--surface);
   --salmon: var(--tile-rose);
-  --lavender: var(--tile-purple);
-  --mint: rgba(63,237,30,.15);
-  --green-d-legacy: #17803f;
+  --lavender: var(--violet);
+  --mint: rgba(48,209,88,.15);
+  --green-d-legacy: #24c246;
 
-  /* ── Typography ── */
-  --font-display: var(--font-space-grotesk), "Space Grotesk", "Inter", sans-serif;
-  --font-body:    var(--font-inter), "Inter", sans-serif;
-  --font-mono:    "JetBrains Mono", "Fira Code", monospace;
+  /* ── Typography (Apple SF system stack) ── */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+                  "Helvetica Neue", Arial, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* ── Shadows ── */
-  --shadow-sm:    0 1px 3px rgba(0,0,0,.4);
-  --shadow-md:    0 4px 16px rgba(0,0,0,.5);
-  --shadow-lg:    0 8px 32px rgba(0,0,0,.6);
-  --shadow-glow:  0 0 20px var(--green-glow);
-  --shadow-glow-lg: 0 0 40px var(--green-glow);
+  /* ── Shadows (soft, deep Apple depth) ── */
+  --shadow-sm:    0 1px 2px rgba(0,0,0,.35);
+  --shadow-md:    0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg:    0 20px 50px rgba(0,0,0,.45);
+  --shadow-glow:    0 4px 16px var(--green-glow);
+  --shadow-glow-lg: 0 6px 28px var(--green-glow);
 
-  /* Legacy clay shadows (no-op in dark theme) */
+  /* Legacy clay shadows (alias) */
   --shadow-clay: var(--shadow-sm);
   --shadow-clay-hover: var(--shadow-md);
   --shadow-clay-active: var(--shadow-sm);
-  --shadow-btn: var(--shadow-sm);
-  --shadow-btn-hover: 0 4px 12px var(--green-glow);
+  --shadow-btn: var(--shadow-glow);
+  --shadow-btn-hover: 0 6px 24px rgba(48,209,88,.32);
   --shadow-btn-active: var(--shadow-sm);
   --shadow-tile: var(--shadow-sm);
 
   /* ── Editor Tokens ── */
-  --ed-bg:          #0c1020;
+  --ed-bg:          #08080a;
   --ed-panel:       var(--surface);
   --ed-panel-2:     var(--surface-2);
   --ed-line:        var(--line);
   --ed-line-strong: var(--line-2);
-  --ed-shadow-sm:   0 1px 4px rgba(0,0,0,.5);
-  --ed-shadow-md:   0 6px 24px rgba(0,0,0,.6);
+  --ed-shadow-sm:   0 1px 3px rgba(0,0,0,.4);
+  --ed-shadow-md:   0 8px 28px rgba(0,0,0,.5);
 
   /* ── Layout ── */
-  --radius-xs:  6px;
-  --radius-sm:  8px;
-  --radius-md:  12px;
-  --radius-lg:  16px;
-  --radius-xl:  20px;
+  --radius-xs:  8px;
+  --radius-sm:  12px;
+  --radius-md:  14px;
+  --radius-lg:  18px;
+  --radius-xl:  24px;
   --topbar-h:   56px;
   --statusbar-h: 26px;
   --left-w:     272px;
   --right-w:    320px;
 
-  /* ── Mobile-First Design Tokens (Spec 3.1) ── */
-  --m-radius-card: 24px;
+  /* ── Nav ── */
+  --bg-nav: rgba(10, 10, 12, 0.82);
+
+  /* ── Mobile-First Design Tokens ── */
+  --m-radius-card: 22px;
   --m-radius-chip: 999px;
-  --m-radius-input: 16px;
-  --m-tap: 48px;                 /* minimum touch target */
+  --m-radius-input: 14px;
+  --m-tap: 48px;
   --m-gap: 12px;
   --m-pad: 16px;
   --m-bottom-nav-h: 72px;
@@ -102,34 +121,41 @@
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   /* tonal layers */
-  --m-surface-1: #1c233c;        /* cards */
-  --m-surface-2: #222a46;        /* chips, inputs */
-  --m-surface-3: #2a3252;        /* pressed, selected container */
+  --m-surface-1: #1a1a20;
+  --m-surface-2: #202027;
+  --m-surface-3: #282831;
 }
 
-/* Optional Alternate Mauve Theme (Spec 3.1) */
+/* Semantic alias */
+:root {
+  --accent: var(--green);
+  --accent-glow: var(--green-glow);
+}
+
+/* Optional Alternate Mauve Theme */
 [data-theme="mauve"] {
-  --bg: #1b1618;
-  --surface: #251f22;
-  --surface-2: #2d2629;
-  --surface-3: #382e33;
-  --m-surface-1: #251f22;
-  --m-surface-2: #2d2629;
-  --m-surface-3: #382e33;
-  --ink: #f0e6eb;
-  --muted: #a698a0;
-  --dim: #6b5c65;
+  --bg: #141217;
+  --surface: #1c1920;
+  --surface-2: #242029;
+  --surface-3: #2e2832;
+  --m-surface-1: #1c1920;
+  --m-surface-2: #242029;
+  --m-surface-3: #2e2832;
+  --ink: #f5f2f7;
+  --muted: #a89fa8;
+  --dim: #5f5560;
   --line: rgba(255, 255, 255, 0.08);
   --line-2: rgba(255, 255, 255, 0.14);
-  --green: #ead6f2;              /* selected chip fill */
-  --green-ink: #2b1f2e;
-  --green-glow: rgba(234, 214, 242, 0.3);
-  --blue: #9a6fb0;
-  --tertiary: #b5827a;
-  --tile-teal: #362933;
-  --tile-purple: #3e2d3b;
-  --tile-rose: #42292f;
-  --tile-amber: #3d2f26;
+  --green: #e7d7f5;              /* selected chip fill (light lavender) */
+  --green-ink: #2a1730;
+  --green-glow: rgba(231,215,245,.25);
+  --blue: #c06bf5;
+  --teal: #d47bd9;
+  --violet: #9a6fb0;
+  --tile-teal: rgba(212,123,217,.12);
+  --tile-purple: rgba(154,111,176,.14);
+  --tile-rose: rgba(255,55,95,.10);
+  --tile-amber: rgba(255,159,10,.10);
 }
 
 /* ==========================================================================
@@ -152,20 +178,22 @@ body {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 :focus-visible {
-  outline: 2px solid var(--green);
+  outline: 2px solid var(--blue);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 button, a, input, select, textarea {
   font-family: inherit;
   color: inherit;
+  letter-spacing: inherit;
 }
 
 button, a {
@@ -180,11 +208,16 @@ input, select, textarea {
   color: var(--ink);
   padding: 8px 12px;
   outline: none;
-  transition: border-color .15s;
+  transition: border-color .15s, box-shadow .15s;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: var(--green);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(10,132,255,.18);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--dim);
 }
 
 /* ==========================================================================
@@ -193,15 +226,15 @@ input:focus, select:focus, textarea:focus {
 
 .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 .highlight-green {
   color: var(--green);
-  text-shadow: 0 0 24px var(--green-glow);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--green) 0%, #7fff6a 100%);
+  background: linear-gradient(90deg, var(--blue) 0%, var(--violet) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -211,18 +244,17 @@ input:focus, select:focus, textarea:focus {
    CARDS & SURFACES
    ========================================================================== */
 
-/* Replaces clay-card — dark glass panel */
 .clay-card {
   background: var(--surface);
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
 .clay-card-interactive:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   border-color: rgba(255,255,255,.18);
 }
 
@@ -235,15 +267,15 @@ input:focus, select:focus, textarea:focus {
   background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .flat-card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   padding: 24px 20px;
-  transition: transform .18s, background .18s, border-color .18s;
+  transition: transform .2s, background .2s, border-color .2s;
 }
 
 .flat-card:hover {
@@ -254,9 +286,9 @@ input:focus, select:focus, textarea:focus {
 
 /* Glass morphism variant */
 .glass-card {
-  background: rgba(22, 27, 46, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(22, 22, 27, 0.72);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid var(--line-2);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -265,9 +297,9 @@ input:focus, select:focus, textarea:focus {
 /* Glow card for hero / CTA */
 .glow-card {
   background: var(--surface);
-  border: 1px solid rgba(63,237,30,.25);
+  border: 1px solid rgba(10,132,255,.28);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(63,237,30,.08);
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(10,132,255,.07);
 }
 
 /* ==========================================================================
@@ -287,10 +319,14 @@ input:focus, select:focus, textarea:focus {
   font-family: var(--font-display);
   font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  transition: all .18s ease;
+  letter-spacing: -0.01em;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
   position: relative;
   overflow: hidden;
+}
+
+.btn-clay:active {
+  transform: scale(.97);
 }
 
 .btn-green {
@@ -307,7 +343,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .btn-green:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(.97);
   box-shadow: var(--shadow-glow);
 }
 
@@ -315,7 +351,17 @@ input:focus, select:focus, textarea:focus {
   background: var(--blue);
   color: var(--white);
   border-color: var(--blue);
-  box-shadow: 0 0 16px rgba(48,137,197,.2);
+  box-shadow: 0 4px 16px rgba(10,132,255,.25);
+}
+
+.btn-blue:hover {
+  background: var(--blue-d);
+  box-shadow: 0 6px 24px rgba(10,132,255,.4);
+  transform: translateY(-1px);
+}
+
+.btn-blue:active {
+  transform: translateY(0) scale(.97);
 }
 
 .btn-white {
@@ -326,7 +372,7 @@ input:focus, select:focus, textarea:focus {
 
 .btn-white:hover {
   background: var(--surface-2);
-  border-color: rgba(255,255,255,.2);
+  border-color: rgba(255,255,255,.22);
 }
 
 /* ==========================================================================
@@ -343,39 +389,39 @@ input:focus, select:focus, textarea:focus {
   font-family: var(--font-display);
   font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
   background: var(--surface-2);
   color: var(--muted);
 }
 
 .pill-green {
-  background: rgba(63,237,30,.12);
-  border-color: rgba(63,237,30,.3);
-  color: var(--green);
+  background: rgba(48,209,88,.12);
+  border-color: rgba(48,209,88,.28);
+  color: #6ee7a0;
 }
 
 .pill-blue {
-  background: rgba(48,137,197,.15);
-  border-color: rgba(48,137,197,.3);
-  color: #70b8f0;
+  background: rgba(10,132,255,.12);
+  border-color: rgba(10,132,255,.28);
+  color: #6db5ff;
 }
 
 .pill-salmon {
-  background: rgba(240, 100, 100, .12);
-  border-color: rgba(240,100,100,.25);
-  color: #f08080;
+  background: rgba(255,69,58,.12);
+  border-color: rgba(255,69,58,.26);
+  color: #ff8a80;
 }
 
 .pill-mint {
-  background: rgba(63,237,30,.12);
-  border-color: rgba(63,237,30,.25);
-  color: #70f040;
+  background: rgba(64,200,224,.12);
+  border-color: rgba(64,200,224,.28);
+  color: #7adcf0;
 }
 
 .pill-lavender {
-  background: rgba(130, 100, 220, .15);
-  border-color: rgba(130,100,220,.3);
-  color: #b09ee0;
+  background: rgba(191,90,242,.12);
+  border-color: rgba(191,90,242,.3);
+  color: #d0a5f7;
 }
 
 /* ==========================================================================
@@ -386,7 +432,7 @@ input:focus, select:focus, textarea:focus {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -394,12 +440,12 @@ input:focus, select:focus, textarea:focus {
   flex-shrink: 0;
 }
 
-.tile-salmon   { background: var(--tile-rose);   color: #f5a0a0; }
-.tile-mint     { background: rgba(63,237,30,.15); color: var(--green); }
-.tile-lavender { background: var(--tile-purple);  color: #b09ee0; }
-.tile-blue     { background: var(--tile-teal);    color: #70b8f0; }
-.tile-green    { background: rgba(63,237,30,.2);  color: var(--green); }
-.tile-gold     { background: var(--tile-amber);   color: var(--gold); }
+.tile-salmon   { background: var(--tile-rose);   color: #ff8a80; }
+.tile-mint     { background: var(--tile-teal);   color: #7adcf0; }
+.tile-lavender { background: var(--tile-purple); color: #d0a5f7; }
+.tile-blue     { background: var(--tile-blue);   color: #6db5ff; }
+.tile-green    { background: var(--tile-green);  color: #6ee7a0; }
+.tile-gold     { background: var(--tile-amber);  color: #ffb84d; }
 
 /* ==========================================================================
    PROGRESS BAR
@@ -416,10 +462,10 @@ input:focus, select:focus, textarea:focus {
 
 .clay-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--green), #7fff6a);
+  background: linear-gradient(90deg, var(--green) 0%, var(--teal) 100%);
   border-radius: 9999px;
   transition: width .4s ease;
-  box-shadow: 0 0 8px var(--green-glow);
+  box-shadow: 0 0 8px rgba(48,209,88,.3);
 }
 
 /* ==========================================================================
@@ -427,39 +473,42 @@ input:focus, select:focus, textarea:focus {
    ========================================================================== */
 
 .floating-chip {
-  animation: floatBob 4s ease-in-out infinite alternate;
+  animation: floatBob 5s ease-in-out infinite alternate;
 }
 
 @keyframes floatBob {
-  0%   { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-10px) rotate(2deg); }
+  0%   { transform: translateY(0px); }
+  100% { transform: translateY(-10px); }
 }
 
-/* Neon pulse animation */
+/* Status pulse */
 @keyframes neonPulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.65; }
 }
 
-/* Grid glow animation */
+@keyframes magick-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.82); }
+}
+
 @keyframes gridGlow {
   0%, 100% { opacity: .4; }
-  50% { opacity: .7; }
+  50% { opacity: .8; }
 }
 
-/* Shimmer animation */
 @keyframes shimmer {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
 .shimmer-text {
-  background: linear-gradient(90deg, var(--green) 0%, #7fff6a 40%, var(--green) 80%);
+  background: linear-gradient(90deg, var(--teal) 0%, var(--blue) 40%, var(--violet) 70%, var(--teal) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
+  animation: shimmer 4s linear infinite;
 }
 
 /* ==========================================================================
@@ -497,9 +546,8 @@ section {
   }
 }
 
-/* ── sm: 480px — pip ticker keeps stacking but items separate ── */
+/* ── sm: 480px ── */
 @media (max-width: 479px) {
-  /* Ticker items stack vertically on very small screens */
   .ticker-inner-grid {
     grid-template-columns: 1fr !important;
   }
@@ -594,27 +642,29 @@ section {
 .canvas-checkerboard {
   background-color: var(--ed-bg);
   background-image:
-    linear-gradient(45deg, rgba(255,255,255,.04) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,.04) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255,255,255,.04) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.04) 75%);
+    linear-gradient(45deg, rgba(255,255,255,.035) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255,255,255,.035) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255,255,255,.035) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.035) 75%);
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
 /* ==========================================================================
-   DARK GRID OVERLAY (HERO BACKGROUND)
+   HERO BACKGROUND (colorful, subtle aurora)
    ========================================================================== */
 
 .hero-grid-bg {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(63,237,30,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(63,237,30,.04) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(10,132,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,132,255,.05) 1px, transparent 1px);
+  background-size: 64px 64px;
   pointer-events: none;
-  animation: gridGlow 4s ease-in-out infinite;
+  animation: gridGlow 6s ease-in-out infinite;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 80%);
 }
 
 /* Radial glow center */
@@ -623,9 +673,12 @@ section {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
-  height: 600px;
-  background: radial-gradient(ellipse at center, rgba(63,237,30,.08) 0%, transparent 70%);
+  width: 900px;
+  height: 620px;
+  background:
+    radial-gradient(ellipse 40% 45% at 28% 42%, rgba(10,132,255,.10) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 40% at 72% 38%, rgba(191,90,242,.09) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 35% at 50% 25%, rgba(48,209,88,.07) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -633,9 +686,9 @@ section {
    SCROLLBAR STYLING
    ========================================================================== */
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--dim); }
 
 /* ==========================================================================
@@ -667,9 +720,9 @@ section {
 }
 
 .tool-btn.active {
-  background: rgba(63,237,30,.1);
-  color: var(--green);
-  border-color: rgba(63,237,30,.25);
+  background: rgba(10,132,255,.14);
+  color: var(--blue);
+  border-color: rgba(10,132,255,.3);
 }
 
 /* Editor panel section header */
@@ -677,7 +730,7 @@ section {
   padding: 10px 14px 6px;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: .07em;
   text-transform: uppercase;
   color: var(--dim);
   border-bottom: 1px solid var(--line);
@@ -689,7 +742,7 @@ section {
   height: 7px;
   border-radius: 50%;
   background: var(--green);
-  box-shadow: 0 0 6px var(--green);
-  animation: neonPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(48,209,88,.55);
+  animation: neonPulse 2.4s ease-in-out infinite;
   display: inline-block;
 }

@@ -193,7 +193,7 @@ export default function ToolLibrary({ onSelectOp, compact }: ToolLibraryProps) {
               fontSize: "0.72rem",
               fontWeight: 600,
               color: "var(--green)",
-              backgroundColor: "rgba(63,237,30,0.1)",
+              backgroundColor: "rgba(48,209,88,0.1)",
               padding: "2px 7px",
               borderRadius: "4px",
             }}
@@ -322,7 +322,7 @@ export default function ToolLibrary({ onSelectOp, compact }: ToolLibraryProps) {
                   key={`recent-${op.id}`}
                   op={op}
                   icon={OP_ICONS[op.id] || Sparkles}
-                  colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#3089c5]" }}
+                  colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#0a84ff]" }}
                   description={op.description || `${op.category} operation`}
                   onAdd={handleAddTool}
                 />
@@ -363,7 +363,7 @@ export default function ToolLibrary({ onSelectOp, compact }: ToolLibraryProps) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
-                  <Icon size={14} color="#3089c5" />
+                  <Icon size={14} color="#0a84ff" />
                   <span style={{ fontSize: "0.82rem", fontWeight: 700 }}>
                     {cat.name}
                   </span>
@@ -402,7 +402,7 @@ export default function ToolLibrary({ onSelectOp, compact }: ToolLibraryProps) {
                       key={op.id}
                       op={op}
                       icon={OP_ICONS[op.id] || Icon}
-                      colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#3089c5]" }}
+                      colorClass={{ bg: "bg-[var(--tile)]", text: "text-[#0a84ff]" }}
                       description={op.description || `${op.category} tool`}
                       onAdd={handleAddTool}
                     />

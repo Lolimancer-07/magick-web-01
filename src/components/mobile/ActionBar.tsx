@@ -224,7 +224,7 @@ export default function ActionBar({
             height: "48px",
             padding: "0 24px",
             borderRadius: "var(--m-radius-chip, 999px)",
-            backgroundColor: "var(--green, #3fed1e)",
+            backgroundColor: "var(--green, #30d158)",
             color: "var(--green-ink, #07110a)",
             border: "none",
             display: "flex",
@@ -233,7 +233,7 @@ export default function ActionBar({
             fontSize: "15px",
             fontWeight: 700,
             cursor: isSaving ? "wait" : "pointer",
-            boxShadow: "0 4px 16px var(--green-glow, rgba(63,237,30,0.3))",
+            boxShadow: "0 4px 16px var(--green-glow, rgba(48,209,88,0.3))",
             transition: "all 0.15s ease",
             WebkitTapHighlightColor: "transparent",
           }}

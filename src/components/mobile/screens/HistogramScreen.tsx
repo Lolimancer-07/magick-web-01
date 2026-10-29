@@ -57,11 +57,11 @@ export default function HistogramScreen() {
 
   const channelColor =
     activeChannel === "red"
-      ? "#f04040"
+      ? "#ff453a"
       : activeChannel === "green"
-      ? "#3fed1e"
+      ? "#30d158"
       : activeChannel === "blue"
-      ? "#3089c5"
+      ? "#0a84ff"
       : "#ffffff";
 
   const rawBins =

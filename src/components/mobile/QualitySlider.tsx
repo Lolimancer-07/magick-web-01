@@ -49,7 +49,7 @@ export default function QualitySlider({
           display: "flex",
           alignItems: "center",
           gap: "4px",
-          color: "var(--green, #3fed1e)",
+          color: "var(--green, #30d158)",
           fontSize: "12px",
           fontWeight: 800,
           letterSpacing: "0.04em",
@@ -73,7 +73,7 @@ export default function QualitySlider({
         onChange={(e) => onChange(parseInt(e.target.value, 10))}
         style={{
           flex: 1,
-          accentColor: "var(--green, #3fed1e)",
+          accentColor: "var(--green, #30d158)",
           height: "6px",
           borderRadius: "3px",
           cursor: "pointer",
@@ -95,7 +95,7 @@ export default function QualitySlider({
             height: "32px",
             borderRadius: "var(--m-radius-chip, 999px)",
             backgroundColor: "var(--m-surface-3, #2a3252)",
-            border: "1px solid var(--green, #3fed1e)",
+            border: "1px solid var(--green, #30d158)",
             color: "var(--ink, #f2f4fb)",
             fontSize: "13px",
             fontWeight: 700,

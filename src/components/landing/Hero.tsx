@@ -9,55 +9,30 @@ export default function Hero() {
 
   return (
     <section
-      className="hero-section"
-      style={{
-        position: "relative",
-        maxWidth: "1240px",
-        margin: "0 auto",
-        overflow: "hidden",
-      }}
+      className="hero-section relative mx-auto max-w-[1240px] overflow-hidden px-4 pb-16 pt-14 md:px-6 md:pb-24 md:pt-20"
     >
       {/* Background glow & faint grid */}
       <div className="hero-glow" aria-hidden="true" />
       <div className="hero-grid-bg" aria-hidden="true" />
 
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: "56px",
-          alignItems: "center",
-          position: "relative",
-          zIndex: 1,
-        }}
-        className="hero-two-column"
+        className="hero-two-column relative z-[1] grid grid-cols-1 items-center gap-12 md:gap-14"
       >
         {/* ── Left Column: Headline & Action ── */}
-        <div style={{ maxWidth: "580px" }}>
+        <div className="max-w-[580px]">
           {/* Badge */}
-          <div style={{ marginBottom: "20px" }}>
+          <div className="mb-5">
             <span
+              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[0.82rem] font-semibold"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "6px 14px",
-                borderRadius: "9999px",
-                background: "rgba(63,237,30,0.12)",
-                border: "1px solid rgba(63,237,30,0.3)",
-                fontSize: "0.82rem",
-                fontWeight: 600,
+                background: "rgba(48,209,88,0.10)",
+                border: "1px solid rgba(48,209,88,0.26)",
                 color: "var(--ink)",
               }}
             >
               <span
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "var(--green)",
-                  boxShadow: "0 0 8px var(--green)",
-                }}
+                className="h-2 w-2 rounded-full"
+                style={{ background: "var(--green)", boxShadow: "0 0 8px var(--green)" }}
               />
               Runs 100% in your browser
             </span>
@@ -65,22 +40,16 @@ export default function Hero() {
 
           {/* Headline */}
           <h1
-            className="font-display"
-            style={{
-              fontSize: "clamp(1.9rem, 5.5vw, 4.2rem)",
-              fontWeight: 800,
-              lineHeight: 1.08,
-              letterSpacing: "-0.03em",
-              color: "#ffffff",
-              marginBottom: "24px",
-            }}
+            className="font-display mb-6 text-[clamp(2.1rem,5.5vw,4.2rem)] font-bold"
+            style={{ lineHeight: 1.06, letterSpacing: "-0.035em", color: "var(--ink)" }}
           >
             Edit Images with{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #3089c5, #3fed1e)",
+                background: "linear-gradient(90deg, #64d2ff, #0a84ff 45%, #bf5af2)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
               }}
             >
               Precision
@@ -88,123 +57,64 @@ export default function Hero() {
           </h1>
 
           <p
-            style={{
-              fontSize: "1.1rem",
-              lineHeight: 1.65,
-              color: "var(--muted)",
-              marginBottom: "36px",
-              maxWidth: "500px",
-            }}
+            className="mb-9 max-w-[500px] text-[1.08rem] leading-[1.65]"
+            style={{ color: "var(--muted)" }}
           >
-            The world’s most trusted image manipulation engine now runs directly inside your
+            The world&rsquo;s most trusted image engine now runs directly inside your
             browser via WebAssembly. Zero cloud uploads, 100% private, instant feedback.
           </p>
 
           {/* Buttons */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "16px",
-              alignItems: "center",
-              marginBottom: "36px",
-            }}
-          >
+          <div className="mb-9 flex flex-wrap items-center gap-4">
             <Link
               href="/app/"
               id="hero-open-editor-btn"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "14px 28px",
-                borderRadius: "12px",
-                background: "var(--green)",
-                color: "var(--green-ink)",
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: "1rem",
-                textDecoration: "none",
-                boxShadow: "0 0 24px rgba(63,237,30,0.35)",
-                transition: "all 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(-2px)";
-                el.style.boxShadow = "0 0 32px rgba(63,237,30,0.55)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(0)";
-                el.style.boxShadow = "0 0 24px rgba(63,237,30,0.35)";
-              }}
+              className="btn-clay btn-green text-base"
+              style={{ padding: "14px 30px", fontSize: "1rem" }}
             >
-              Open Editor →
+              Open Studio
+              <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
 
           {/* Trust items */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "24px",
-              alignItems: "center",
-              color: "var(--muted)",
-              fontSize: "0.86rem",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Shield size={16} color="var(--green)" />
+          <div className="flex flex-wrap items-center gap-6 text-[0.86rem]" style={{ color: "var(--muted)" }}>
+            <div className="flex items-center gap-2">
+              <Shield size={16} color="var(--green)" aria-hidden="true" />
               <span>Nothing is uploaded — 100% private</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Zap size={16} color="#3089c5" />
+            <div className="flex items-center gap-2">
+              <Zap size={16} color="var(--teal)" aria-hidden="true" />
               <span>No sign-up, free, open source</span>
             </div>
           </div>
         </div>
 
-        {/* ── Right Column: Chart & Preview Card with Floating Chips ── */}
-        <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
-          <div style={{ position: "relative", width: "100%", maxWidth: "480px" }}>
-
+        {/* ── Right Column: Histogram Card with Floating Chips ── */}
+        <div className="relative flex justify-center">
+          <div className="relative w-full max-w-[480px]">
             {/* Floating Chip 1 (Top Left): Blur */}
             <div
-              className="floating-chip hero-float-chip"
+              className="floating-chip hero-float-chip absolute left-[-18px] top-[-18px] z-10 flex items-center gap-2.5 rounded-2xl px-4 py-2.5"
               style={{
-                position: "absolute",
-                top: "-18px",
-                left: "-18px",
-                zIndex: 10,
-                padding: "10px 16px",
-                borderRadius: "12px",
-                backgroundColor: "var(--surface)",
-                border: "1px solid var(--line-strong)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
+                backgroundColor: "color-mix(in srgb, var(--surface) 88%, transparent)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid var(--line-2)",
+                boxShadow: "var(--shadow-md)",
               }}
             >
               <div
-                style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "8px",
-                  backgroundColor: "var(--tile)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                className="flex h-7 w-7 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "var(--tile-blue)" }}
               >
-                <Sliders size={15} color="#3089c5" />
+                <Sliders size={15} color="var(--blue)" aria-hidden="true" />
               </div>
               <div>
-                <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--ink)" }}>
+                <div className="text-[0.8rem] font-bold" style={{ color: "var(--ink)" }}>
                   Blur σ 2.0
                 </div>
-                <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--green)" }}>
+                <div className="text-[0.72rem] font-semibold" style={{ color: "var(--green)" }}>
                   Δ +24% smooth
                 </div>
               </div>
@@ -212,100 +122,69 @@ export default function Hero() {
 
             {/* Floating Chip 2 (Bottom Right): Sharpen */}
             <div
-              className="floating-chip hero-float-chip"
+              className="floating-chip hero-float-chip absolute bottom-[-18px] right-[-18px] z-10 flex items-center gap-2.5 rounded-2xl px-4 py-2.5"
               style={{
-                position: "absolute",
-                bottom: "-18px",
-                right: "-18px",
-                zIndex: 10,
-                padding: "10px 16px",
-                borderRadius: "12px",
-                backgroundColor: "var(--surface)",
-                border: "1px solid var(--line-strong)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
+                backgroundColor: "color-mix(in srgb, var(--surface) 88%, transparent)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid var(--line-2)",
+                boxShadow: "var(--shadow-md)",
                 animationDelay: "1.5s",
               }}
             >
               <div
-                style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "8px",
-                  backgroundColor: "var(--tile)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                className="flex h-7 w-7 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "var(--tile-purple)" }}
               >
-                <Sparkles size={15} color="#3089c5" />
+                <Sparkles size={15} color="var(--violet)" aria-hidden="true" />
               </div>
               <div>
-                <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--ink)" }}>
+                <div className="text-[0.8rem] font-bold" style={{ color: "var(--ink)" }}>
                   Sharpen +1.5
                 </div>
-                <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--green)" }}>
+                <div className="text-[0.72rem] font-semibold" style={{ color: "var(--green)" }}>
                   Δ +18% micro-contrast
                 </div>
               </div>
             </div>
 
-            {/* Main Preview Chart Card */}
+            {/* Main Preview Card */}
             <div
+              className="rounded-3xl p-6"
               style={{
                 backgroundColor: "var(--surface)",
                 border: "1px solid var(--line)",
-                borderRadius: "16px",
-                padding: "24px",
-                boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
+                boxShadow: "var(--shadow-lg)",
               }}
             >
               {/* Header */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "16px",
-                }}
-              >
+              <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <div style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                    Live Tone Curve & Pipeline
+                  <div
+                    className="text-[0.75rem] font-semibold uppercase"
+                    style={{ color: "var(--muted)", letterSpacing: "0.04em" }}
+                  >
+                    Live Tone &amp; Pipeline
                   </div>
-                  <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--ink)", fontFamily: "var(--font-display)" }}>
+                  <div className="font-display text-2xl font-bold" style={{ color: "var(--ink)" }}>
                     Live Histogram
                   </div>
                 </div>
 
-                {/* Range Tabs */}
+                {/* Apple-style segmented control */}
                 <div
-                  style={{
-                    display: "flex",
-                    background: "var(--surface-2)",
-                    padding: "3px",
-                    borderRadius: "8px",
-                    gap: "2px",
-                  }}
+                  className="flex gap-0.5 rounded-xl p-[3px]"
+                  style={{ background: "var(--surface-3)", padding: "3px" }}
                 >
                   {(["original", "edited", "split"] as const).map((tab) => (
                     <button
                       key={tab}
                       type="button"
                       onClick={() => setActiveTab(tab)}
+                      className="rounded-lg px-2.5 py-1 text-[0.75rem] font-semibold capitalize transition-all duration-150"
                       style={{
-                        padding: "4px 10px",
-                        borderRadius: "6px",
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        border: "none",
-                        cursor: "pointer",
-                        textTransform: "capitalize",
                         backgroundColor: activeTab === tab ? "var(--blue)" : "transparent",
                         color: activeTab === tab ? "#ffffff" : "var(--muted)",
-                        transition: "all 0.15s ease",
                       }}
                     >
                       {tab}
@@ -314,30 +193,26 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Green Area Chart / Histogram SVG */}
+              {/* Histogram SVG */}
               <div
-                style={{
-                  height: "150px",
-                  width: "100%",
-                  marginBottom: "20px",
-                  position: "relative",
-                  background: "rgba(15, 19, 32, 0.6)",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  padding: "8px",
-                  display: "flex",
-                  alignItems: "flex-end",
-                }}
+                className="relative mb-5 flex h-[150px] w-full items-end overflow-hidden rounded-2xl p-2"
+                style={{ background: "rgba(8, 8, 10, 0.55)" }}
               >
                 <svg
                   viewBox="0 0 400 150"
                   preserveAspectRatio="none"
-                  style={{ width: "100%", height: "100%", overflow: "visible" }}
+                  className="h-full w-full overflow-visible"
                 >
                   <defs>
                     <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3fed1e" stopOpacity="0.45" />
-                      <stop offset="100%" stopColor="#3fed1e" stopOpacity="0.02" />
+                      <stop offset="0%" stopColor="#64d2ff" stopOpacity="0.4" />
+                      <stop offset="55%" stopColor="#0a84ff" stopOpacity="0.18" />
+                      <stop offset="100%" stopColor="#0a84ff" stopOpacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="chartLine" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#64d2ff" />
+                      <stop offset="55%" stopColor="#0a84ff" />
+                      <stop offset="100%" stopColor="#bf5af2" />
                     </linearGradient>
                   </defs>
 
@@ -352,46 +227,43 @@ export default function Hero() {
                     fill="url(#chartGradient)"
                   />
 
-                  {/* Line curve */}
+                  {/* Gradient line curve */}
                   <path
                     d="M 0,140 Q 40,110 80,120 T 160,80 T 240,40 T 320,60 T 400,20"
                     fill="none"
-                    stroke="#3fed1e"
+                    stroke="url(#chartLine)"
                     strokeWidth="3"
                     strokeLinecap="round"
                   />
 
                   {/* Active highlight point */}
-                  <circle cx="240" cy="40" r="5" fill="#3fed1e" />
-                  <circle cx="240" cy="40" r="10" fill="#3fed1e" opacity="0.3" />
+                  <circle cx="240" cy="40" r="5" fill="#bf5af2" />
+                  <circle cx="240" cy="40" r="10" fill="#bf5af2" opacity="0.3" />
                 </svg>
               </div>
 
               {/* Status / mini preview details */}
               <div
+                className="grid grid-cols-1 gap-3 rounded-2xl sm:grid-cols-2"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                  padding: "12px",
-                  borderRadius: "10px",
                   backgroundColor: "var(--surface-2)",
                   border: "1px solid var(--line)",
+                  padding: "12px",
                 }}
               >
                 <div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--muted)", textTransform: "uppercase" }}>
+                  <div className="text-[0.7rem] uppercase" style={{ color: "var(--muted)", letterSpacing: "0.04em" }}>
                     Active Filter
                   </div>
-                  <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--ink)" }}>
+                  <div className="text-[0.88rem] font-bold" style={{ color: "var(--ink)" }}>
                     Sigmoidal Contrast (5.0, 50%)
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--muted)", textTransform: "uppercase" }}>
+                  <div className="text-[0.7rem] uppercase" style={{ color: "var(--muted)", letterSpacing: "0.04em" }}>
                     Color Space
                   </div>
-                  <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--green)" }}>
+                  <div className="text-[0.88rem] font-bold" style={{ color: "var(--green)" }}>
                     sRGB D65 Standard
                   </div>
                 </div>
@@ -400,22 +272,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .hero-section {
-          padding: 60px 16px 70px;
-        }
-        @media (min-width: 600px) {
-          .hero-section {
-            padding: 80px 24px 100px;
-          }
-        }
-        @media (min-width: 960px) {
-          .hero-two-column {
-            grid-template-columns: 1.15fr 0.85fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

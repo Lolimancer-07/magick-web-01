@@ -50,7 +50,7 @@ export default function Segmented<T extends string = string>({
               flex: 1,
               minHeight: "40px",
               borderRadius: "var(--m-radius-chip, 999px)",
-              backgroundColor: isSelected ? "var(--green, #3fed1e)" : "transparent",
+              backgroundColor: isSelected ? "var(--green, #30d158)" : "transparent",
               color: isSelected
                 ? "var(--green-ink, #07110a)"
                 : opt.disabled

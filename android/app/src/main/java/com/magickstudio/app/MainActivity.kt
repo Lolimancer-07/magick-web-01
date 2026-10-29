@@ -24,6 +24,12 @@ import androidx.navigation.navArgument
 import com.magickstudio.app.core.designsystem.theme.MagickStudioTheme
 import com.magickstudio.app.feature.crop.CropScreen
 import com.magickstudio.app.feature.cutting.ImageCuttingScreen
+import com.magickstudio.app.feature.ai.AiDetectionScreen
+import com.magickstudio.app.feature.ai.AiEnhanceScreen
+import com.magickstudio.app.feature.ai.DepthEffectsScreen
+import com.magickstudio.app.feature.ai.EnhanceMode
+import com.magickstudio.app.feature.convert.ConvertScreen
+import com.magickstudio.app.feature.filters.FiltersScreen
 import com.magickstudio.app.feature.exif.DeleteExifScreen
 import com.magickstudio.app.feature.exif.EditExifScreen
 import com.magickstudio.app.feature.hub.HubScreen
@@ -95,6 +101,13 @@ fun MagickStudioApp(initialImageUri: Uri?) {
                         "batch-rename" -> navController.navigate("batch-rename")
                         "edit-exif" -> navController.navigate("edit-exif")
                         "delete-exif" -> navController.navigate("delete-exif")
+                        "ai-detector" -> navController.navigate("ai-detector")
+                        "depth-effects" -> navController.navigate("depth-effects")
+                        "background-remover" -> navController.navigate("background-remover")
+                        "upscale" -> navController.navigate("upscale")
+                        "denoise" -> navController.navigate("denoise")
+                        "filters" -> navController.navigate("filters")
+                        "convert" -> navController.navigate("convert")
                         else -> navController.navigate("tool/${tool.id}")
                     }
                 },
@@ -155,6 +168,58 @@ fun MagickStudioApp(initialImageUri: Uri?) {
 
         composable("delete-exif") {
             DeleteExifScreen(
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("ai-detector") {
+            AiDetectionScreen(
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("depth-effects") {
+            DepthEffectsScreen(
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("background-remover") {
+            AiEnhanceScreen(
+                mode = EnhanceMode.RemoveBackground,
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("upscale") {
+            AiEnhanceScreen(
+                mode = EnhanceMode.Upscale,
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("denoise") {
+            AiEnhanceScreen(
+                mode = EnhanceMode.Denoise,
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("filters") {
+            FiltersScreen(
+                imageUri = currentImageUri,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("convert") {
+            ConvertScreen(
                 imageUri = currentImageUri,
                 onBackClick = { navController.popBackStack() }
             )

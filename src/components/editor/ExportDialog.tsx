@@ -117,7 +117,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
                 onClick={() => setFormat(fmt)}
                 className={`py-2 px-3 rounded-xl border text-xs font-bold uppercase transition-all cursor-pointer ${
                   format === fmt
-                    ? "bg-[var(--green)] text-[var(--green-ink)] border-[var(--green)] shadow-[0_0_12px_rgba(63,237,30,0.3)]"
+                    ? "bg-[var(--green)] text-[var(--green-ink)] border-[var(--green)] shadow-[0_0_12px_rgba(48,209,88,0.3)]"
                     : "bg-[var(--surface-2)] text-[var(--muted)] border-[var(--line)] hover:bg-[var(--surface-3)] hover:text-[var(--ink)]"
                 }`}
               >
@@ -187,7 +187,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
             type="button"
             onClick={handleExport}
             disabled={isExporting}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl font-display font-bold text-xs text-[var(--green-ink)] bg-[var(--green)] hover:bg-[var(--green-d)] transition-all shadow-[0_0_16px_rgba(63,237,30,0.3)] active:translate-y-0.5 cursor-pointer disabled:opacity-50"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl font-display font-bold text-xs text-[var(--green-ink)] bg-[var(--green)] hover:bg-[var(--green-d)] transition-all shadow-[0_0_16px_rgba(48,209,88,0.3)] active:translate-y-0.5 cursor-pointer disabled:opacity-50"
           >
             <FileDown size={15} aria-hidden="true" />
             <span>{isExporting ? "Exporting..." : "Download Image"}</span>

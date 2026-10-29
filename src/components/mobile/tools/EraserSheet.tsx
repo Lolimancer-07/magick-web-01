@@ -73,7 +73,7 @@ export default function EraserSheet({
             >
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
                 <span>Color Tolerance (-fuzz)</span>
-                <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{fuzz}%</span>
+                <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{fuzz}%</span>
               </div>
               <input
                 type="range"
@@ -81,7 +81,7 @@ export default function EraserSheet({
                 max={60}
                 value={fuzz}
                 onChange={(e) => setFuzz(parseInt(e.target.value, 10))}
-                style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
               />
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function EraserSheet({
             >
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
                 <span>Brush Radius</span>
-                <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{brushSize} px</span>
+                <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{brushSize} px</span>
               </div>
               <input
                 type="range"
@@ -108,7 +108,7 @@ export default function EraserSheet({
                 max={120}
                 value={brushSize}
                 onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
-                style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function EraserSheet({
             >
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: 600 }}>
                 <span>Edge Hardness</span>
-                <span style={{ color: "var(--green, #3fed1e)", fontFamily: "var(--font-mono)" }}>{hardness}%</span>
+                <span style={{ color: "var(--green, #30d158)", fontFamily: "var(--font-mono)" }}>{hardness}%</span>
               </div>
               <input
                 type="range"
@@ -133,7 +133,7 @@ export default function EraserSheet({
                 max={100}
                 value={hardness}
                 onChange={(e) => setHardness(parseInt(e.target.value, 10))}
-                style={{ width: "100%", accentColor: "var(--green, #3fed1e)" }}
+                style={{ width: "100%", accentColor: "var(--green, #30d158)" }}
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function EraserSheet({
             alignItems: "flex-start",
             gap: "8px",
             fontSize: "12px",
-            color: "var(--blue, #3089c5)",
+            color: "var(--blue, #0a84ff)",
             lineHeight: 1.4,
           }}
         >
@@ -166,7 +166,7 @@ export default function EraserSheet({
           style={{
             height: "48px",
             borderRadius: "var(--m-radius-chip, 999px)",
-            backgroundColor: "var(--green, #3fed1e)",
+            backgroundColor: "var(--green, #30d158)",
             color: "var(--green-ink, #07110a)",
             fontWeight: 700,
             fontSize: "15px",

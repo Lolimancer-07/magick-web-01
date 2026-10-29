@@ -108,7 +108,7 @@ export default function AllOptionsScreen() {
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <code style={{ fontSize: "14px", fontWeight: 700, color: "var(--green, #3fed1e)" }}>
+                  <code style={{ fontSize: "14px", fontWeight: 700, color: "var(--green, #30d158)" }}>
                     {opt.flag}
                   </code>
                   <span
@@ -119,7 +119,7 @@ export default function AllOptionsScreen() {
                       borderRadius: "6px",
                       backgroundColor:
                         opt.engine === "native" ? "rgba(48, 137, 197, 0.2)" : "rgba(63, 237, 30, 0.15)",
-                      color: opt.engine === "native" ? "var(--blue, #3089c5)" : "var(--green, #3fed1e)",
+                      color: opt.engine === "native" ? "var(--blue, #0a84ff)" : "var(--green, #30d158)",
                       textTransform: "uppercase",
                     }}
                   >

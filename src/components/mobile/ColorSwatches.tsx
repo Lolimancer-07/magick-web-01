@@ -67,14 +67,14 @@ export default function ColorSwatches({
                 : undefined,
               backgroundSize: "8px 8px",
               border: isSelected
-                ? "3px solid var(--green, #3fed1e)"
+                ? "3px solid var(--green, #30d158)"
                 : "2px solid var(--line-2, rgba(255,255,255,0.14))",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
               flexShrink: 0,
-              boxShadow: isSelected ? "0 0 12px var(--green-glow, rgba(63,237,30,0.3))" : "none",
+              boxShadow: isSelected ? "0 0 12px var(--green-glow, rgba(48,209,88,0.3))" : "none",
               transition: "transform 0.15s ease",
               transform: isSelected ? "scale(1.08)" : "scale(1)",
               WebkitTapHighlightColor: "transparent",
@@ -84,7 +84,7 @@ export default function ColorSwatches({
               <Check
                 size={18}
                 style={{
-                  color: s.value === "#ffffff" ? "#000" : "var(--green, #3fed1e)",
+                  color: s.value === "#ffffff" ? "#000" : "var(--green, #30d158)",
                   filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.8))",
                 }}
               />

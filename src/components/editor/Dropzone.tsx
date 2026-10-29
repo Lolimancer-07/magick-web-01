@@ -105,13 +105,13 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
           userSelect: "none",
           transition: "all .2s ease",
           background: isDragActive
-            ? "rgba(63,237,30,.06)"
+            ? "rgba(48,209,88,.06)"
             : "var(--surface)",
           border: isDragActive
-            ? "2px dashed rgba(63,237,30,.6)"
+            ? "2px dashed rgba(48,209,88,.6)"
             : "1px dashed rgba(255,255,255,.12)",
           boxShadow: isDragActive
-            ? "0 0 40px rgba(63,237,30,.15), inset 0 0 40px rgba(63,237,30,.05)"
+            ? "0 0 40px rgba(48,209,88,.15), inset 0 0 40px rgba(48,209,88,.05)"
             : "0 8px 32px rgba(0,0,0,.4)",
           transform: isDragActive ? "scale(1.01)" : "scale(1)",
         }}
@@ -135,8 +135,8 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
                 width: "64px",
                 height: "64px",
                 borderRadius: "18px",
-                background: "rgba(63,237,30,.1)",
-                border: "1px solid rgba(63,237,30,.2)",
+                background: "rgba(48,209,88,.1)",
+                border: "1px solid rgba(48,209,88,.2)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -166,7 +166,7 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
                 style={{
                   width: "60%",
                   height: "100%",
-                  background: "linear-gradient(90deg, var(--green), #7fff6a)",
+                  background: "linear-gradient(90deg, var(--green), #64d2ff)",
                   borderRadius: "9999px",
                   animation: "shimmer 1.5s linear infinite",
                   backgroundSize: "200% auto",
@@ -183,15 +183,15 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
                   width: "76px",
                   height: "76px",
                   borderRadius: "22px",
-                  background: isDragActive ? "rgba(63,237,30,.15)" : "var(--surface-2)",
-                  border: isDragActive ? "1px solid rgba(63,237,30,.35)" : "1px solid var(--line)",
+                  background: isDragActive ? "rgba(48,209,88,.15)" : "var(--surface-2)",
+                  border: isDragActive ? "1px solid rgba(48,209,88,.35)" : "1px solid var(--line)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   color: isDragActive ? "var(--green)" : "var(--muted)",
                   transition: "all .2s",
                   transform: isDragActive ? "scale(1.08) rotate(-3deg)" : "scale(1)",
-                  boxShadow: isDragActive ? "0 0 24px rgba(63,237,30,.2)" : "0 4px 16px rgba(0,0,0,.3)",
+                  boxShadow: isDragActive ? "0 0 24px rgba(48,209,88,.2)" : "0 4px 16px rgba(0,0,0,.3)",
                 }}
               >
                 {isDragActive ? (
@@ -255,18 +255,18 @@ export default function Dropzone({ onImageLoaded }: DropzoneProps) {
                   fontWeight: 700,
                   fontSize: "0.9rem",
                   cursor: "pointer",
-                  boxShadow: "0 0 20px rgba(63,237,30,.3)",
+                  boxShadow: "0 0 20px rgba(48,209,88,.3)",
                   transition: "all .18s",
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
                   el.style.transform = "translateY(-2px)";
-                  el.style.boxShadow = "0 0 32px rgba(63,237,30,.5)";
+                  el.style.boxShadow = "0 0 32px rgba(48,209,88,.5)";
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
                   el.style.transform = "translateY(0)";
-                  el.style.boxShadow = "0 0 20px rgba(63,237,30,.3)";
+                  el.style.boxShadow = "0 0 20px rgba(48,209,88,.3)";
                 }}
               >
                 <Upload size={16} aria-hidden="true" />
